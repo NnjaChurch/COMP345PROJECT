@@ -24,14 +24,19 @@
 // Namespaces
 using namespace std;
 
-
 // Main Class
 class GBMap {
 public:
 	// Constructor
 	GBMap(int num_players);
 	// Destructor
-	~GBMap();
+	virtual ~GBMap();
+
+	// Player Functions
+	void AddTile();
+
+	// Draw Functions
+	void Draw();	// Outputs Board to the Console
 
 private:
 };
