@@ -39,5 +39,15 @@ public:
 	void Draw();	// Outputs Board to the Console
 
 private:
-};
+	void AddEdges(int i);
 
+	class Node {
+		// Will contain Tile Data
+	public:
+		Node(int node_number);
+	private:
+		int NodeNumber;
+	};
+	vector<Node>* Nodes;
+	vector<vector<int>>* Edges;
+};
