@@ -20,6 +20,7 @@
 
 // Includes
 #include <vector>
+#include <iostream>
 
 // Namespaces
 using namespace std;
@@ -27,27 +28,33 @@ using namespace std;
 // Main Class
 class GBMap {
 public:
-	// Constructor
-	GBMap(int num_players);
-	// Destructor
-	virtual ~GBMap();
-
-	// Player Functions
-	void AddTile();
-
-	// Draw Functions
-	void Draw();	// Outputs Board to the Console
-
-private:
-	void AddEdges(int i);
-
+	// Node Class
 	class Node {
 		// Will contain Tile Data
 	public:
 		Node(int node_number);
+		virtual ~Node();
 	private:
 		int NodeNumber;
 	};
-	vector<Node>* Nodes;
+
+	// Default Constructor
+	GBMap(int num_players);
+	// Constructor for MapLoader
+	GBMap(vector<Node*>* nodes, vector<vector<int>>* edges);
+	// Destructor
+	virtual ~GBMap();
+
+	// Player Functions
+	void AddTile(int board_space);
+
+	// Draw Functions
+	void Draw();	// Outputs Board to the Console
+
+	
+
+private:
+	int* NumNodes;
+	vector<Node*>* Nodes;
 	vector<vector<int>>* Edges;
 };

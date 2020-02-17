@@ -1,0 +1,29 @@
+----------------------------------------------------------------------------------------------------
+	COMP345 - ASSIGNMENT 1 - DOCUMENTATION
+	GROUP - 17
+		- Kevin McAllister (40031326)
+		- Karim Loulou (40027203)
+		- Annes Cherid (40038453)
+----------------------------------------------------------------------------------------------------
+
+// Temporary notes during writing (remove when documentation is complete!!!)
+// Follow template already included in this file for each of the components
+// Each component should contain:
+//	- Description of its main purpose
+//	- Type of component it is (Object / Static Functions)
+//	- List of its accessible functions + quick description of its usage
+//	- Author of file? (Maybe not necessary)
+
+----------------------------------------------------------------------------------------------------
+GBMap.h / GBMap.cpp:
+Description:	Handles to creation and modification of the Game Board and its related components
+Type: Object
+Functions:
+	GBMap(int num_players)									// Default Constructor
+	GBMap(vector<Node> Nodes, vector<vector<int>> Edges)	// Constructor for MapLoader
+	~GBMap ()												// Destructor
+	void AddTile(int board_space, Tile harvest_tile)		// Function to add tiles to the board
+	void Draw()												// Outputs board to the console
+	
+	
+----------------------------------------------------------------------------------------------------
