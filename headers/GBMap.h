@@ -29,11 +29,11 @@ using namespace std;
 class GBMap {
 public:
 	// Node Class
-	class Node {
+	class GBNode {
 		// Will contain Tile Data
 	public:
-		Node(int node_number);
-		virtual ~Node();
+		GBNode(int node_number);
+		virtual ~GBNode();
 	private:
 		int NodeNumber;
 	};
@@ -41,7 +41,7 @@ public:
 	// Default Constructor
 	GBMap(int num_players);
 	// Constructor for MapLoader
-	GBMap(vector<Node*>* nodes, vector<vector<int>>* edges);
+	GBMap(vector<GBNode*>* nodes, vector<vector<int>>* edges);
 	// Destructor
 	virtual ~GBMap();
 
@@ -55,6 +55,6 @@ public:
 
 private:
 	int* NumNodes;
-	vector<Node*>* Nodes;
+	vector<GBNode*>* Nodes;
 	vector<vector<int>>* Edges;
 };

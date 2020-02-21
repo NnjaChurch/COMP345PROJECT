@@ -17,23 +17,40 @@
 
 // Includes
 #include <vector>
+#include <iostream>
 
 // Namespaces
 using namespace std;
 
 class VGMap {
 public:
-	// Constructor
+	// Node Class
+	class VGNode {
+		// Will contain Tile data
+	public:
+		VGNode(int node_number);
+		virtual ~VGNode();
+	private:
+		int NodeNumber;
+	};
+
+	// Default Constructor
 	VGMap(int player_number);
+	// Constructor for Map Loader
+	VGMap(int player_number, vector<VGNode*>* nodes, vector<vector<int>>* edges);
 	// Destructor
 	virtual ~VGMap();
 
 	// Player Functions
-	void AddTile();
+	void AddTile(int board_space);		// Missing Tile from Resource
 
 	// Draw Functions
 	void Draw();	// Outputs Board to the Console
 
 private:
+	int* PlayerNumber;
+	int* NumNodes;
+	vector<VGNode*>* Nodes;
+	vector<vector<int>>* Edges;
 };
 

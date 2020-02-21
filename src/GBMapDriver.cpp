@@ -15,8 +15,11 @@ int main() {
 	// 2P Map
 	cout << "2 Player Map:\n";
 	GBMap2P->Draw();
+	// 3P Map
 	cout << "\n3 Player Map:\n";
 	GBMap3P->Draw();
+
+	// 4P Map
 	cout << "\n4 Player Map:\n";
 	GBMap4P->Draw();
 }

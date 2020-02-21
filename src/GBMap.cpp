@@ -160,10 +160,11 @@ GBMap::GBMap(vector<Node*>* nodes, vector<vector<int>>* edges) {
 }
 
 GBMap::~GBMap() {
+	delete NumNodes;
 	// Delete Nodes
 	for (int i = 0; i < Nodes->size(); i++) {
 		// Call Node Deconstructor
-		Nodes->at(i)->~Node();
+		Nodes->at(i).~GBNode();
 		// Clear allocated memory for Node
 		delete Nodes->at(i);
 	}
@@ -198,10 +199,10 @@ void GBMap::Draw() {
 	}
 }
 
-GBMap::Node::Node(int node_number) {
+GBMap::GBNode::GBNode(int node_number) {
 	NodeNumber = node_number;
 }
 
-GBMap::Node::~Node() {
+GBMap::GBNode::~GBNode() {
 	// Clear memory and pointers to internal data if necessary
 }
