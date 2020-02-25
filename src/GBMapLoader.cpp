@@ -1,14 +1,15 @@
 #include "..\headers\GBMapLoader.h"
 
+// Initialize Static Variables
 vector<int>* GBMapLoader::Nodes;
-int** GBMapLoader::Edges;
+vector<vector<int>>* GBMapLoader::Edges;
 
 
-void GBMapLoader::LoadMap(string GBPath) {
+void GBMapLoader::LoadMap(string MFile) {
 	fstream in_stream;
-	in_stream.open(GBPath);
+	in_stream.open(MFile);
 
-	cout << "Loading Map at Path: " << GBPath << endl;
+	cout << "Loading GBMap at Path: " << MFile << endl;
 
 	if (in_stream.fail()) {
 		cerr << "ERROR::GB_MAP_LOADER::LOAD_MAP::COULD_NOT_OPEN_MAP_FILE" << endl;
@@ -40,7 +41,7 @@ vector<int>* GBMapLoader::GetNodes() {
 	return Nodes;
 }
 
-int** GBMapLoader::GetEdges() {
+vector<vector<int>>* GBMapLoader::GetEdges() {
 	return Edges;
 }
 
@@ -53,31 +54,22 @@ bool GBMapLoader::ParseLine(vector<string> tokens) {
 		}
 		else if (tokens[0] == "Nodes") {
 			int nodeCount = static_cast<int>(atof(tokens[1].c_str()));
-			cout << "Number of Nodes: " << nodeCount << endl;
 			Nodes = new vector<int>();
-			Edges = new int* [nodeCount];
+			Edges = new vector<vector<int>>(nodeCount, vector<int>(4, -1));
 			for (int i = 0; i < nodeCount; i++) {
 				Nodes->push_back(i);
-
-				// Populate Edges with 0
-				Edges[i] = new int[nodeCount];
-				for (int j = 0; j < nodeCount; j++) {
-					Edges[i][j] = 0;
-				}
 			}
 			return true;
 		}
 		else if (tokens[0] == "Edges") {
 			int currentNode = static_cast<int>(atof(tokens[1].c_str()));
-			cout << "Current Node: " << currentNode << endl;
 			for (int i = 2; i < 6; i++) {
 				if (tokens[i] == "N") {
 					// Do Nothing
 				}
 				else {
 					int edgeNode = static_cast<int>(atof(tokens[i].c_str()));
-					cout << "Edge Node: " << edgeNode << endl;
-					Edges[currentNode][edgeNode] = 1;
+					Edges->at(currentNode).at(i - 2) = edgeNode;
 				}
 			}
 			return true;

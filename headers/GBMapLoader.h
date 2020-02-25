@@ -5,25 +5,24 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <iterator>
 
 // Namespaces
 using namespace std;
 
 // Class
 class GBMapLoader {
-
 public:
 	static void LoadMap(string MFile);
 
+	// Temporary Functions until the Loader is linked to GBMap
 	static vector<int>* GetNodes();
-	static int** GetEdges();
+	static vector<vector<int>>* GetEdges();
 
 private:
 	static bool ParseLine(vector<string> tokens);
 
 	// Temporary Containers for Maps (will be delegated to GBMap once components are connected)
 	static vector<int>* Nodes;
-	static int** Edges;
+	static vector<vector<int>>* Edges;
 };
 

@@ -1,29 +1,44 @@
 // Includes
 #include <GBMapLoader.h>
+#include <VGMapLoader.h>
 int main() {
 	string GBMapPath = "./GBMap2P.txt";
+	string VGMapPath = "./VGMapTP.txt";
 
+	// Load GBMap from File
 	GBMapLoader::LoadMap(GBMapPath);
+	// Load VGMap from File
+	VGMapLoader::LoadMap(VGMapPath);
 
-	vector<int>* Nodes = GBMapLoader::GetNodes();
-	int** Edges = GBMapLoader::GetEdges();
+	// Get GBMap Data
+	vector<int>* GBNodes = GBMapLoader::GetNodes();
+	vector<vector<int>>* GBEdges = GBMapLoader::GetEdges();
 
-	cout << "Number of Nodes: " << Nodes->size() << endl;
-	cout << "\t";
-	for (int i = 0; i < Nodes->size(); i++) {
-		if (i < 10) {
-			cout << i << "   ";
-		}
-		else {
-			cout << i << "  ";
-		}
-	}
-	cout << "\n\n";
-	for (int i = 0; i < Nodes->size(); i++) {
+	// Get VGMap Data
+	vector<int>* VGNodes = VGMapLoader::GetNodes();
+	vector<vector<int>>* VGEdges = VGMapLoader::GetEdges();
+
+	// Print GBMap
+	cout << "GBMap Number of Nodes: " << GBNodes->size() << endl;
+	cout << "Edges\tL\tR\tT\tB\n\n";
+	for (int i = 0; i < GBEdges->size(); i++) {
 		cout << i << "\t";
-		for (int j = 0; j < Nodes->size(); j++) {
-			cout << Edges[i][j] << "   ";
+		for (int j = 0; j < 4; j++) {
+			int edgeValue = GBEdges->at(i).at(j);
+			cout << edgeValue << "\t";
 		}
-		cout << "\n";
+		cout << "\n\n";
+	}
+
+	// Print VGMap
+	cout << "VGMap Number of Nodes: " << VGNodes->size() << endl;
+	cout << "Edges\tL\tR\tT\tB\n\n";
+	for (int i = 0; i < VGEdges->size(); i++) {
+		cout << i << "\t";
+		for (int j = 0; j < 4; j++) {
+			int edgeValue = VGEdges->at(i).at(j);
+			cout << edgeValue << "\t";
+		}
+		cout << "\n\n";
 	}
 }

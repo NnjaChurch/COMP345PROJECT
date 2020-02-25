@@ -3,7 +3,7 @@
 GBMap::GBMap(int num_players) {
 	// Initialize variables
 	NumNodes = new int;
-	Nodes = new vector<Node*>;
+	Nodes = new vector<GBNode*>;
 	Edges = new vector<vector<int>>;
 
 	// Assign values based on num_players
@@ -11,7 +11,7 @@ GBMap::GBMap(int num_players) {
 		*NumNodes = 25;
 		// Fill Nodes
 		for (int i = 0; i < *NumNodes; i++) {
-			Nodes->push_back(new Node(i));
+			Nodes->push_back(new GBNode(i));
 		}
 		// Fill Edges (Adjacency List { L, R, T, B } with -1 meaning no adjacency)
 		vector<vector<int>> tempVec = {
@@ -47,7 +47,7 @@ GBMap::GBMap(int num_players) {
 	else if (num_players == 3) {
 		*NumNodes = 35;
 		for (int i = 0; i < *NumNodes; i++) {
-			Nodes->push_back(new Node(i));
+			Nodes->push_back(new GBNode(i));
 		}
 		// Fill Edges (Adjacency List { L, R, T, B } with -1 meaning no adjacency)
 		vector<vector<int>> tempVec = {
@@ -93,7 +93,7 @@ GBMap::GBMap(int num_players) {
 	else if (num_players == 4) {
 		*NumNodes = 45;
 		for (int i = 0; i < *NumNodes; i++) {
-			Nodes->push_back(new Node(i));
+			Nodes->push_back(new GBNode(i));
 		}
 		// Fill Edges (Adjacency List { L, R, T, B } with -1 meaning no adjacency)
 		vector<vector<int>> tempVec = {
@@ -153,7 +153,7 @@ GBMap::GBMap(int num_players) {
 	}
 }
 
-GBMap::GBMap(vector<Node*>* nodes, vector<vector<int>>* edges) {
+GBMap::GBMap(vector<GBNode*>* nodes, vector<vector<int>>* edges) {
 	*NumNodes = nodes->size();
 	Nodes = nodes;
 	Edges = edges;
@@ -164,7 +164,7 @@ GBMap::~GBMap() {
 	// Delete Nodes
 	for (int i = 0; i < Nodes->size(); i++) {
 		// Call Node Deconstructor
-		Nodes->at(i).~GBNode();
+		Nodes->at(i)->~GBNode();
 		// Clear allocated memory for Node
 		delete Nodes->at(i);
 	}
