@@ -3,7 +3,6 @@
 Player::Player(string villageName) {
     Player::Player(int player_number) {
         // Initialize Variables
-        int player_number=1;
         int board_space = 0;
 	PlayerNumber = new int(player_number);
 	if (PlayerNumber == 1){
@@ -19,17 +18,19 @@ Player::Player(string villageName) {
         self.villageName = "  Milford";
     }
     
-    }
+    };
     
     
 
     void Player::PlaceHarvestTile(int board_space){
         // Add Tile to position in Game Board (used later)
+        cout << "ok"<< endl;
     }
     void Player::DrawBuilding(int PlayerNumber){
         VGMap* VGMapP1 = new VGMap(PlayerNumber);
     }
-    vector<int> resourceMarkers[4]={0,0,0,0};
-    vector<int> harvest_tiles[];
-    vector<int> building_tokens[];
-}
+
+    vector<int> resourceMarkers();
+    vector<int> harvest_tiles();
+    vector<int> building_tokens();
+};
