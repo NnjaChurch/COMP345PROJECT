@@ -51,8 +51,6 @@ public:
 	// Draw Functions
 	void Draw();	// Outputs Board to the Console
 
-	
-
 private:
 	int* NumNodes;
 	vector<GBNode*>* Nodes;

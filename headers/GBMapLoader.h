@@ -12,7 +12,7 @@ using namespace std;
 // Class
 class GBMapLoader {
 public:
-	static void LoadMap(string MFile);
+	static void LoadMap(string map_file);
 
 	// Temporary Functions until the Loader is linked to GBMap
 	static vector<int>* GetNodes();

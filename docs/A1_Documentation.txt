@@ -16,14 +16,50 @@
 
 ----------------------------------------------------------------------------------------------------
 GBMap.h / GBMap.cpp:
-Description:	Handles to creation and modification of the Game Board and its related components
-Type: Object
+Description:	Handles the creation and modification of the Game Board and its related components
+Type:	Object
 Functions:
-	GBMap(int num_players)									// Default Constructor
-	GBMap(vector<Node> Nodes, vector<vector<int>> Edges)	// Constructor for MapLoader
-	~GBMap ()												// Destructor
-	void AddTile(int board_space, Tile harvest_tile)		// Function to add tiles to the board
-	void Draw()												// Outputs board to the console
+	GBMap(int num_players)										// Default Constructor
+	GBMap(vector<GBNode>* Nodes, vector<vector<int>>* Edges)	// Constructor for MapLoader
+	~GBMap()													// Destructor
+	void AddTile(int board_space, Tile harvest_tile)			// Function to add tiles to the board
+	void Draw()													// Outputs board to the console
+
+Subclass:	GBNode
+Description:	Stores data of the tiles that are placed on the board
+Functions:
+	GBNode(int node_number)										// Constructor
+	~GBNode()													// Destructor
+
+VGMap.h / VGMap.cpp:
+Description:	Handles the creation and modification of the Village board and its related components
+Type:	Object
+Functions:
+	VGMap(int player_number)									// Default Constructor
+	VGMap(vector<VGNode>* Nodes, vector<vector<int>>* Edges)	// Constrcutor for MapLoader
+	~VGMap()													// Destructor
+	void AddTile(int board_space, Tile building_tile)			// Function to add tiles to the board
+	void Draw()													// Outputs board to the console
 	
+Subclass:	VGNode
+Description:	Stores data of tiles that are placed on the board and costs to place them
+Functions:
+	VGNode(int node_number)										// Constructor
+	~VGNode()													// Destructor
 	
+GBMapLoader.h / GBMapLoader.cpp:
+Description:	Handles the loading of GBMaps from files
+Type:	Static Functions
+Functions:
+	static void LoadMap(string map_file)						// Loads map from file
+	static vector<int>* GetNodes()								// Returns stored nodes loaded from file
+	static vector<vector<int>>* GetEdges()						// Returns stored edges loaded from file
+	
+VGMapLoader.h / VGMapLoader.cpp:
+Description:	Handles loading of VGMaps from files
+Type:	Static Functions
+Functions:
+	static void LoadMap(string map_file)						// Loads map from file
+	static vector<int>* GetNodes()								// Returns stored nodes loaded from file
+	static vector<vector<int>>* GetEdges()						// Returns stored edges loaded from file
 ----------------------------------------------------------------------------------------------------

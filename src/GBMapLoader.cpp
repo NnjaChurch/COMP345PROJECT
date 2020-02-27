@@ -5,11 +5,11 @@ vector<int>* GBMapLoader::Nodes;
 vector<vector<int>>* GBMapLoader::Edges;
 
 
-void GBMapLoader::LoadMap(string MFile) {
+void GBMapLoader::LoadMap(string map_file) {
 	fstream in_stream;
-	in_stream.open(MFile);
+	in_stream.open(map_file);
 
-	cout << "Loading GBMap at Path: " << MFile << endl;
+	cout << "Loading GBMap at Path: " << map_file << endl;
 
 	if (in_stream.fail()) {
 		cerr << "ERROR::GB_MAP_LOADER::LOAD_MAP::COULD_NOT_OPEN_MAP_FILE" << endl;

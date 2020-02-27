@@ -12,7 +12,7 @@ using namespace std;
 // Class
 class VGMapLoader {
 public:
-	static void LoadMap(string MFile);
+	static void LoadMap(string map_file);
 
 	// Temporary Functions until the Loader is linked to VGMap
 	static vector<int>* GetNodes();
