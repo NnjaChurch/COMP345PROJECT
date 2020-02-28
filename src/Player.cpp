@@ -1,36 +1,55 @@
 #include "../headers/Player.h"
-#include "../headers/VGMap.h"
-Player::Player(string villageName) {
-    Player::Player(int player_number) {
-        // Initialize Variables
-        int board_space = 0;
-	PlayerNumber = new int(player_number);
-	if (PlayerNumber == 1){
-        self.villageName = "Stratford";
-    }else if (PlayerNumber == 2)
+
+Player::Player(int player_number) {
+    // Initialize Variables
+    int board_space = 0;
+    string* villageName;
+	
+	if (player_number == 1){
+        *villageName = "Stratford";
+    }else if (player_number == 2)
     {
-        self.villageName = " Guilford";
-    }else if (PlayerNumber == 3)
+        *villageName = " Guilford";
+    }else if (player_number == 3)
     {
-        self.villageName = "  Fairfield";
-    }else if (PlayerNumber == 4)
+        *villageName = "  Fairfield";
+    }else if (player_number == 4)
     {
-        self.villageName = "  Milford";
+        *villageName = "  Milford";
     }
-    
-    };
-    
     
 
-    void Player::PlaceHarvestTile(int board_space){
-        // Add Tile to position in Game Board (used later)
-        cout << "ok"<< endl;
-    }
-    void Player::DrawBuilding(int PlayerNumber){
-        VGMap* VGMapP1 = new VGMap(PlayerNumber);
-    }
+   
 
     vector<int> resourceMarkers();
     vector<int> harvest_tiles();
     vector<int> building_tokens();
-};
+}; 
+    string Player::PlaceHarvestTile(){
+        // Add Tile to position in Game Board (used later)
+        return "hi";
+    }
+    void Player::DrawBuilding(){
+        // Need to draw 1 from the board (one of those 5 placed face up) or one from bag
+        // Depending on for each resource at zero. If there are 2 resources at zero, 
+        //first draw from board then draw from board or bag.
+    }
+    void Player::DrawHarvestTile(){
+        //Always need to have 2 building tiles in the begining of turn. Draw a tile.
+        
+    }
+    void Player::ResourceTracker(){
+        //Tracks what resources are there to use 
+        
+    }
+    void Player::BuildVillage(){
+        //Place a village buildling token in the VGMap 
+        
+    }
+    void Player::CalculateResources(){
+        //Resources collected for each color shown on the Harvest Tile the player just placed
+    }
+
+    
+    
+    
