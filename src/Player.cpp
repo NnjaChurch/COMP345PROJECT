@@ -3,19 +3,23 @@
 Player::Player(int player_number) {
     // Initialize Variables
     int board_space = 0;
-    string* villageName;
+    // Changed from string* villageName to current (make sure you use the variable you declared in your h file, not create a new one)
+    villageName = new string;
 	
 	if (player_number == 1){
         *villageName = "Stratford";
     }else if (player_number == 2)
     {
-        *villageName = " Guilford";
+        *villageName = "Guilford";
     }else if (player_number == 3)
     {
-        *villageName = "  Fairfield";
+        *villageName = "Fairfield";
     }else if (player_number == 4)
     {
-        *villageName = "  Milford";
+        *villageName = "Milford";
+    }
+    else {
+        *villageName = "None";
     }
     
 
@@ -24,7 +28,12 @@ Player::Player(int player_number) {
     vector<int> resourceMarkers();
     vector<int> harvest_tiles();
     vector<int> building_tokens();
-}; 
+}
+Player::~Player() {
+    // TODO: Destructor (make sure to free anything you used "new" for pointers)
+    
+}
+;
     string Player::PlaceHarvestTile(){
         // Add Tile to position in Game Board (used later)
         return "hi";

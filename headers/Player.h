@@ -5,30 +5,26 @@
 
 // Namespaces
 using namespace std;
-class Player
-{
-   
-
+class Player {
 public:
-    
-    // Default Constructor
-    Player(int player_number);
-    // Destructor
-    virtual ~Player();
+	// Default Constructor
+	Player(int player_number);
+	// Destructor
+	virtual ~Player();
 
-    string PlaceHarvestTile();
-    void DrawBuilding();
-    void DrawHarvestTile();
-    void ResourceTracker();
-    void BuildVillage();
-    void CalculateResources();
+	string PlaceHarvestTile();
+	void DrawBuilding();
+	void DrawHarvestTile();
+	void ResourceTracker();
+	void BuildVillage();
+	void CalculateResources();
 
 
 private:
-    string *villageName;
-    vector<int> *resourceMarkers();
-    vector<int> *harvest_tiles();
-    vector<int> *building_tokens();
+	string *villageName;
+	vector<int> *resourceMarkers;
+	vector<int> *harvest_tiles;
+	vector<int> *building_tokens;
 };
 
 class TempVGMap {
@@ -63,8 +59,8 @@ private:
 	vector<vector<int>>* Edges;
 };
 class TempResources{
-    public:
-    private:
-    vector<int>* villageBuildings;
+	public:
+	private:
+	vector<int>* villageBuildings;
 
 };
