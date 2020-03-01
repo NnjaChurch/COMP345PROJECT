@@ -6,25 +6,59 @@
 #include "..\headers\Resources.h"
 using namespace std;
 
-//generate a random number in a specific range
-int randomInRange(int range) {
-	srand(time(NULL));
-	int ran = rand() % range;
-	return ran;
-}
+
 
 
 Resources::Resources() {
 	vector < vector<char>> temp = allCard();
-	fullShuffle(temp);
-	deck = createDeck(temp);
+	tileFullShuffle(temp);
+	tileDeck = createDeckOfTile(temp);
+
+	// create the building deck
+	vector<Building> allBuilding(144);
+	char color[4] = { 'B','Y','R','G' };
+
+	int index = 0;
+
+	for (int n = 0; n < 6; n++) {
+		for (int c = 0; c < 4; c++) {
+			for (int v = 1; v < 7; v++) {
+				allBuilding[index].color = color[c];
+				allBuilding[index].value = v;
+				index++;
+			}
+
+		}
+	}
+
+	buildingFullShuffle(allBuilding);
+	buildingDeck = createDeckOfBuilding(allBuilding);
 
 }
 
 Resources::~Resources() {
 }
 
+void buildingShuffle(vector<Building>& vec, int a, int b) {
+	Building temp = vec[a];
+	vec[a] = vec[b];
+	vec[b] = temp;
+}
 
+void buildingFullShuffle(vector<Building>& vec) {
+	for (int i = 0; i < 500; i++) {
+		buildingShuffle(vec, randomInRange(144), randomInRange(144));
+
+	}
+
+}
+
+//generate a random number in a specific range
+int randomInRange(int range) {
+	srand(time(NULL));
+	int ran = rand() % range;
+	return ran;
+}
 	
 	//rotate once clock wise a vector representing a tile
 	void Resources::rotate(vector<char>&arr ) {
@@ -108,7 +142,7 @@ Resources::~Resources() {
 	}
 
 	// switch 2 tiles positions
-	void Resources::shuffle(vector <vector<char>>& vec, int a, int b) {
+	void Resources::tileShuffle(vector <vector<char>>& vec, int a, int b) {
 		vector<char> temp = vec[a];
 		vec[a] = vec[b];
 		vec[b] = temp;
@@ -116,16 +150,16 @@ Resources::~Resources() {
 
 
 	//process to switch multiple tile a hundred times
-	void Resources::fullShuffle(vector <vector<char>>& vec) {
+	void Resources::tileFullShuffle(vector <vector<char>>& vec) {
 		for (int i = 0; i < 100; i++) {
-			shuffle(vec, randomInRange(60), randomInRange(60));
+			tileShuffle(vec, randomInRange(60), randomInRange(60));
 
 		}
 
 	}
 
 	// take a vector of tile and transfer it to a stack to simulate a real deck
-	stack<vector<char>> Resources::createDeck(vector<vector<char>> cards) {
+	stack<vector<char>> Resources::createDeckOfTile(vector<vector<char>> cards) {
 		int length = cards.size();
 		stack <vector<char>> deckOfCards;
 		for (int i = 0; i < length; i++) {
@@ -137,64 +171,28 @@ Resources::~Resources() {
 	}
 
 	//take the first card in the dack and get rid of it
-	vector<char> Resources::draw(stack<vector<char>>& deck) {
-		vector<char> to_return = deck.top();
-		deck.pop();
+	vector<char> Resources::drawTile() {
+		vector<char> to_return = this->tileDeck.top();
+		this->tileDeck.pop();
 		return to_return;
 
 	}
 
-	char getTopLeftOfTile(vector<char> arr) {
-		return arr[0];
-	};
-	char getTopRightOfTile(vector<char> arr) {
-		return arr[1];
-	};
-	char getBottomLeftOfTile(vector<char> arr) {
-		return arr[2];
-	};
-	char getBottomRightOfTile(vector<char> arr) {
-		return  arr[3];
-	};
-
-struct Building {
-	int value;
-	char color;
-};
-
-	stack<Building> deckOfBuilding;
-
-	BuildingDeck::BuildingDeck() {
-		vector<Building> allBuilding(144);
-		char color[4] = { 'B','Y','R','G' };
-
-
-		int index = 0;
-
-		for (int n = 0; n < 6; n++) {
-			for (int c = 0; c < 4; c++) {
-				for (int v = 1; v < 7; v++) {
-					allBuilding[index].color = color[c];
-					allBuilding[index].value = v;
-					index++;
-				}
-
-			}
-		}
-
-		fullShuffle(allBuilding);
-		deckOfBuilding = createDeck(allBuilding);
+	Building Resources::drawBuilding() {
+		Building to_retrun = this->buildingDeck.top();
+		deck.pop();
+		return to_retrun;
 
 	}
 
 	// switch 2 tiles positions
-	void shuffle(vector<Building>& vec, int a, int b) {
+	void Resources::buildingShuffle(vector<Building>& vec, int a, int b) {
 		Building temp = vec[a];
 		vec[a] = vec[b];
 		vec[b] = temp;
 	}
 
-	void fullShuffle(vector<Building>& vec) {
+	void Resources::BuildingFullShuffle(vector<Building>& vec) {
 		for (int i = 0; i < 500; i++) {
 			shuffle(vec, randomInRange(144), randomInRange(144));
 
@@ -202,7 +200,7 @@ struct Building {
 
 	}
 
-	stack<Building> createDeck(vector<Building> cards) {
+	stack<Building> Resources::createDeckOfBuilding(vector<Building> cards) {
 		int length = cards.size();
 		stack <Building> deckOfCards;
 		for (int i = 0; i < length; i++) {
@@ -213,16 +211,22 @@ struct Building {
 
 	}
 
-	Building draw(stack<Building> &deck) {
-		Building to_retrun = deck.top();
-		deck.pop();
-		return to_retrun;
+	char Resources::getTopLeftOfTile(vector<char> arr) {
+		return arr[0];
+	};
+	char Resources::getTopRightOfTile(vector<char> arr) {
+		return arr[1];
+	};
+	char Resources::getBottomLeftOfTile(vector<char> arr) {
+		return arr[2];
+	};
+	char Resources::getBottomRightOfTile(vector<char> arr) {
+		return  arr[3];
+	};
 
-	}
+struct Building {
+	int value;
+	char color;
+};
 
 
-
-
-
-
-	// Includes (h file)
