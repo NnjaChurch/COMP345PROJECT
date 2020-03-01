@@ -1,20 +1,29 @@
 #pragma once
+#include <iostream>
+#include<vector> 
+#include<ctime>
+#include<stack>
+using namespace std;
+
 class TileDeck {
 	public:
-		building draw(stack<building>& deck);
-		BuildingDeck();
+		Building draw(stack<Building>& deck);
+		void BuildingDeck();
 		char getTopLeftOfTile(vector<char>);
 		char getTopRightOfTile(vector<char>);
 		char getBottomLeftOfTile(vector<char>);
 		char getBottomRightOfTile(vector<char>);
-	private:
-		stack<vector<char>> deck;
+        stack<vector<char>> deck;
 		void rotate(vector<char>& arr);
 		vector < vector<char>> allCard();
 		void shuffle(vector <vector<char>>& vec, int a, int b);
 		void fullShuffle(vector <vector<char>>& vec);
 		stack<vector<char>> createDeck(vector<vector<char>> cards);
 		vector<char> draw(stack<vector<char>>& deck);
+        
+	private:
+		
+
 
 };
 
@@ -27,19 +36,18 @@ class BuildingDeck {
 
 	public:
 		BuildingDeck();
-		building draw(stack<building>& deck);
+		Building draw(stack<Building>& deck);
 
 	private:
-		stack<building> deckOfBuilding;
-		void shuffle(vector<building>& vec, int a, int b);
-		void fullShuffle(vector<building>& vec);
-		stack<building> createDeck(vector<building> cards);
+		stack<Building> deckOfBuilding;
+		void shuffle(vector<Building>& vec, int a, int b);
+		void fullShuffle(vector<Building>& vec);
+		stack<Building> createDeck(vector<Building> cards);
 
 
 
 
 };
-
 
 
 
