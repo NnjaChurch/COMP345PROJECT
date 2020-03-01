@@ -10,14 +10,12 @@ int randomInRange(int range) {
     srand(rand());
     int ran = rand() % range;
     return ran;
-
-
 }
 
 
 
 class TileDeck {
-private:
+
     stack<vector<char>> deck;
 
     TileDeck() {
@@ -147,15 +145,29 @@ private:
         return to_retrun;
 
     }
+
+    char getTopLeftOfTile(vector<char> arr) {
+        return arr[0];
+    };
+    char getTopRightOfTile(vector<char> arr) {
+        return arr[1];
+    };
+    char getBottomLeftOfTile(vector<char> arr) {
+        return arr[2];
+    };
+    char getBottomRightOfTile(vector<char> arr) {
+        retrun  arr[3];
+    };
 };
 
-struct building {
+struct Building {
     int value;
     char color;
 };
 
+
 class BuildingDeck {
-private:
+
     stack<building> deckOfBuilding;
 
     BuildingDeck() {
@@ -195,6 +207,7 @@ private:
         }
 
     }
+
     stack<building> createDeck(vector<building> cards) {
         int length = cards.size();
         stack <building> deckOfCards;
@@ -205,6 +218,7 @@ private:
         return deckOfCards;
 
     }
+
     building draw(stack<building> &deck) {
         building to_retrun = deck.top();
         deck.pop();
