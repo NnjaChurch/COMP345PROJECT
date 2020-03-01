@@ -13,8 +13,8 @@ class Resources {
 		~Resources();
 
 		// Functions
-		Building draw(stack<Building>& deck);
-		vector<char> draw(stack<vector<char>>& deck);
+		vector<char> drawTile());
+		Building drawBuilding();
 
 		// Inner Tile Functions
 		char getTopLeftOfTile(vector<char>);
@@ -27,18 +27,22 @@ class Resources {
 
 
 		// Shufflers
-		void shuffle(vector <vector<char>>& vec, int a, int b);
-		void fullShuffle(vector <vector<char>>& vec);
+		void buildingShuffle(vector<Building>& vec, int a, int b) :
+		void BuildingFullShuffle(vector<Building>& vec);
+		stack<Building> createDeckOfBuilding(vector<Building> cards);
 
-		stack<vector<char>> createDeck(vector<vector<char>> cards);
+		stack<vector<char>> createDeckOfTile(vector<vector<char>> cards);
+		void tileFullShuffle(vector <vector<char>>& vec);
+		void tileShuffle(vector <vector<char>>& vec, int a, int b);
+
 		
 	private:
+
+
 		// Attributes
-		stack<vector<char>> deck;
-
-
+		
 		stack<vector<Building>> buildingDeck;
-		stack<vector<Resources>> resourceDeck;
+		stack<vector<char>> tileDeck;
 };
 
 struct Building
@@ -46,23 +50,7 @@ struct Building
 
 };
 
-class BuildingDeck {
 
-	public:
-		// Constructor
-		BuildingDeck();
-		// Destructor
-		~BuildingDeck();
-		Building draw(stack<Building>& deck);
-
-	private:
-		// Attributes
-		stack<Building> deckOfBuilding;
-		// Functions
-		void shuffle(vector<Building>& vec, int a, int b);
-		void fullShuffle(vector<Building>& vec);
-		stack<Building> createDeck(vector<Building> cards);-
-};
 
 
 // Order for CPP
