@@ -140,9 +140,9 @@ class TileDeck {
 
     //take the first card in the dack and get rid of it
     vector<char> draw(stack<vector<char>>& deck) {
-        vector<char> to_retrun = deck.top();
+        vector<char> to_return = deck.top();
         deck.pop();
-        return to_retrun;
+        return to_return;
 
     }
 
@@ -156,7 +156,7 @@ class TileDeck {
         return arr[2];
     };
     char getBottomRightOfTile(vector<char> arr) {
-        retrun  arr[3];
+        return  arr[3];
     };
 };
 
@@ -168,10 +168,10 @@ struct Building {
 
 class BuildingDeck {
 
-    stack<building> deckOfBuilding;
+    stack<Building> deckOfBuilding;
 
     BuildingDeck() {
-        vector<building> allBuilding(144);
+        vector<Building> allBuilding(144);
         char color[4] = { 'B','Y','R','G' };
 
 
@@ -194,13 +194,13 @@ class BuildingDeck {
     }
 
     // switch 2 tiles positions
-    void shuffle(vector<building>& vec, int a, int b) {
-        building temp = vec[a];
+    void shuffle(vector<Building>& vec, int a, int b) {
+        Building temp = vec[a];
         vec[a] = vec[b];
         vec[b] = temp;
     }
 
-    void fullShuffle(vector<building>& vec) {
+    void fullShuffle(vector<Building>& vec) {
         for (int i = 0; i < 500; i++) {
             shuffle(vec, randomInRange(144), randomInRange(144));
 
@@ -208,9 +208,9 @@ class BuildingDeck {
 
     }
 
-    stack<building> createDeck(vector<building> cards) {
+    stack<Building> createDeck(vector<Building> cards) {
         int length = cards.size();
-        stack <building> deckOfCards;
+        stack <Building> deckOfCards;
         for (int i = 0; i < length; i++) {
             deckOfCards.push(cards[i]);
         }
@@ -219,8 +219,8 @@ class BuildingDeck {
 
     }
 
-    building draw(stack<building> &deck) {
-        building to_retrun = deck.top();
+    Building draw(stack<Building> &deck) {
+        Building to_retrun = deck.top();
         deck.pop();
         return to_retrun;
 
