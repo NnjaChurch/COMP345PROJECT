@@ -43,6 +43,13 @@ void buildingShuffle(vector<Building>& vec, int a, int b) {
 	vec[b] = temp;
 }
 
+//generate a random number in a specific range
+int randomInRange(int range) {
+	srand(time(NULL));
+	int ran = rand() % range;
+	return ran;
+}
+
 void buildingFullShuffle(vector<Building>& vec) {
 	for (int i = 0; i < 500; i++) {
 		buildingShuffle(vec, randomInRange(144), randomInRange(144));
@@ -51,12 +58,7 @@ void buildingFullShuffle(vector<Building>& vec) {
 
 }
 
-//generate a random number in a specific range
-int randomInRange(int range) {
-	srand(time(NULL));
-	int ran = rand() % range;
-	return ran;
-}
+
 	
 	//rotate once clock wise a vector representing a tile
 	void Resources::rotate(vector<char>&arr ) {
