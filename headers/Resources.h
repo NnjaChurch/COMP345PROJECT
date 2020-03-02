@@ -9,7 +9,7 @@ struct Building
 	char color;
 	int value;
 };
-
+void buildingFullShuffle(vector<Building>& vec);
 class Resources {
 	public:
 		// Constructor
