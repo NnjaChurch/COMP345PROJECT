@@ -7,12 +7,10 @@
 using namespace std;
 
 
-
-
 Resources::Resources() {
 	vector < vector<char>> temp = allCard();
 	tileFullShuffle(temp);
-	*tileDeck = createDeckOfTile(temp);
+	tileDeck = createDeckOfTile(temp);
 
 	// create the building deck
 	vector<Building> allBuilding(144);
@@ -32,7 +30,7 @@ Resources::Resources() {
 	}
 
 	buildingFullShuffle(allBuilding);
-	*buildingDeck = createDeckOfBuilding(allBuilding);
+	buildingDeck = createDeckOfBuilding(allBuilding);
 
 }
 
@@ -172,15 +170,17 @@ int randomInRange(int range) {
 
 	//take the first card in the dack and get rid of it
 	vector<char> Resources::drawTile() {
-		vector<char> to_return = tileDeck->top();
-		tileDeck->pop();
+		vector<char> to_return = this->tileDeck.top();
+		this->tileDeck.pop();
 		return to_return;
+
 	}
 
 	Building Resources::drawBuilding() {
-		Building to_retrun = buildingDeck.top();
-		buildingDeck.pop();
+		Building to_retrun = this->buildingDeck.top();
+		deck.pop();
 		return to_retrun;
+
 	}
 
 	// switch 2 tiles positions
@@ -195,6 +195,7 @@ int randomInRange(int range) {
 			buildingShuffle(vec, randomInRange(144), randomInRange(144));
 
 		}
+
 	}
 
 	stack<Building> Resources::createDeckOfBuilding(vector<Building> cards) {
@@ -221,9 +222,5 @@ int randomInRange(int range) {
 		return  arr[3];
 	};
 
-struct Building {
-	int value;
-	char color;
-};
 
 
