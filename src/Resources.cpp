@@ -17,10 +17,10 @@ Resources::Resources() {
 	char color[4] = { 'B','Y','R','G' };
 
 	int index = 0;
-
-	for (int n = 0; n < 6; n++) {
-		for (int c = 0; c < 4; c++) {
-			for (int v = 1; v < 7; v++) {
+	//populating the vector allBuilding with all the card 
+	for (int n = 0; n < 6; n++) {//create 6 copy of each card
+		for (int c = 0; c < 4; c++) {//loop through all the color
+			for (int v = 1; v < 7; v++) {//assign a value to each card
 				allBuilding[index].color = color[c];
 				allBuilding[index].value = v;
 				index++;
@@ -36,7 +36,7 @@ Resources::Resources() {
 
 Resources::~Resources() {
 }
-
+//swap 2 elements of an array 
 void buildingShuffle(vector<Building>& vec, int a, int b) {
 	Building temp = vec[a];
 	vec[a] = vec[b];
@@ -50,6 +50,7 @@ int randomInRange(int range) {
 	return ran;
 }
 
+//swap multiple element together to simulate a real shuffle
 void buildingFullShuffle(vector<Building>& vec) {
 	for (int i = 0; i < 500; i++) {
 		buildingShuffle(vec, randomInRange(144), randomInRange(144));
@@ -60,7 +61,7 @@ void buildingFullShuffle(vector<Building>& vec) {
 
 
 	
-	//rotate once clock wise a vector representing a tile
+	//rotate once clock wise a vector representing a tile to place it on the board
 	void Resources::rotate(vector<char>&arr ) {
 		char temp = arr[0];
 		arr[0] = arr[3];
@@ -199,7 +200,7 @@ void buildingFullShuffle(vector<Building>& vec) {
 		}
 
 	}
-
+	//to simulate a deck we transfer all the card in the vector and put them in a stack to simualate fifo
 	stack<Building> Resources::createDeckOfBuilding(vector<Building> cards) {
 		int length = cards.size();
 		stack <Building> deckOfCards;
