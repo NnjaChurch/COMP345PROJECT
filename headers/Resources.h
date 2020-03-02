@@ -5,6 +5,11 @@
 #include<stack>
 using namespace std;
 
+struct Building {
+	char color;
+	int value;
+};
+
 class Resources {
 	public:
 		// Constructor
@@ -13,7 +18,7 @@ class Resources {
 		~Resources();
 
 		// Functions
-		vector<char> drawTile());
+		vector<char> drawTile();
 		Building drawBuilding();
 
 		// Inner Tile Functions
@@ -27,8 +32,8 @@ class Resources {
 
 
 		// Shufflers
-		void buildingShuffle(vector<Building>& vec, int a, int b) :
-		void BuildingFullShuffle(vector<Building>& vec);
+		void buildingShuffle(vector<Building>& vec, int a, int b);
+		void BuildingFullShuffle(vector<Building> &vec);
 		stack<Building> createDeckOfBuilding(vector<Building> cards);
 
 		stack<vector<char>> createDeckOfTile(vector<vector<char>> cards);
@@ -37,18 +42,12 @@ class Resources {
 
 		
 	private:
-
-
 		// Attributes
-		
-		stack<vector<Building>> buildingDeck;
-		stack<vector<char>> tileDeck;
+		stack<vector<Building>>* buildingDeck;
+		stack<vector<char>>* tileDeck;
 };
 
-struct Building
-{
 
-};
 
 
 
