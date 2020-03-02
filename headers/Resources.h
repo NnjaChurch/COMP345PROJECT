@@ -54,11 +54,3 @@ class Resources {
 
 
 
-
-// Order for CPP
-// Includes
-
-// Constructor
-// Destructor
-
-// Functions
