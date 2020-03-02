@@ -64,31 +64,14 @@ Functions:
 	static vector<vector<int>>* GetEdges()						// Returns stored edges loaded from file
 
 Resources.h / Resources.cpp:
-Description:	Handles the creation and modification of the Harvest Tiles and its related components.
-		Also, it shuffles the cards and handles the angle of the Harvest Tile.
-subclass:	TileDeck
+Description:	Handles the creation and modification of the Harvest Tiles and and building card and its related components.
+		Also, it shuffles the cards and handles to draw from the object deck.
+type:	object
 Functions:
-    	vector < vector<char>> allCard() 			//vector of vector wich reprensents all possible tiles
-	draw(stack<Building>& deck)				//draws from deck pile
- 	rotate(vector<char>& arr);				//rotate once clock wise a vector representing a tile
-	shuffle(vector <vector<char>>& vec, int a, int b);	//Swaps 2 random Tiles, repeat to make a full shuffle 
-	fullShuffle(vector <vector<char>>& vec);		//Returns a repeated shuffle to make it a full shuffle	
-	stack<vector<char>> createDeck(vector<vector<char>> cards); //Creates a stack full of cards
-	char getTopLeftOfTile(vector<char>); 			//Gets the value of the topleft tile and adds it to ressource marker
-	char getTopRightOfTile(vector<char>);
-	char getBottomLeftOfTile(vector<char>);
-	char getBottomRightOfTile(vector<char>);
-														// Outputs board to the console
-
-Subclass:	BuildingDeck
-Description:	Handles the creation and modification of the Building cards and its related components.
-		Also, it shuffles the cards and handles the flip of the card.
-
-Functions:
-	Building draw(stack<Building>& deck);			//draws from deck pile										// Destructor
-	void shuffle(vector<Building>& vec, int a, int b);	//Swaps 2 random Buidling tokens, repeat to make a full shuffle 
-	void fullShuffle(vector<Building>& vec);		//Returns a repeated shuffle to make it a full shuffle
-	stack<Building> createDeck(vector<Building> cards);	//Creates deck for the building cards
-
-
-
+	vector<char> drawTile()							//return the first tile card of the deck
+	Building drawBuilding()							//return the first building card of the deck
+    	char getTopLeftOfTile(vector<char>)					//return the upper left ressources part of a tile card
+	char getTopRightOfTile(vector<char>)					//return the upper right ressources part of a tile card
+	char getBottomLeftOfTile(vector<char>)					//return the bottom left ressources part of a tile card
+	char getBottomRightOfTile(vector<char>)					//return the bottom right ressources part of a tile card
+					
