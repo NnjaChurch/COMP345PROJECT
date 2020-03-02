@@ -5,6 +5,12 @@
 		- Karim Loulou (40027203)
 		- Annes Cherid (40038453)
 ----------------------------------------------------------------------------------------------------
+Compile Instructions:
+- Included Visual Studio Solution should allow compilation without any extra libraries
+- To run a specific driver:
+	- Exclude all other drivers (as having multiple main functions on compilation will generate an error)
+	- Run the desired driver (on x64 Debug, as all settings are configured for that version)
+	- Repeat for other drivers
 ----------------------------------------------------------------------------------------------------
 GBMap.h / GBMap.cpp:
 Description:	Handles the creation and modification of the Game Board and its related components
