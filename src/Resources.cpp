@@ -1,4 +1,9 @@
 
+
+
+
+// Karim Code
+/*
 #include <iostream>
 #include<vector> 
 #include<ctime>
@@ -224,6 +229,4 @@ void buildingFullShuffle(vector<Building>& vec) {
 	char Resources::getBottomRightOfTile(vector<char> arr) {
 		return  arr[3];
 	};
-
-
-
+*/

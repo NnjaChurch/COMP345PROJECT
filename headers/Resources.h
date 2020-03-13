@@ -1,4 +1,99 @@
 #pragma once
+// Includes
+#include <vector>
+#include <stack>
+#include <iostream>
+#include <ctime>
+
+// Namepsaces
+using namespace std;
+
+// Sub Classes
+enum ResourceType {
+	WOOD,
+	STONE,
+	SHEEP,
+	WHEAT
+};
+
+enum TileType {
+	BUILDING,
+	HARVEST
+};
+
+class Resource {
+public:
+	// Default Constructor
+	Resource();
+	// Constructor
+	Resource(int tile_number);
+	// Destructor
+	~Resource();
+
+private:
+	int TileNumber;
+
+};
+class BuildingTile : public Resource {
+public:
+	// Default Constructor
+	BuildingTile();
+	// Constructor
+	BuildingTile(int tile_value, ResourceType tile_type);
+	// Destructor
+	~BuildingTile();
+private:
+	// Attributes
+	int Value;
+	ResourceType Type;
+	bool Flipped;
+};
+
+class HarvestTile : public Resource {
+public:
+	// Default Constructor
+	HarvestTile();
+	// Constructor
+	HarvestTile(int tile_number);
+	// Destructor
+	~HarvestTile();
+private:
+	// HarvestNode
+	class HarvestNode {
+	public:
+		// Constructor
+		HarvestNode(ResourceType type);
+		// Destructor
+		~HarvestNode();
+	private:
+		ResourceType Type;
+		bool Visited;
+	};
+	// Attributes
+	vector<HarvestNode> Nodes;
+	
+};
+
+class Deck {
+public:
+	// Default Constructor
+	Deck();
+	// Constructor
+	Deck(TileType type);
+	// Destructor
+	~Deck();
+
+	// Functions
+	Resource DrawTile();
+	void Shuffle();
+private:
+	TileType DeckType;
+	stack<Resource> Tiles;
+};
+
+
+// Karim Code
+/*
 #include <iostream>
 #include<vector> 
 #include<ctime>
@@ -18,7 +113,7 @@ class Resources {
 		~Resources();
 
 		// Functions
-		vector<char> drawTile());
+		vector<char> drawTile();
 		Building drawBuilding();
 
 		// Inner Tile Functions
@@ -49,6 +144,7 @@ class Resources {
 		stack<Building> buildingDeck;
 		stack<vector<char>> tileDeck;
 };
+*/
 
 
 
