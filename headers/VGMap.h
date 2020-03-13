@@ -12,12 +12,16 @@ class VGMap {
 public:
 	// Node Class
 	class VGNode {
-		// Will contain Tile data
 	public:
 		VGNode(int node_number);
 		virtual ~VGNode();
+
+		// Node Functions
+		void SetValue(int node_value);
+		void PlaceTile(BuildingTile* tile);
 	private:
-		int NodeNumber;
+		int* NodeNumber;
+		int* NodeValue;
 		BuildingTile* Tile;
 	};
 
@@ -28,6 +32,9 @@ public:
 
 	// Destructor
 	virtual ~VGMap();
+
+	// Setter Functions
+	void AddNodes(int node_count);
 
 	// Player Functions
 	void AddTile(int board_space, BuildingTile* tile);

@@ -4,6 +4,8 @@
 static string VGMapTP = "./maps/VGMapTP.txt";
 
 VGMap VGMapLoader::LoadMap(int player_number) {
+	VGMap* load_map = new VGMap(player_number);
+
 	fstream in_stream;
 	in_stream.open(VGMapTP);
 

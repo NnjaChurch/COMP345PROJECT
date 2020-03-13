@@ -5,7 +5,8 @@ static string GBMap2P = "./maps/GBMap2P.txt";
 static string GBMap3P = "./maps/GBMap3P.txt";
 static string GBMap4P = "./maps/GBMap4P.txt";
 
-GBMap GBMapLoader::LoadMap(string map_file) {
+GBMap GBMapLoader::LoadMap(int num_players) {
+	GBMap* load_map = new GBMap;
 	fstream in_stream;
 	in_stream.open(map_file);
 

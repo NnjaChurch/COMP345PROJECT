@@ -1,7 +1,9 @@
 #include "../headers/GBMap.h"
 
 GBMap::GBMap() {
-	
+	NumNodes = new int;
+	Nodes = new vector<GBNode*>;
+	Edges = new vector<vector<int>>;
 }
 
 GBMap::~GBMap() {
@@ -20,12 +22,12 @@ GBMap::~GBMap() {
 	delete Edges;
 }
 
-void GBMap::AddTile(int board_space, HarvestTile* tile) {	// Missing Tile connection from Resources.h should be AddTile(int board_space, Tile resource_tile)
+void GBMap::AddTile(int board_space, HarvestTile* tile) {
 	// Add Tile to position in Game Board (used later)
 }
 
 void GBMap::Draw() {
-	// TODO Output Board to Console
+	// TODO: Update Print to include harvest tiles if placed
 
 	// Print for 25 Nodes
 	// Print for 35 Nodes

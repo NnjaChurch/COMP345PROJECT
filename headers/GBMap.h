@@ -17,6 +17,9 @@ public:
 	public:
 		GBNode(int node_number);
 		virtual ~GBNode();
+
+		// Node Functions
+		void PlaceTile(HarvestTile* tile);
 	private:
 		int NodeNumber;
 		HarvestTile* Tile;

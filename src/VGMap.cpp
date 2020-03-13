@@ -8,7 +8,12 @@ VGMap::VGMap() {
 }
 
 VGMap::VGMap(int player_number) {
-	
+	// Set Player Number
+	PlayerNumber = new int(player_number);
+	// Allocate Space for Data Members
+	NumNodes = new int;
+	Nodes = new vector<VGNode*>;
+	Edges = new vector<vector<int>>(30, vector<int>(4, -1));
 }
 
 VGMap::~VGMap() {
@@ -26,11 +31,19 @@ VGMap::~VGMap() {
 	delete Edges;
 }
 
+void VGMap::AddNodes(int node_count) {
+	for (int i = 0; i < node_count; i++) {
+		Nodes->push_back(new VGNode(i));
+	}
+}
+
 void VGMap::AddTile(int board_space, BuildingTile* tile) {
 	// Add Tile to position in Game Board (used later)
 }
 
 void VGMap::Draw() {
+	// TODO: Update Printing to Include Buildings if placed
+
 	// Output to Console
 	cout << "Player " << *PlayerNumber << " Village Board\n";
 	cout << "________________\n";
@@ -50,12 +63,18 @@ void VGMap::Draw() {
 }
 
 VGMap::VGNode::VGNode(int node_number) {
-	NodeNumber = node_number;
-	// Default Set Tile to Empty Tile
+	NodeNumber = new int(node_number);
+	// Allocate space for Data Members
+	NodeValue = new int;
 	Tile = new BuildingTile;
 }
 
 VGMap::VGNode::~VGNode() {
-	// Clear Tile
-	Tile->~BuildingTile();
+	delete NodeNumber;
+	delete NodeValue;
+	delete Tile;
+}
+
+void VGMap::VGNode::SetValue(int node_value) {
+	*NodeValue = node_value;
 }
