@@ -1,14 +1,13 @@
 #include "..\headers\VGMapLoader.h"
 
-// Initialize Static Variables
-vector<int>* VGMapLoader::Nodes;
-vector<vector<int>>* VGMapLoader::Edges;
+// Map Files
+static string VGMapTP = "./maps/VGMapTP.txt";
 
-void VGMapLoader::LoadMap(string map_file) {
+VGMap VGMapLoader::LoadMap(int player_number) {
 	fstream in_stream;
-	in_stream.open(map_file);
+	in_stream.open(VGMapTP);
 
-	cout << "Loading VGMap at Path: " << map_file << endl;
+	cout << "Loading VGMap at Path: " << VGMapTP << endl;
 
 	if (in_stream.fail()) {
 		cerr << "ERROR::VG_MAP_LOADER::LOAD_MAP::COULD_NOT_OPEN_MAP_FILE" << endl;
@@ -34,14 +33,6 @@ void VGMapLoader::LoadMap(string map_file) {
 			exit(-1);
 		}
 	}
-}
-
-vector<int>* VGMapLoader::GetNodes() {
-	return Nodes;
-}
-
-vector<vector<int>>* VGMapLoader::GetEdges() {
-	return Edges;
 }
 
 bool VGMapLoader::ParseLine(vector<string> tokens)

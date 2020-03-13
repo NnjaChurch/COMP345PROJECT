@@ -6,23 +6,17 @@
 #include <fstream>
 #include <sstream>
 
+#include "VGMap.h"
+
 // Namespaces
 using namespace std;
 
 // Class
 class VGMapLoader {
 public:
-	static void LoadMap(string map_file);
-
-	// Temporary Functions until the Loader is linked to VGMap
-	static vector<int>* GetNodes();
-	static vector<vector<int>>* GetEdges();
-
+	static VGMap LoadMap(int player_number);
 private:
+	// Parse Function
 	static bool ParseLine(vector<string> tokens);
-
-	// Temporary Containers for Maps (will be delegated to VGmap once components are connected)
-	static vector<int>* Nodes;
-	static vector<vector<int>>* Edges;
 };
 

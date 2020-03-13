@@ -6,23 +6,17 @@
 #include <fstream>
 #include <sstream>
 
+#include "GBMap.h"
+
 // Namespaces
 using namespace std;
 
 // Class
 class GBMapLoader {
 public:
-	static void LoadMap(string map_file);
-
-	// Temporary Functions until the Loader is linked to GBMap
-	static vector<int>* GetNodes();
-	static vector<vector<int>>* GetEdges();
-
+	static GBMap LoadMap(int num_players);
 private:
+	// Parse Function
 	static bool ParseLine(vector<string> tokens);
-
-	// Temporary Containers for Maps (will be delegated to GBMap once components are connected)
-	static vector<int>* Nodes;
-	static vector<vector<int>>* Edges;
 };
 

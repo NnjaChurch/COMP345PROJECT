@@ -1,11 +1,11 @@
 #include "..\headers\GBMapLoader.h"
 
-// Initialize Static Variables
-vector<int>* GBMapLoader::Nodes;
-vector<vector<int>>* GBMapLoader::Edges;
+// Map Files
+static string GBMap2P = "./maps/GBMap2P.txt";
+static string GBMap3P = "./maps/GBMap3P.txt";
+static string GBMap4P = "./maps/GBMap4P.txt";
 
-
-void GBMapLoader::LoadMap(string map_file) {
+GBMap GBMapLoader::LoadMap(string map_file) {
 	fstream in_stream;
 	in_stream.open(map_file);
 
@@ -35,14 +35,6 @@ void GBMapLoader::LoadMap(string map_file) {
 			exit(-1);
 		}
 	}
-}
-
-vector<int>* GBMapLoader::GetNodes() {
-	return Nodes;
-}
-
-vector<vector<int>>* GBMapLoader::GetEdges() {
-	return Edges;
 }
 
 bool GBMapLoader::ParseLine(vector<string> tokens) {
