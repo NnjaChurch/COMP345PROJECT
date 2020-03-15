@@ -31,9 +31,9 @@ public:
 	~Resource();
 
 private:
-	int TileNumber;
-
+	int* TileNumber;
 };
+
 class BuildingTile : public Resource {
 public:
 	// Default Constructor
@@ -44,9 +44,9 @@ public:
 	~BuildingTile();
 private:
 	// Attributes
-	int Value;
-	ResourceType Type;
-	bool Flipped;
+	int* Value;
+	ResourceType* Type;
+	bool* Flipped;
 };
 
 class HarvestTile : public Resource {
@@ -66,11 +66,11 @@ private:
 		// Destructor
 		~HarvestNode();
 	private:
-		ResourceType Type;
-		bool Visited;
+		ResourceType* Type;
+		bool* Visited;
 	};
 	// Attributes
-	vector<HarvestNode> Nodes;
+	vector<HarvestNode>* Nodes;
 	
 };
 
@@ -87,8 +87,8 @@ public:
 	Resource DrawTile();
 	void Shuffle();
 private:
-	TileType DeckType;
-	stack<Resource> Tiles;
+	TileType* DeckType;
+	stack<Resource>* Tiles;
 };
 
 
@@ -145,8 +145,3 @@ class Resources {
 		stack<vector<char>> tileDeck;
 };
 */
-
-
-
-
-
