@@ -17,7 +17,7 @@ int main(){
     //Creating Deck
     Deck* DeckTiles= new Deck(HARVEST);
     Deck* DeckTiles= new Deck(BUILDING);
-    cout<<"Deck created successfully";
+    cout<<"Decks created successfully";
     
     
     //creating the players
@@ -25,9 +25,9 @@ int main(){
     vector<Resource*> ResourcesForPlayer;
     for (int i = 1; i <= number_of_players; i++)
     {
-        Players [i]= new Player (i); 
-        ResourcesForPlayer [i]= new Resource();
-
+        Players.push_back(new Player(i)); 
+        ResourcesForPlayer.push_back(new Resource);
+        
     }
     //Players have been initialized
     //main loop PART 2
@@ -38,13 +38,14 @@ int main(){
         {
             cout<<"It's the turn for player "<< i << endl ;
             cout<<"Here are the tiles that you pocess: "<<endl;
+            ResourcesForPlayer.at(i);
 
         }
         
     }
     //end of main loop
     //
-
+    
 
     
     return 0;
