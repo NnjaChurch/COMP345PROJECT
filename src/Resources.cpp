@@ -1,4 +1,209 @@
+#include "..\headers\Resources.h"
 
+Building::Building(){
+    Value=new int;
+    Type=new int;
+    Flipped=new bool ;
+}
+Building::~Building() {
+
+}
+
+
+Building::Building(int value, int type) {
+    Value=new int;
+    Type=new int;
+    Flipped=new bool ;
+
+    *Value=value;
+    *Type=type;
+    *Flipped=false;
+
+}
+
+
+void Building::setValue(int value) {
+    *Value=value;
+
+}
+
+void Building::setType(int type) {
+    *Type=type;
+}
+
+void Building::setFlipped(bool flip) {
+    *Flipped=flip;
+}
+
+int Building::getValue() {
+    return *Value;
+}
+
+
+int Building::getType() {
+    return *Type;
+}
+
+bool Building::getFlipped() {
+    return *Flipped;
+}
+
+HarvestTile::HarvestNode::HarvestNode(int type) {
+    Type= new int;
+    Visited=new bool ;
+    *Type=type;
+    *Visited= false;
+}
+
+HarvestTile::HarvestNode::HarvestNode() {
+
+}
+HarvestTile::HarvestNode::~HarvestNode() {
+
+}
+
+
+HarvestTile::HarvestTile(int *arrayOfTypeOfTile) {
+    Nodes=new vector<HarvestNode>;
+    Nodes->emplace_back(*(arrayOfTypeOfTile));
+    Nodes->emplace_back(*(arrayOfTypeOfTile+1));
+    Nodes->emplace_back(*(arrayOfTypeOfTile+2));
+    Nodes->emplace_back(*(arrayOfTypeOfTile+3));
+}
+HarvestTile::HarvestTile(){}
+
+
+HarvestTile::~HarvestTile() {
+
+}
+
+Resource::Resource() {
+
+}
+
+Resource::~Resource() {
+
+}
+
+
+Resource::Resource(int tile_number) {
+    TileNumber=new int;
+    *TileNumber=tile_number;
+}
+
+Deck::Deck() {
+    HarvestsDeck= new stack<HarvestTile>;
+    BuildingDeck=new stack<Building>;
+    vector<HarvestTile> * allHarvest= new vector<HarvestTile>;
+    vector<Building> *allBuilding= new vector<Building>;
+
+    for(int numberOfEachCard=0;numberOfEachCard<6;numberOfEachCard++){
+        for(int valueOfEachCard=1;valueOfEachCard<7;valueOfEachCard++){
+            for(int typeOfEachCard=0;typeOfEachCard<4;typeOfEachCard++ ){
+                allBuilding->emplace_back(valueOfEachCard,typeOfEachCard);
+            }
+        }
+    }
+
+    int argument_of_Harvest[60][4] = {
+            {0,    0,    0,    1},
+            {0,    0,    1,    1},
+            {0,    1,    1,    1},
+            {1,    1,    1,    2},
+            {1,    1,    2,    2},
+            {1,    2,    2,    2},
+            {2,    2,    2,    0},
+            {2,    2,    0,    0},
+            {2,    0,    0,    0},
+            {3,    3,    3,    0},
+            {3,    3,    0,    0},
+            {3,    0,    0,    0},
+            {3,    3,    3,    1},
+            {3,    3,    1,    1},
+            {3,    1,    1,    1},
+            {3,    3,    3,    2},
+            {3,    3,    2,    2},
+            {3,    2,    2,    2},
+            {0,    0,    1,    2},
+            {1,    1,    0,    2},
+            {2,    2,    0,    1},
+            {0,    0,    1,    3},
+            {1,    1,    0,    3},
+            {3 ,   3,    0,    1},
+            {2,    2,    1,    3},
+            {1,    1,    2,    3},
+            {3,    3,    2,    1},
+            {1,    0,    1,    0},
+            {1,    2,    1,    2},
+            {1,    3,    1,    3},
+            {0,    2,    0,    2},
+            {0,    3,    0,    3},
+            {2,    3,    2,    3},
+            {0,    2,    1,    0},
+            {1,    2,    0,    1},
+            {2,    1,    0,    2},
+            {0,    3,    1,    0},
+            {1,    3,    0,    1},
+            {3,    1,    0,    3},
+            {2,    3,    1,    2},
+            {1,    3,    2,    1},
+            {3,    1,    2,    3},
+            {0,    1,    2,    0},
+            {1,    0,    2,    1},
+            {2,    0,    1,    2},
+            {0,    1,    3,    0},
+            {1,    0,    3,    1},
+            {3,    0,    1,    3},
+            {2,    1,    3,    2},
+            {1,    2,    3,    1},
+            {3,    2,    1,    3},
+            {0,    0,    2,    1},
+            {1,    1,    2,    0},
+            {2,    2,    1,    0},
+            {0,    0,    3,    1},
+            {1,    1,    3,    0},
+            {3,    3,    1,    0},
+            {2,    2,    3,    1},
+            {1,    1,    3,    2},
+            {3,    3,    1,    2}
+    };
+
+
+    for(int i=0;i<60;i++){
+        allHarvest->emplace_back(*(argument_of_Harvest+i));
+
+    }
+    //generate random seed from time so each game the card will be shuffled in different order
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::default_random_engine e(seed);
+    //randomize allCard
+    shuffle(allHarvest->begin(),allHarvest->end(),e);
+    shuffle(allBuilding->begin(),allBuilding->end(),e);
+
+    for(int i=0;i<60;i++){
+        HarvestsDeck->push(allHarvest->at(i));
+    }
+    for(int i=0;i<144;i++){
+        BuildingDeck->push(allBuilding->at(i));
+    }
+
+
+
+
+}
+
+
+HarvestTile Deck::DrawHarvestTile() {
+    HarvestTile cardToReturn=HarvestsDeck->top();
+    HarvestsDeck->pop();
+    return cardToReturn;
+}
+
+Building Deck::DrawBuilding() {
+    Building cardToReturn=BuildingDeck->top();
+    BuildingDeck->pop();
+    return cardToReturn;
+}
 
 
 

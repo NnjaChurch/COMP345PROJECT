@@ -4,91 +4,101 @@
 #include <stack>
 #include <iostream>
 #include <ctime>
+#include <algorithm>
+#include <random>
 
-// Namepsaces
 using namespace std;
 
-// Sub Classes
-enum ResourceType {
-	WOOD,
-	STONE,
-	SHEEP,
-	WHEAT
+enum TileType {
+    BUILDING,
+    HARVEST
 };
 
-enum TileType {
-	BUILDING,
-	HARVEST
+enum ResourceType {
+    WOOD,
+    STONE,
+    SHEEP,
+    WHEAT
 };
+
+
 
 class Resource {
 public:
-	// Default Constructor
-	Resource();
-	// Constructor
-	Resource(int tile_number);
-	// Destructor
-	~Resource();
+    // Default Constructor
+    Resource();
+    // Constructor
+    Resource(int tile_number);
+    // Destructor
+    ~Resource();
 
 private:
-	int* TileNumber;
+    int* TileNumber;
 };
 
-class BuildingTile : public Resource {
+
+class Building:public Resource{
 public:
-	// Default Constructor
-	BuildingTile();
-	// Constructor
-	BuildingTile(int tile_value, ResourceType tile_type);
-	// Destructor
-	~BuildingTile();
+    Building();
+    Building(int value,int type);
+    ~Building();
+    void setValue(int value);
+    void setType(int Type);
+    void setFlipped(bool flip);
+    int getValue();
+    int getType();
+    bool getFlipped();
+
 private:
-	// Attributes
-	int* Value;
-	ResourceType* Type;
-	bool* Flipped;
+    int* Value;
+    int* Type;
+    bool* Flipped;
+
 };
 
-class HarvestTile : public Resource {
+class HarvestTile :public Resource{
 public:
-	// Default Constructor
-	HarvestTile();
-	// Constructor
-	HarvestTile(int tile_number);
-	// Destructor
-	~HarvestTile();
-private:
-	// HarvestNode
-	class HarvestNode {
-	public:
-		// Constructor
-		HarvestNode(ResourceType type);
-		// Destructor
-		~HarvestNode();
-	private:
-		ResourceType* Type;
-		bool* Visited;
-	};
-	// Attributes
-	vector<HarvestNode>* Nodes;
-	
+    // Default Constructor
+    HarvestTile();
+    // Constructor
+    HarvestTile(int* arrayOfTypeOfTile);
+    // Destructor
+    ~HarvestTile();
+
+    // HarvestNode
+    class HarvestNode {
+    public:
+        HarvestNode();
+        // Constructor
+        HarvestNode(int type);
+        // Destructor
+        ~HarvestNode();
+        int* Type;
+        bool* Visited;
+    };
+    // Attributes
+    std::vector<HarvestNode>* Nodes;
+
+
 };
+
 
 class Deck {
 public:
-	// Default Constructor
-	Deck();
-	// Constructor
-	Deck(TileType type);
-	// Destructor
-	~Deck();
+    // Default Constructor
+    Deck();
+    // Destructor
+    ~Deck();
 
-	// Functions
-	Resource DrawTile();
-	void Shuffle();
+    // Functions
+    HarvestTile DrawHarvestTile();
+    Building DrawBuilding();
+
 private:
-	TileType* DeckType;
-	stack<Resource>* Tiles;
+    stack<HarvestTile>* HarvestsDeck;
+    stack<Building>* BuildingDeck;
+
+
 };
 
 
