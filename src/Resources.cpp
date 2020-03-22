@@ -1,58 +1,51 @@
 #include "..\headers\Resources.h"
 
-Building::Building(){
-    Value=new int;
-    Type=new int;
-    Flipped=new bool ;
-}
-Building::~Building() {
-
+BuildingTile::BuildingTile() {
+    Value = new int;
+    Type = new int;
+    Flipped = new bool;
 }
 
+BuildingTile::~BuildingTile() {
+	delete Value;
+	delete Type;
+	delete Flipped;
+}
 
-Building::Building(int value, int type) {
-    Value=new int;
-    Type=new int;
-    Flipped=new bool ;
-
-    *Value=value;
-    *Type=type;
-    *Flipped=false;
-
+BuildingTile::BuildingTile(int value, int type) {
+    Value = new int(value);
+    Type = new int(type);
+    Flipped = new bool(false);
 }
 
 
-void Building::setValue(int value) {
-    *Value=value;
-
+void BuildingTile::setValue(int value) {
+    *Value = value;
 }
 
-void Building::setType(int type) {
-    *Type=type;
+void BuildingTile::setType(int type) {
+    *Type = type;
 }
 
-void Building::setFlipped(bool flip) {
-    *Flipped=flip;
+void BuildingTile::setFlipped(bool flip) {
+    *Flipped = flip;
 }
 
-int Building::getValue() {
-    return *Value;
+int BuildingTile::getValue() {
+	return *Value;
 }
 
-
-int Building::getType() {
+int BuildingTile::getType() {
     return *Type;
 }
 
-bool Building::getFlipped() {
+bool BuildingTile::isFlipped() {
     return *Flipped;
 }
 
 HarvestTile::HarvestNode::HarvestNode(int type) {
-    Type= new int;
-    Visited=new bool ;
-    *Type=type;
-    *Visited= false;
+    Type = new int(type);
+    Visited = new bool(false) ;
 }
 
 HarvestTile::HarvestNode::HarvestNode() {
@@ -92,7 +85,7 @@ Resource::Resource(int tile_number) {
 }
 
 Deck::Deck() {
-    HarvestsDeck= new stack<HarvestTile>;
+    /*HarvestsDeck= new stack<HarvestTile>;
     BuildingDeck=new stack<Building>;
     vector<HarvestTile> * allHarvest= new vector<HarvestTile>;
     vector<Building> *allBuilding= new vector<Building>;
@@ -174,7 +167,7 @@ Deck::Deck() {
 
     }
     //generate random seed from time so each game the card will be shuffled in different order
-    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine e(seed);
     //randomize allCard
     shuffle(allHarvest->begin(),allHarvest->end(),e);
@@ -185,22 +178,29 @@ Deck::Deck() {
     }
     for(int i=0;i<144;i++){
         BuildingDeck->push(allBuilding->at(i));
-    }
-
+    }*/
 
 
 
 }
 
+Deck::Deck(TileType type) {
 
-HarvestTile Deck::DrawHarvestTile() {
-    HarvestTile cardToReturn=HarvestsDeck->top();
-    HarvestsDeck->pop();
+}
+
+Deck::~Deck()
+{
+}
+
+
+HarvestTile* Deck::DrawHarvestTile() {
+    HarvestTile* cardToReturn= HarvestDeck->top();
+    HarvestDeck->pop();
     return cardToReturn;
 }
 
-Building Deck::DrawBuilding() {
-    Building cardToReturn=BuildingDeck->top();
+BuildingTile* Deck::DrawBuilding() {
+    BuildingTile* cardToReturn = BuildingDeck->top();
     BuildingDeck->pop();
     return cardToReturn;
 }

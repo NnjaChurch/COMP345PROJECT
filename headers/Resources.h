@@ -6,15 +6,16 @@
 #include <ctime>
 #include <algorithm>
 #include <random>
+#include <chrono>
 
 using namespace std;
 
-enum TileType {
+enum class TileType {
     BUILDING,
     HARVEST
 };
 
-enum ResourceType {
+enum class ResourceType {
     WOOD,
     STONE,
     SHEEP,
@@ -37,17 +38,17 @@ private:
 };
 
 
-class Building:public Resource{
+class BuildingTile : public Resource {
 public:
-    Building();
-    Building(int value,int type);
-    ~Building();
+    BuildingTile();
+    BuildingTile(int value,int type);
+    ~BuildingTile();
     void setValue(int value);
     void setType(int Type);
     void setFlipped(bool flip);
     int getValue();
     int getType();
-    bool getFlipped();
+    bool isFlipped();
 
 private:
     int* Value;
@@ -77,9 +78,7 @@ public:
         bool* Visited;
     };
     // Attributes
-    std::vector<HarvestNode>* Nodes;
-
-
+    vector<HarvestNode>* Nodes;
 };
 
 
@@ -87,18 +86,18 @@ class Deck {
 public:
     // Default Constructor
     Deck();
+    // Constructor
+    Deck(TileType type);
     // Destructor
     ~Deck();
 
     // Functions
-    HarvestTile DrawHarvestTile();
-    Building DrawBuilding();
+    HarvestTile* DrawHarvestTile();
+    BuildingTile* DrawBuilding();
 
 private:
-    stack<HarvestTile>* HarvestsDeck;
-    stack<Building>* BuildingDeck;
-
-
+    stack<HarvestTile*>* HarvestDeck;
+    stack<BuildingTile*>* BuildingDeck;
 };
 
 
