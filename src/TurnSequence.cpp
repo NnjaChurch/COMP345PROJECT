@@ -16,20 +16,20 @@ int main(){
     GBMapNumP->LoadMap(number_of_players); //We have now created a Map depending on the number of players.
     cout<<"Map loaded successfully!";
     //Creating Deck
-    Deck* DeckHarvest= new Deck(HARVEST);
-    Deck* DeckBuilding= new Deck(BUILDING);
+    Deck* Decks= new Deck();
+    //Deck* DeckBuilding= new Deck(BUILDING);
     cout<<"Decks created successfully";
     
     
     //creating the players
     Player* villager;
-    Resource* ResourcesForPlayer;
+    
     
 
     for (int i = 1; i <= number_of_players; i++)
     {   
         villager= new Player(1); 
-        ResourcesForPlayer = new Resource();
+        
         
     }
     //Players have been initialized
@@ -68,9 +68,6 @@ int main(){
         
     }
     //end of main loop
-    //
-    
-
-    
+        
     return 0;
 }
