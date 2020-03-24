@@ -17,6 +17,6 @@ public:
 	static GBMap LoadMap(int num_players);
 private:
 	// Parse Function
-	static bool ParseLine(vector<string> tokens);
+	static bool ParseLine(vector<string> tokens, GBMap* load_map);
 };
 

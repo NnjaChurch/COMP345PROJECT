@@ -13,11 +13,10 @@ public:
 	// Node Class
 	class VGNode {
 	public:
-		VGNode(int node_number);
+		VGNode(int node_number, int node_value);
 		virtual ~VGNode();
 
 		// Node Functions
-		void SetValue(int node_value);
 		void PlaceTile(BuildingTile* tile);
 	private:
 		int* NodeNumber;
@@ -34,7 +33,8 @@ public:
 	virtual ~VGMap();
 
 	// Setter Functions
-	void AddNodes(int node_count);
+	void AddNode(int node_number, int node_value);
+	void AddEdge(int edge_start, int side_value, int edge_end);
 
 	// Player Functions
 	void AddTile(int board_space, BuildingTile* tile);

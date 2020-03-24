@@ -1,4 +1,4 @@
-#pragma once+
+#pragma once
 // Includes
 #include <vector>
 #include <iostream>
@@ -29,6 +29,10 @@ public:
 	GBMap();
 	// Destructor
 	virtual ~GBMap();
+
+	// Setters
+	void AddNodes(int num_nodes);
+	void AddEdge(int edge_start, int side_value, int edge_end);
 
 	// Player Functions
 	void AddTile(int board_space, HarvestTile* tile);

@@ -8,7 +8,18 @@ static string GBMap4P = "./maps/GBMap4P.txt";
 GBMap GBMapLoader::LoadMap(int num_players) {
 	GBMap* load_map = new GBMap;
 	fstream in_stream;
-	in_stream.open(map_file);
+
+	string map_file;
+	if (num_players == 2) {
+		map_file = GBMap2P;
+	}
+	else if (num_players == 3) {
+		map_file = GBMap3P;
+	}
+	else if (num_players == 4) {
+		map_file = GBMap4P;
+	}
+		in_stream.open(map_file);
 
 	cout << "Loading GBMap at Path: " << map_file << endl;
 
@@ -28,7 +39,7 @@ GBMap GBMapLoader::LoadMap(int num_players) {
 		}
 
 		// Process Tokens
-		if (ParseLine(tokens) == false) {
+		if (ParseLine(tokens, load_map) == false) {
 			cerr << "ERROR::GB_MAP_LOADER::LOAD_MAP::ERROR_READING_MAP_FILE_AT_TOKEN: " << tokens[0].c_str();
 			// Discard Token
 			getchar();
@@ -36,9 +47,10 @@ GBMap GBMapLoader::LoadMap(int num_players) {
 			exit(-1);
 		}
 	}
+	return *load_map;
 }
 
-bool GBMapLoader::ParseLine(vector<string> tokens) {
+bool GBMapLoader::ParseLine(vector<string> tokens, GBMap* load_map) {
 	// Check if empty token
 	if (tokens.empty() == false) {
 		// Check if first token is # (comment line)
@@ -46,12 +58,8 @@ bool GBMapLoader::ParseLine(vector<string> tokens) {
 			return true;
 		}
 		else if (tokens[0] == "Nodes") {
-			int nodeCount = static_cast<int>(atof(tokens[1].c_str()));
-			Nodes = new vector<int>();
-			Edges = new vector<vector<int>>(nodeCount, vector<int>(4, -1));
-			for (int i = 0; i < nodeCount; i++) {
-				Nodes->push_back(i);
-			}
+			int numNodes = static_cast<int>(atof(tokens[1].c_str()));
+			load_map->AddNodes(numNodes);
 			return true;
 		}
 		else if (tokens[0] == "Edges") {
@@ -62,7 +70,7 @@ bool GBMapLoader::ParseLine(vector<string> tokens) {
 				}
 				else {
 					int edgeNode = static_cast<int>(atof(tokens[i].c_str()));
-					Edges->at(currentNode).at(i - 2) = edgeNode;
+					load_map->AddEdge(currentNode, i - 2, edgeNode);
 				}
 			}
 			return true;

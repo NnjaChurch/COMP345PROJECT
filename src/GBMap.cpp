@@ -1,7 +1,7 @@
 #include "../headers/GBMap.h"
 
 GBMap::GBMap() {
-	NumNodes = new int;
+	NumNodes = new int();
 	Nodes = new vector<GBNode*>;
 	Edges = new vector<vector<int>>;
 }
@@ -20,6 +20,18 @@ GBMap::~GBMap() {
 	// Delete Edges
 	Edges->clear();
 	delete Edges;
+}
+
+void GBMap::AddNodes(int num_nodes) {
+	*NumNodes = num_nodes;
+	for (int i = 0; i < num_nodes; i++) {
+		Nodes->push_back(new GBNode(i));
+	}
+	Edges = new vector<vector<int>>(num_nodes, vector<int>(4, -1));
+}
+
+void GBMap::AddEdge(int edge_start, int side_value, int edge_end) {
+	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
 void GBMap::AddTile(int board_space, HarvestTile* tile) {

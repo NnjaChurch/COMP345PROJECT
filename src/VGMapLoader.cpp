@@ -27,7 +27,7 @@ VGMap VGMapLoader::LoadMap(int player_number) {
 		}
 
 		// Process Tokens
-		if (ParseLine(tokens) == false) {
+		if (ParseLine(tokens, load_map) == false) {
 			cerr << "ERROR::VG_MAP_LOADER::LOAD_MAP::ERROR_READING_MAP_FILE_AT_TOKEN: " << tokens[0].c_str();
 			// Discard Token
 			getchar();
@@ -35,34 +35,27 @@ VGMap VGMapLoader::LoadMap(int player_number) {
 			exit(-1);
 		}
 	}
+	return *load_map;
 }
 
-bool VGMapLoader::ParseLine(vector<string> tokens)
-{
+bool VGMapLoader::ParseLine(vector<string> tokens, VGMap* load_map) {
 	// Check if empty token
 	if (tokens.empty() == false) {
 		// Check if first token is # (comment line)
 		if (tokens[0].empty() == false && tokens[0][0] == '#') {
 			return true;
 		}
-		else if (tokens[0] == "Nodes") {
-			int nodeCount = static_cast<int>(atof(tokens[1].c_str()));
-			Nodes = new vector<int>();
-			Edges = new vector<vector<int>>(nodeCount, vector<int>(4, -1));
-			for (int i = 0; i < nodeCount; i++) {
-				Nodes->push_back(i);
-			}
-			return true;
-		}
-		else if (tokens[0] == "Edges") {
+		else if (tokens[0] == "Node") {
 			int currentNode = static_cast<int>(atof(tokens[1].c_str()));
+			int nodeValue = static_cast<int>(atof(tokens[6].c_str()));
+			load_map->AddNode(currentNode, nodeValue);
 			for (int i = 2; i < 6; i++) {
 				if (tokens[i] == "N") {
 					// Do Nothing
 				}
 				else {
 					int edgeNode = static_cast<int>(atof(tokens[i].c_str()));
-					Edges->at(currentNode).at(i - 2) = edgeNode;
+					load_map->AddEdge(currentNode, i - 2, edgeNode);
 				}
 			}
 			return true;

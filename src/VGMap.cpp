@@ -12,7 +12,7 @@ VGMap::VGMap(int player_number) {
 	PlayerNumber = new int(player_number);
 	// Allocate Space for Data Members
 	NumNodes = new int;
-	Nodes = new vector<VGNode*>;
+	Nodes = new vector<VGNode*>();
 	Edges = new vector<vector<int>>(30, vector<int>(4, -1));
 }
 
@@ -31,10 +31,12 @@ VGMap::~VGMap() {
 	delete Edges;
 }
 
-void VGMap::AddNodes(int node_count) {
-	for (int i = 0; i < node_count; i++) {
-		Nodes->push_back(new VGNode(i));
-	}
+void VGMap::AddNode(int node_number, int node_value) {
+	Nodes->push_back(new VGNode(node_number, node_value));
+}
+
+void VGMap::AddEdge(int edge_start, int side_value, int edge_end) {
+	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
 void VGMap::AddTile(int board_space, BuildingTile* tile) {
@@ -62,10 +64,10 @@ void VGMap::Draw() {
 	cout << "\n";
 }
 
-VGMap::VGNode::VGNode(int node_number) {
+VGMap::VGNode::VGNode(int node_number, int node_value) {
 	NodeNumber = new int(node_number);
 	// Allocate space for Data Members
-	NodeValue = new int;
+	NodeValue = new int(node_value);
 	Tile = new BuildingTile;
 }
 
@@ -75,6 +77,6 @@ VGMap::VGNode::~VGNode() {
 	delete Tile;
 }
 
-void VGMap::VGNode::SetValue(int node_value) {
-	*NodeValue = node_value;
+void VGMap::VGNode::PlaceTile(BuildingTile* tile) {
+
 }
