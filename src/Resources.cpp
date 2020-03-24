@@ -1,51 +1,72 @@
 #include "..\headers\Resources.h"
 
-BuildingTile::BuildingTile() {
-    Value = new int;
-    Type = new int;
-    Flipped = new bool;
+
+BuildingTile::BuildingTile(){
+    Value=new int;
+    Type=new int;
+    Flipped=new bool ;
+}
+BuildingTile::~BuildingTile() {
+    delete Value;
+    delete Type;
+    delete Flipped;
 }
 
-BuildingTile::~BuildingTile() {
-	delete Value;
-	delete Type;
-	delete Flipped;
-}
 
 BuildingTile::BuildingTile(int value, int type) {
     Value = new int(value);
     Type = new int(type);
     Flipped = new bool(false);
+
 }
 
 
 void BuildingTile::setValue(int value) {
-    *Value = value;
+    *Value=value;
+
 }
 
 void BuildingTile::setType(int type) {
-    *Type = type;
+    *Type=type;
 }
 
 void BuildingTile::setFlipped(bool flip) {
-    *Flipped = flip;
+    *Flipped=flip;
 }
 
 int BuildingTile::getValue() {
-	return *Value;
+    return *Value;
 }
 
-int BuildingTile::getType() {
-    return *Type;
+
+string BuildingTile::getType() {
+    if(*Type==0){
+        return "WO";
+
+    }
+    if(*Type==1){
+        return "ST";
+
+    }
+    if(*Type==2){
+        return "SH";
+
+    }
+    if(*Type==3){
+        return "WH";
+
+    }
 }
 
-bool BuildingTile::isFlipped() {
+bool BuildingTile::getFlipped() {
     return *Flipped;
 }
 
 HarvestTile::HarvestNode::HarvestNode(int type) {
-    Type = new int(type);
-    Visited = new bool(false) ;
+    Type= new int;
+    Visited=new bool ;
+    *Type=type;
+    *Visited= false;
 }
 
 HarvestTile::HarvestNode::HarvestNode() {
@@ -85,10 +106,10 @@ Resource::Resource(int tile_number) {
 }
 
 Deck::Deck() {
-    /*HarvestsDeck= new stack<HarvestTile>;
-    BuildingDeck=new stack<Building>;
+    HarvestsDeck= new stack<HarvestTile>;
+    BuildingDeck=new stack<BuildingTile>;
     vector<HarvestTile> * allHarvest= new vector<HarvestTile>;
-    vector<Building> *allBuilding= new vector<Building>;
+    vector<BuildingTile> *allBuilding= new vector<BuildingTile>;
 
     for(int numberOfEachCard=0;numberOfEachCard<6;numberOfEachCard++){
         for(int valueOfEachCard=1;valueOfEachCard<7;valueOfEachCard++){
@@ -167,7 +188,7 @@ Deck::Deck() {
 
     }
     //generate random seed from time so each game the card will be shuffled in different order
-    unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::default_random_engine e(seed);
     //randomize allCard
     shuffle(allHarvest->begin(),allHarvest->end(),e);
@@ -178,31 +199,75 @@ Deck::Deck() {
     }
     for(int i=0;i<144;i++){
         BuildingDeck->push(allBuilding->at(i));
-    }*/
+    }
 
 
 
-}
-
-Deck::Deck(TileType type) {
 
 }
 
-Deck::~Deck()
-{
-}
 
-
-HarvestTile* Deck::DrawHarvestTile() {
-    HarvestTile* cardToReturn= HarvestDeck->top();
-    HarvestDeck->pop();
+HarvestTile Deck::DrawHarvestTile() {
+    HarvestTile cardToReturn=HarvestsDeck->top();
+    HarvestsDeck->pop();
     return cardToReturn;
 }
 
-BuildingTile* Deck::DrawBuilding() {
-    BuildingTile* cardToReturn = BuildingDeck->top();
+BuildingTile Deck::DrawBuilding() {
+    BuildingTile cardToReturn=BuildingDeck->top();
     BuildingDeck->pop();
     return cardToReturn;
+}
+
+string HarvestTile::HarvestNode::getType() {
+    if(*Type==0){
+        return "WO";
+
+    }
+    if(*Type==1){
+        return "ST";
+
+    }
+    if(*Type==2){
+        return "SH";
+
+    }
+    if(*Type==3){
+        return "WH";
+
+    }
+
+}
+
+void HarvestTile::printHarvestTile() {
+    cout << "***************" << endl;
+    cout << "*  "<<Nodes->at(0).getType()<<"  *  "<<Nodes->at(1).getType()<<"  *" << endl;
+    cout << "***************" << endl;
+    cout << "*  "<<Nodes->at(2).getType()<<"  *  "<<Nodes->at(3).getType()<<"  *" << endl;
+    cout << "***************" << endl;
+
+}
+
+void HarvestTile::rotate() {
+
+    HarvestNode temp=Nodes->at(0);
+    Nodes->at(0)=Nodes->at(2);
+    Nodes->at(2)=Nodes->at(3);
+    Nodes->at(3)=Nodes->at(1);
+    Nodes->at(1)=temp;
+
+
+
+}
+
+void BuildingTile::printBuildingTile() {
+    cout << "**************************" << endl;
+    cout << "*  Building Type  *  "<<this->getType()<<"  *" << endl;
+    cout << "**************************" << endl;
+    cout << "*      Value      *   "<<this->getValue()<<"  *" << endl;
+    cout << "**************************" << endl;
+
+
 }
 
 

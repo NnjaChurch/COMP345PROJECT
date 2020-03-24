@@ -1,3 +1,4 @@
+
 #pragma once
 // Includes
 #include <vector>
@@ -6,16 +7,17 @@
 #include <ctime>
 #include <algorithm>
 #include <random>
+#include <string>
 #include <chrono>
 
 using namespace std;
 
-enum class TileType {
+enum TileType {
     BUILDING,
     HARVEST
 };
 
-enum class ResourceType {
+enum ResourceType {
     WOOD,
     STONE,
     SHEEP,
@@ -38,7 +40,7 @@ private:
 };
 
 
-class BuildingTile : public Resource {
+class BuildingTile:public Resource{
 public:
     BuildingTile();
     BuildingTile(int value,int type);
@@ -47,8 +49,10 @@ public:
     void setType(int Type);
     void setFlipped(bool flip);
     int getValue();
-    int getType();
-    bool isFlipped();
+    string getType();
+    bool getFlipped();
+    void printBuildingTile();
+
 
 private:
     int* Value;
@@ -65,6 +69,8 @@ public:
     HarvestTile(int* arrayOfTypeOfTile);
     // Destructor
     ~HarvestTile();
+    void printHarvestTile();
+    void rotate();
 
     // HarvestNode
     class HarvestNode {
@@ -74,11 +80,15 @@ public:
         HarvestNode(int type);
         // Destructor
         ~HarvestNode();
+
+        string getType();
         int* Type;
         bool* Visited;
     };
     // Attributes
-    vector<HarvestNode>* Nodes;
+    std::vector<HarvestNode>* Nodes;
+
+
 };
 
 
@@ -86,19 +96,25 @@ class Deck {
 public:
     // Default Constructor
     Deck();
-    // Constructor
-    Deck(TileType type);
     // Destructor
     ~Deck();
 
     // Functions
-    HarvestTile* DrawHarvestTile();
-    BuildingTile* DrawBuilding();
+    HarvestTile DrawHarvestTile();
+    BuildingTile DrawBuilding();
 
 private:
-    stack<HarvestTile*>* HarvestDeck;
-    stack<BuildingTile*>* BuildingDeck;
+    stack<HarvestTile>* HarvestsDeck;
+    stack<BuildingTile>* BuildingDeck;
+
+
 };
+
+
+
+
+
+
 
 
 // Karim Code
