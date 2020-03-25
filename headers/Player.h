@@ -141,3 +141,14 @@ struct Building
 	int value;
 	char color;
 };*/
+// Class
+
+/* REMOVE THESE COMMENTS FOR UNDEFINED REFERENCE PROBLEM
+class GBMapLoader {
+public:
+	static GBMap LoadMap(int num_players);
+private:
+	// Parse Function
+	static bool ParseLine(vector<string> tokens, GBMap* load_map);
+};
+*/
