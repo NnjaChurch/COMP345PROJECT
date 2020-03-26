@@ -13,17 +13,7 @@ using namespace std;
 struct Tile {
 	vector<char>* TileData;
 };
-// GBMap Struct to Place Tiles on
-struct GBMap {
-	vector<Tile*>* Nodes;
-	vector<vector<int>>* Edges;
-};
-// VGMap Struct to Place Tiles on
-struct VGMap {
-	string* VillageName;
-	vector<Tile*>* Nodes;
-	vector<vector<int>>* Edges;
-};
+
 
 // Player Class
 class Player
@@ -143,7 +133,21 @@ struct Building
 };*/
 // Class
 
-/* REMOVE THESE COMMENTS FOR UNDEFINED REFERENCE PROBLEM
+// GBMap Struct to Place Tiles on
+#ifndef GBMAP_H
+#define GBMAP_H
+
+struct GBMap {
+	vector<Tile*>* Nodes;
+	vector<vector<int>>* Edges;
+};
+// VGMap Struct to Place Tiles on
+struct VGMap {
+	string* VillageName;
+	vector<Tile*>* Nodes;
+	vector<vector<int>>* Edges;
+};
+#endif
 class GBMapLoader {
 public:
 	static GBMap LoadMap(int num_players);
@@ -151,4 +155,5 @@ private:
 	// Parse Function
 	static bool ParseLine(vector<string> tokens, GBMap* load_map);
 };
-*/
+
+
