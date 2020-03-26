@@ -17,6 +17,7 @@ public:
 		virtual ~VGNode();
 
 		// Node Functions
+		bool CheckTile();
 		void PlaceTile(BuildingTile* tile);
 	private:
 		int* NodeNumber;
@@ -35,6 +36,9 @@ public:
 	// Setter Functions
 	void AddNode(int node_number, int node_value);
 	void AddEdge(int edge_start, int side_value, int edge_end);
+
+	// Getter Functions
+	bool CheckEmpty(int board_space);
 
 	// Player Functions
 	void AddTile(int board_space, BuildingTile* tile);

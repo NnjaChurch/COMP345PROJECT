@@ -19,6 +19,7 @@ public:
 		virtual ~GBNode();
 
 		// Node Functions
+		bool CheckTile();
 		void PlaceTile(HarvestTile* tile);
 	private:
 		int NodeNumber;
@@ -33,6 +34,9 @@ public:
 	// Setters
 	void AddNodes(int num_nodes);
 	void AddEdge(int edge_start, int side_value, int edge_end);
+
+	// Getters
+	bool CheckEmpty(int board_space);
 
 	// Player Functions
 	void AddTile(int board_space, HarvestTile* tile);

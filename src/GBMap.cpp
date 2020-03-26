@@ -34,6 +34,10 @@ void GBMap::AddEdge(int edge_start, int side_value, int edge_end) {
 	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
+bool GBMap::CheckEmpty(int board_space) {
+	return Nodes->at(board_space)->CheckTile();
+}
+
 void GBMap::AddTile(int board_space, HarvestTile* tile) {
 	// Add Tile to position in Game Board (used later)
 }
@@ -60,9 +64,18 @@ void GBMap::Draw() {
 
 GBMap::GBNode::GBNode(int node_number) {
 	NodeNumber = node_number;
-	Tile = new HarvestTile;
+	Tile = NULL;
 }
 
 GBMap::GBNode::~GBNode() {
 	Tile->~HarvestTile();
+}
+
+bool GBMap::GBNode::CheckTile() {
+	if (Tile == NULL) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }

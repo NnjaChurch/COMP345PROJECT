@@ -56,6 +56,9 @@ string BuildingTile::getType() {
         return "WH";
 
     }
+	else {
+		return "__";
+	}
 }
 
 bool BuildingTile::getFlipped() {
@@ -236,7 +239,9 @@ string HarvestTile::HarvestNode::getType() {
         return "WH";
 
     }
-
+	else {
+		return "__";
+	}
 }
 
 void HarvestTile::printHarvestTile() {

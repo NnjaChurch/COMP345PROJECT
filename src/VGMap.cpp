@@ -39,8 +39,12 @@ void VGMap::AddEdge(int edge_start, int side_value, int edge_end) {
 	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
+bool VGMap::CheckEmpty(int board_space) {
+	return Nodes->at(board_space)->CheckTile();
+}
+
 void VGMap::AddTile(int board_space, BuildingTile* tile) {
-	// Add Tile to position in Game Board (used later)
+	Nodes->at(board_space)->PlaceTile(tile);
 }
 
 void VGMap::Draw() {
@@ -68,7 +72,7 @@ VGMap::VGNode::VGNode(int node_number, int node_value) {
 	NodeNumber = new int(node_number);
 	// Allocate space for Data Members
 	NodeValue = new int(node_value);
-	Tile = new BuildingTile;
+	Tile = NULL;
 }
 
 VGMap::VGNode::~VGNode() {
@@ -77,6 +81,15 @@ VGMap::VGNode::~VGNode() {
 	delete Tile;
 }
 
-void VGMap::VGNode::PlaceTile(BuildingTile* tile) {
+bool VGMap::VGNode::CheckTile() {
+	if (Tile == NULL) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
 
+void VGMap::VGNode::PlaceTile(BuildingTile* tile) {
+	Tile = tile;
 }

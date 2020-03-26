@@ -1,8 +1,6 @@
-#include "../headers/Player.h"
-#include "../headers/VGMap.h"
-#include "../headers/Resources.h"
-#include "../headers/GBMap.h"
-#include "../headers/GBMapLoader.h"
+#include "GBMapLoader.h"
+#include "VGMapLoader.h"
+#include "Player.h"
 #include <iostream>
 #include <vector>
 
@@ -31,8 +29,8 @@ int main(){
 	cout << "Decks created successfully";
 
 	// Main Loop Part 2
-	int counter;
-	while (counter != 0)
+	bool exit = false;
+	while (!exit)
 	{
 		for (int i = 0; i < numPlayers; i++) {
 			int tile_to_place, where_to_place, building_to_place, where_to_placeBuilding;

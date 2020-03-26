@@ -11,7 +11,6 @@
 // Namespaces
 using namespace std;
 
-/* REMOVE THESE COMMENTS FOR UNDEFINED REFERENCE PROBLEM
 // Class
 class GBMapLoader {
 public:
@@ -20,4 +19,3 @@ private:
 	// Parse Function
 	static bool ParseLine(vector<string> tokens, GBMap* load_map);
 };
-*/
