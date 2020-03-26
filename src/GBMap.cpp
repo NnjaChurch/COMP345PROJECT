@@ -8,13 +8,8 @@ GBMap::GBMap() {
 
 GBMap::~GBMap() {
 	delete NumNodes;
-	// Delete Nodes
-	for (int i = 0; i < Nodes->size(); i++) {
-		// Call Node Deconstructor
-		Nodes->at(i)->~GBNode();
-		// Clear allocated memory for Node
-		delete Nodes->at(i);
-	}
+	// Delete inner Nodes
+	Nodes->clear();
 	// Clear allocated memory for vector
 	delete Nodes;
 	// Delete Edges

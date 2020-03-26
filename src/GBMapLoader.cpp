@@ -79,4 +79,7 @@ bool GBMapLoader::ParseLine(vector<string> tokens, GBMap* load_map) {
 			return false;
 		}
 	}
+	else {
+		return false;
+	}
 }

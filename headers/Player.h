@@ -24,8 +24,11 @@ public:
 
 	// Functions
 	int PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board);
-	void DrawBuilding(stack<BuildingTile*>* building_deck);
-	void DrawHarvestTile(stack<HarvestTile*>* harvest_deck);
+	void DrawBuilding(Deck* decks);
+	void DrawHarvestTile(Deck* decks);
+
+	// Hand Functiions
+	void ShowHand();
 	void ResourceTracker(int board_space, GBMap* game_board);
 
 	// Part 6 Functions

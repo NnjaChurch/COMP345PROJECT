@@ -44,22 +44,33 @@ int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* ga
 	}
 }
 
-void Player::DrawBuilding(stack<BuildingTile*>* building_deck) {
+void Player::DrawBuilding(Deck* decks) {
 	// Draw Tile
-	BuildingTile* drawn_tile = building_deck->top();
-	building_deck->pop();
-	// Add Tile to Hand
+	BuildingTile* drawn_tile = decks->DrawBuilding();
+	// Add to Hand
 	building_tokens->push_back(drawn_tile);
 	cout << "Player " << *PlayerNumber << " drew a Building Tile" << endl;
 }
 
-void Player::DrawHarvestTile(stack<HarvestTile*>* harvest_deck) {
+void Player::DrawHarvestTile(Deck* decks) {
 	// Draw Tile
-	HarvestTile* drawn_tile = harvest_deck->top();
-	harvest_deck->pop();
+	HarvestTile* drawn_tile = decks->DrawHarvestTile();
 	// Add Tile to Hand
 	harvest_tiles->push_back(drawn_tile);
 	cout << "Player " << *PlayerNumber << " drew a Harvest Tile" << endl;
+}
+
+void Player::ShowHand() {
+	cout << "Harvest Tiles: " << endl;
+	for (int i = 0; i < harvest_tiles->size(); i++) {
+		cout << "Tile: " << i << endl;
+		harvest_tiles->at(i)->printHarvestTile();
+	}
+	cout << "Building Tiles: " << endl;
+	for (int i = 0; i < building_tokens->size(); i++) {
+		cout << "Tile: " << i << endl;
+		building_tokens->at(i)->printBuildingTile();
+	}
 }
 
 void Player::ResourceTracker(int board_space, GBMap* game_board) {

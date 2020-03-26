@@ -12,19 +12,17 @@
 
 using namespace std;
 
-enum TileType {
+enum class TileType {
     BUILDING,
     HARVEST
 };
 
-enum ResourceType {
+enum class ResourceType {
     WOOD,
     STONE,
     SHEEP,
     WHEAT
 };
-
-
 
 class Resource {
 public:
@@ -35,41 +33,56 @@ public:
     // Destructor
     ~Resource();
 
+    // Getter
+    int GetTileNumber();
+
 private:
     int* TileNumber;
 };
 
 
-class BuildingTile:public Resource{
+class BuildingTile : public Resource{
 public:
+    // Default Constructor
     BuildingTile();
-    BuildingTile(int value,int type);
+    // Constructor
+    BuildingTile(int tile_number, int value, ResourceType type);
+    // Destructor
     ~BuildingTile();
-    void setValue(int value);
-    void setType(int Type);
-    void setFlipped(bool flip);
-    int getValue();
-    string getType();
-    bool getFlipped();
-    void printBuildingTile();
 
+    // Setters
+    void setValue(int value);
+    void setType(ResourceType type);
+    void setFlipped(bool flip);
+
+    // Getters
+    int getValue();
+    ResourceType getType();
+    bool getFlipped();
+
+    // Drawing Functions
+    void printType();
+    void printBuildingTile();
 
 private:
     int* Value;
-    int* Type;
+    ResourceType* Type;
     bool* Flipped;
-
 };
 
-class HarvestTile :public Resource{
+class HarvestTile : public Resource {
 public:
     // Default Constructor
     HarvestTile();
     // Constructor
-    HarvestTile(int* arrayOfTypeOfTile);
+    HarvestTile(int number, vector<ResourceType> resource_list);
     // Destructor
     ~HarvestTile();
+
+    // Drawing Functions
     void printHarvestTile();
+    
+    // Tile Functions
     void rotate();
 
     // HarvestNode
@@ -77,20 +90,19 @@ public:
     public:
         HarvestNode();
         // Constructor
-        HarvestNode(int type);
+        HarvestNode(ResourceType type);
         // Destructor
         ~HarvestNode();
 
-        string getType();
-        int* Type;
+        ResourceType getType();
+        void PrintNode();
+        ResourceType* Type;
         bool* Visited;
     };
     // Attributes
-    std::vector<HarvestNode>* Nodes;
-
+    vector<HarvestNode*>* Nodes;
 
 };
-
 
 class Deck {
 public:
@@ -100,73 +112,10 @@ public:
     ~Deck();
 
     // Functions
-    HarvestTile DrawHarvestTile();
-    BuildingTile DrawBuilding();
+    HarvestTile* DrawHarvestTile();
+    BuildingTile* DrawBuilding();
 
 private:
-    stack<HarvestTile>* HarvestsDeck;
-    stack<BuildingTile>* BuildingDeck;
-
-
+    stack<HarvestTile*>* HarvestDeck;
+    stack<BuildingTile*>* BuildingDeck;
 };
-
-
-
-
-
-
-
-
-// Karim Code
-/*
-#include <iostream>
-#include<vector> 
-#include<ctime>
-#include<stack>
-using namespace std;
-struct Building
-{
-	char color;
-	int value;
-};
-void buildingFullShuffle(vector<Building>& vec);
-class Resources {
-	public:
-		// Constructor
-		Resources();
-		// Destructor
-		~Resources();
-
-		// Functions
-		vector<char> drawTile();
-		Building drawBuilding();
-
-		// Inner Tile Functions
-		char getTopLeftOfTile(vector<char>);
-		char getTopRightOfTile(vector<char>);
-		char getBottomLeftOfTile(vector<char>);
-		char getBottomRightOfTile(vector<char>);
-		void rotate(vector<char>& arr);
-
-		vector < vector<char>> allCard();
-
-
-		// Shufflers
-		void buildingShuffle(vector<Building>& vec, int a, int b);
-		void BuildingFullShuffle(vector<Building>& vec);
-		stack<Building> createDeckOfBuilding(vector<Building> cards);
-
-		stack<vector<char>> createDeckOfTile(vector<vector<char>> cards);
-		void tileFullShuffle(vector <vector<char>>& vec);
-		void tileShuffle(vector <vector<char>>& vec, int a, int b);
-
-		
-	private:
-
-
-		// Attributes
-		
-		stack<Building> buildingDeck;
-		stack<vector<char>> tileDeck;
-};
-*/

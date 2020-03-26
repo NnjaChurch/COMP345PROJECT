@@ -7,37 +7,51 @@
 int main(){
 	// Initialization
 
-	cout << "Welcome to NewHaven how many players will be playing?" << endl;
+	cout << "Welcome to NewHaven how many players will be playing? ";
 	int numPlayers;
 	cin >> numPlayers;
-	cout<< "Alright! " << numPlayers;
+	cout<< "Alright! " << numPlayers << endl;
 
+	cout << "Initializing Game Resources..." << endl;
 	// Load Game Map
 	GBMap* GameMap = new GBMap();
 	*GameMap = GBMapLoader::LoadMap(numPlayers);
-	cout << "Map loaded successfully!";
+	cout << "Map loaded successfully!" << endl;
 
 	// Load Players
 	vector<Player*>* Players = new vector<Player*>();
 	for (int i = 0; i < numPlayers; i++) {
 		Players->push_back(new Player(i + 1));
 	}
-	// Players have been initialized
+	cout << "Players created succesfully!" << endl;
 	
 	// Creating Deck
 	Deck* Decks = new Deck();
-	cout << "Decks created successfully";
+	cout << "Decks created successfully!" << endl;
+
+	cout << "\nBeginning Game Loop..." << endl;
 
 	// Main Loop Part 2
 	bool exit = false;
 	while (!exit)
 	{
+
 		for (int i = 0; i < numPlayers; i++) {
 			int tile_to_place, where_to_place, building_to_place, where_to_placeBuilding;
 
-			cout << "It's the turn for player " << i << endl;
-			cout << "Here are the tiles that you pocess: " << endl;
-			cout << "Which tile do you want to place?" << endl; //TODO: Need to include that jokerTile special tile option
+			// TODO: Display GBMap at the start of each Player's turn
+
+			cout << "It's the turn for player " << i + 1 << endl;
+
+			// Draw HarvestTile
+			Players->at(i)->DrawHarvestTile(Decks);
+			// Draw Building Tile
+			Players->at(i)->DrawBuilding(Decks);
+
+			cout << "Here are the tiles that you have: " << endl;
+			Players->at(i)->ShowHand();
+
+			cout << "Which HarvestTile do you want to place?" << endl;
 			cin >> tile_to_place;
 			cout << "Where do you want to place it?" << endl;
 			cin >> where_to_place;
