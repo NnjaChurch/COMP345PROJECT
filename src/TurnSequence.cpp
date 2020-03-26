@@ -1,8 +1,9 @@
-#include "../headers/Player.h"
+
 #include "../headers/VGMap.h"
 #include "../headers/Resources.h"
 #include "../headers/GBMap.h"
 #include "../headers/GBMapLoader.h"
+#include "../headers/Player.h"
 #include <iostream>
 #include <vector>
 
