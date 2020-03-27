@@ -21,6 +21,7 @@ public:
 		// Node Functions
 		bool CheckTile();
 		void PlaceTile(HarvestTile* tile);
+		void ResetTileAccess();
 	private:
 		int NodeNumber;
 		HarvestTile* Tile;
@@ -35,7 +36,10 @@ public:
 	void AddNodes(int num_nodes);
 	void AddEdge(int edge_start, int side_value, int edge_end);
 
+	void ResetMapAccess();
+
 	// Getters
+	vector<int> GetAdjacentTiles(int current_tile);
 	bool CheckEmpty(int board_space);
 
 	// Player Functions

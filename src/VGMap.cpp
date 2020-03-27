@@ -39,6 +39,10 @@ void VGMap::AddEdge(int edge_start, int side_value, int edge_end) {
 	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
+vector<int> VGMap::GetAdjacentTiles(int board_space) {
+	return Edges->at(board_space);
+}
+
 bool VGMap::CheckEmpty(int board_space) {
 	return Nodes->at(board_space)->CheckTile();
 }
@@ -48,24 +52,7 @@ void VGMap::AddTile(int board_space, BuildingTile* tile) {
 }
 
 void VGMap::Draw() {
-	// TODO: Update Printing to Include Buildings if placed
-
-	// Output to Console
-	cout << "Player " << *PlayerNumber << " Village Board\n";
-	cout << "________________\n";
-	for (int i = 0; i < Nodes->size(); i++) {
-		if (i < 10) {
-			cout << "| " << i;
-		}
-		else {
-			cout << "|" << i;
-		}
-		if (i % 5 == 4) {
-			cout << "|\n";
-			cout << "----------------\n";
-		}
-	}
-	cout << "\n";
+	// TODO: Print functions for VGMap
 }
 
 VGMap::VGNode::VGNode(int node_number, int node_value) {

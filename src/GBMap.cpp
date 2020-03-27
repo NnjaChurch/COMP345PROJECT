@@ -29,32 +29,26 @@ void GBMap::AddEdge(int edge_start, int side_value, int edge_end) {
 	Edges->at(edge_start).at(side_value) = edge_end;
 }
 
+void GBMap::ResetMapAccess() {
+	for (int i = 0; i < Nodes->size(); i++) {
+		Nodes->at(i)->ResetTileAccess();
+	}
+}
+
+vector<int> GBMap::GetAdjacentTiles(int current_tile) {
+	return Edges->at(current_tile);
+}
+
 bool GBMap::CheckEmpty(int board_space) {
 	return Nodes->at(board_space)->CheckTile();
 }
 
 void GBMap::AddTile(int board_space, HarvestTile* tile) {
-	// Add Tile to position in Game Board (used later)
+	Nodes->at(board_space)->PlaceTile(tile);
 }
 
 void GBMap::Draw() {
-	// TODO: Update Print to include harvest tiles if placed
-
-	// Print for 25 Nodes
-	// Print for 35 Nodes
-	// Print for 45 Nodes
-
-	// Temp Print to check adjacencies
-	cout << "Number of Nodes: " << *NumNodes << endl;
-	cout << "Adjacencies:" << endl;
-	cout << "\tL\tR\tT\tB" << endl;
-	for (int i = 0; i < Edges->size(); i++) {
-		cout << i << ":\t";
-		for (int j = 0; j < (*Edges)[i].size(); j++) {
-			cout << (*Edges)[i][j] << "\t";
-		}
-		cout << "\n";
-	}
+	// TODO: Print function to draw GBMap
 }
 
 GBMap::GBNode::GBNode(int node_number) {
@@ -72,5 +66,15 @@ bool GBMap::GBNode::CheckTile() {
 	}
 	else {
 		return true;
+	}
+}
+
+void GBMap::GBNode::PlaceTile(HarvestTile* tile) {
+	Tile = tile;
+}
+
+void GBMap::GBNode::ResetTileAccess() {
+	if (CheckTile()) {
+		Tile->ResetTileAccess();
 	}
 }

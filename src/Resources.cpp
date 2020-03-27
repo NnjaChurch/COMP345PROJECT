@@ -103,32 +103,6 @@ HarvestTile::~HarvestTile() {
 	delete Nodes;
 }
 
-void HarvestTile::printHarvestTile() {
-	// TODO: Printing Function for HarvestTile
-	cout << "***************" << endl;
-	cout << "*  ";
-	Nodes->at(0)->PrintNode();
-	cout << "  *  ";
-	Nodes->at(1)->PrintNode();
-	cout << "  *" << endl;
-	cout << "***************" << endl;
-	cout << "*  ";
-	Nodes->at(2)->PrintNode();
-	cout << "  *  ";
-	Nodes->at(3)->PrintNode();
-	cout << "  *" << endl;
-	cout << "***************" << endl;
-
-}
-
-void HarvestTile::rotate() {
-	HarvestNode* tempNode = Nodes->at(0);
-	Nodes->at(0) = Nodes->at(2);
-	Nodes->at(2) = Nodes->at(3);
-	Nodes->at(3) = Nodes->at(1);
-	Nodes->at(1) = tempNode;
-}
-
 HarvestTile::HarvestNode::HarvestNode() {
 	Type = new ResourceType;
 	Visited = new bool;
@@ -148,6 +122,11 @@ ResourceType HarvestTile::HarvestNode::getType() {
 	return *Type;
 }
 
+void HarvestTile::HarvestNode::ResetNodeAccess() {
+	*Visited = false;
+}
+
+
 void HarvestTile::HarvestNode::PrintNode() {
 	if (*Type == ResourceType::WOOD) {
 		cout << "WD";
@@ -161,6 +140,42 @@ void HarvestTile::HarvestNode::PrintNode() {
 	else if (*Type == ResourceType::WHEAT) {
 		cout << "WH";
 	}
+}
+
+vector<HarvestTile::HarvestNode*>* HarvestTile::GetTileData() {
+	return Nodes;
+}
+
+void HarvestTile::printHarvestTile() {
+	// TODO: Printing Function for HarvestTile
+	cout << "***************" << endl;
+	cout << "*  ";
+	Nodes->at(0)->PrintNode();
+	cout << "  *  ";
+	Nodes->at(1)->PrintNode();
+	cout << "  *" << endl;
+	cout << "***************" << endl;
+	cout << "*  ";
+	Nodes->at(2)->PrintNode();
+	cout << "  *  ";
+	Nodes->at(3)->PrintNode();
+	cout << "  *" << endl;
+	cout << "***************" << endl;
+
+}
+
+void HarvestTile::ResetTileAccess() {
+	for (int i = 0; i < Nodes->size(); i++) {
+		Nodes->at(i)->ResetNodeAccess();
+	}
+}
+
+void HarvestTile::rotate() {
+	HarvestNode* tempNode = Nodes->at(0);
+	Nodes->at(0) = Nodes->at(2);
+	Nodes->at(2) = Nodes->at(3);
+	Nodes->at(3) = Nodes->at(1);
+	Nodes->at(1) = tempNode;
 }
 
 Deck::Deck() {
@@ -287,14 +302,3 @@ BuildingTile* Deck::DrawBuilding() {
 	BuildingDeck->pop();
 	return Tile;
 }
-
-/*
-void BuildingTile::printBuildingTile() {
-	cout << "**************************" << endl;
-	cout << "*  Building Type  *  " << this->getType() << "  *" << endl;
-	cout << "**************************" << endl;
-	cout << "*      Value      *   " << this->getValue() << "  *" << endl;
-	cout << "**************************" << endl;
-
-}
-*/

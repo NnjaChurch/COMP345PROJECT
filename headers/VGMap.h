@@ -38,6 +38,7 @@ public:
 	void AddEdge(int edge_start, int side_value, int edge_end);
 
 	// Getter Functions
+	vector<int> GetAdjacentTiles(int board_space);
 	bool CheckEmpty(int board_space);
 
 	// Player Functions

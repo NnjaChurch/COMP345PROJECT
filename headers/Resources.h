@@ -79,12 +79,6 @@ public:
     // Destructor
     ~HarvestTile();
 
-    // Drawing Functions
-    void printHarvestTile();
-    
-    // Tile Functions
-    void rotate();
-
     // HarvestNode
     class HarvestNode {
     public:
@@ -94,11 +88,30 @@ public:
         // Destructor
         ~HarvestNode();
 
+        // Getters
         ResourceType getType();
+
+        // Setters
+        void ResetNodeAccess();
+
+        // Drawing Functions
         void PrintNode();
+
+    private:
         ResourceType* Type;
         bool* Visited;
     };
+
+    // Getters
+    vector<HarvestNode*>* GetTileData();
+
+    // Drawing Functions
+    void printHarvestTile();
+    
+    // Tile Functions
+    void ResetTileAccess();
+    void rotate();
+
     // Attributes
     vector<HarvestNode*>* Nodes;
 
