@@ -61,8 +61,8 @@ public:
     bool getFlipped();
 
     // Drawing Functions
-    void printType();
-    void printBuildingTile();
+    string PrintType();
+    vector<string> PrintBuildingTile();
 
 private:
     int* Value;
@@ -95,15 +95,7 @@ public:
         void ResetNodeAccess();
 
         // Drawing Functions
-        void PrintNode();
-
-        //return 2 char resource type
-        string getTopRight();
-        string getTopLeft();
-        string getBottomRight();
-        string getBottomLeft();
-
-        string twoCharResourcesType(ResourceType type);
+        string PrintNode();
 
     private:
         ResourceType* Type;
@@ -114,7 +106,7 @@ public:
     vector<HarvestNode*>* GetTileData();
 
     // Drawing Functions
-    void printHarvestTile();
+    vector<string> PrintHarvestTile();
     
     // Tile Functions
     void ResetTileAccess();

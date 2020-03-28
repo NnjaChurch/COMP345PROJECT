@@ -22,6 +22,9 @@ public:
 		bool CheckTile();
 		void PlaceTile(HarvestTile* tile);
 		void ResetTileAccess();
+
+		// Drawing Functions
+		vector<string> PrintTile();
 	private:
 		int NodeNumber;
 		HarvestTile* Tile;

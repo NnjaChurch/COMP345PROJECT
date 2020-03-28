@@ -64,12 +64,12 @@ void Player::ShowHand() {
 	cout << "Harvest Tiles: " << endl;
 	for (int i = 0; i < harvest_tiles->size(); i++) {
 		cout << "Tile: " << i << endl;
-		harvest_tiles->at(i)->printHarvestTile();
+		harvest_tiles->at(i)->PrintHarvestTile();
 	}
 	cout << "Building Tiles: " << endl;
 	for (int i = 0; i < building_tokens->size(); i++) {
 		cout << "Tile: " << i << endl;
-		building_tokens->at(i)->printBuildingTile();
+		building_tokens->at(i)->PrintBuildingTile();
 	}
 }
 
@@ -101,6 +101,12 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 }
 
 vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
+
+	game_board->GetAdjacentTiles(board_space);
+
+
+
+
 	// Temp return
 	vector<int> tempResources = { 5, 5, 5, 5 };
 	return tempResources;

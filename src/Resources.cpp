@@ -61,30 +61,35 @@ bool BuildingTile::getFlipped() {
 	return *Flipped;
 }
 
-void BuildingTile::printType() {
+string BuildingTile::PrintType() {
 	if (*Type == ResourceType::WOOD) {
-		cout << "WD";
+		return "WD";
 	}
 	else if (*Type == ResourceType::STONE) {
-		cout << "ST";
+		return "ST";
 	}
 	else if (*Type == ResourceType::SHEEP) {
-		cout << "SH";
+		return "SH";
 	}
 	else if (*Type == ResourceType::WHEAT) {
-		cout << "WH";
+		return "WH";
+	}
+	else {
+		cerr << "ERROR::RESOURCES::BUILDING_TILE::TILE_DATA_MISSING" << endl;
+		return "";
 	}
 }
 
-void BuildingTile::printBuildingTile() {
-	// TODO: Printing Function for BuildingTile
-	cout << "**************************" << endl;
-	cout << "*  Building Type  *  ";
-	printType();
-	cout << "  *" << endl;
-	cout << "**************************" << endl;
-	cout << "*      Value      *   " << getValue() << "  *" << endl;
-	cout << "**************************" << endl;
+vector<string> BuildingTile::PrintBuildingTile() {
+	vector<string> tileData;
+
+	tileData.push_back("**************************");
+	tileData.push_back("*  Building Type  *  " + PrintType());
+	tileData.push_back("**************************");
+	tileData.push_back("*      Value      *   " + to_string(getValue()) + "  *");
+	tileData.push_back("**************************");
+
+	return tileData;
 }
 
 // Harvest Tile
@@ -127,18 +132,22 @@ void HarvestTile::HarvestNode::ResetNodeAccess() {
 }
 
 
-void HarvestTile::HarvestNode::PrintNode() {
+string HarvestTile::HarvestNode::PrintNode() {
 	if (*Type == ResourceType::WOOD) {
-		cout << "WD";
+		return "WD";
 	}
 	else if (*Type == ResourceType::STONE) {
-		cout << "ST";
+		return "ST";
 	}
 	else if (*Type == ResourceType::SHEEP) {
-		cout << "SH";
+		return "SH";
 	}
 	else if (*Type == ResourceType::WHEAT) {
-		cout << "WH";
+		return "WH";
+	}
+	else {
+		cerr << "ERROR::RESOURCES::HARVVEST_TILE::HARVEST_NODE::PRINT_NODE::NODE_DATA_MISSING" << endl;
+		return "";
 	}
 }
 
@@ -146,22 +155,17 @@ vector<HarvestTile::HarvestNode*>* HarvestTile::GetTileData() {
 	return Nodes;
 }
 
-void HarvestTile::printHarvestTile() {
-	// TODO: Printing Function for HarvestTile
-	cout << "***************" << endl;
-	cout << "*  ";
-	Nodes->at(0)->PrintNode();
-	cout << "  *  ";
-	Nodes->at(1)->PrintNode();
-	cout << "  *" << endl;
-	cout << "***************" << endl;
-	cout << "*  ";
-	Nodes->at(2)->PrintNode();
-	cout << "  *  ";
-	Nodes->at(3)->PrintNode();
-	cout << "  *" << endl;
-	cout << "***************" << endl;
+vector<string> HarvestTile::PrintHarvestTile() {
+	vector<string> tileData;	
+	// NOTE: Index Values in the ->at() might need to be changed for tile node order
 
+	tileData.push_back("..........");
+	tileData.push_back(" " + Nodes->at(0)->PrintNode() + " | " + Nodes->at(1)->PrintNode() + " |");
+	tileData.push_back(".........|");
+	tileData.push_back(" " + Nodes->at(2)->PrintNode() + " | " + Nodes->at(3)->PrintNode() + " |");
+	tileData.push_back("..........");
+
+	return tileData;
 }
 
 void HarvestTile::ResetTileAccess() {
@@ -176,37 +180,6 @@ void HarvestTile::rotate() {
 	Nodes->at(2) = Nodes->at(3);
 	Nodes->at(3) = Nodes->at(1);
 	Nodes->at(1) = tempNode;
-}
-
-string HarvestTile::twoCharResourcesType(ResourceType type) {
-    if (type == ResourceType::WOOD) {
-        return "WD";
-    }
-    else if (type == ResourceType::STONE) {
-        return "ST";
-    }
-    else if (type == ResourceType::SHEEP) {
-        return "SH";
-    }
-    else if (type == ResourceType::WHEAT) {
-        return "WH";
-    }
-}
-
-string HarvestTile::getTopRight() {
-    return twoCharResourcesType(Nodes->at(1)->getType());
-}
-
-string HarvestTile::getTopLeft() {
-    return twoCharResourcesType(Nodes->at(0)->getType());
-}
-
-string HarvestTile::getBottomLeft() {
-    return twoCharResourcesType(Nodes->at(2)->getType());
-}
-
-string HarvestTile::getBottomRight() {
-    return twoCharResourcesType(Nodes->at(3)->getType());
 }
 
 Deck::Deck() {

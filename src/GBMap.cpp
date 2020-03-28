@@ -47,6 +47,7 @@ void GBMap::AddTile(int board_space, HarvestTile* tile) {
 	Nodes->at(board_space)->PlaceTile(tile);
 }
 
+/*
 void printRowOfHarvestTile(vector<HarvestTile*> allTile,int startingTile,bool tab=false,bool top=true,bool bottom=true){
     vector<string> allLines{".","|","|","|","."};
     if(tab){
@@ -93,9 +94,69 @@ void printRowOfHarvestTile(vector<HarvestTile*> allTile,int startingTile,bool ta
     }
 
 }
+*/
 
 void GBMap::Draw() {
-	// TODO: Print function to draw GBMap
+    vector<string>* line1 = new vector<string>;
+    vector<string>* line2 = new vector<string>;
+    vector<string>* line3 = new vector<string>;
+    vector<string>* line4 = new vector<string>;
+    vector<string>* line5 = new vector<string>;
+
+
+    // PRINTING FOR 2 AND 3 PLAYERS
+    if (*NumNodes == 25 || *NumNodes == 35) {
+        for (int i = 0; i < Nodes->size(); i++) {
+            if (!CheckEmpty(i)) {
+                // Tile Empty Print Number
+                string TileNumber = "0" + to_string(i);         // NOTE TILE NUMBER STARTS AT ZERO BECAUSE THE PLAYER'S INPUTS MUST MATCH INDEXES
+
+                line1->push_back("..........");
+                line2->push_back("         |");
+                line3->push_back("    " + TileNumber + "   |");
+                line4->push_back("         |");
+                line5->push_back("..........");
+            }
+            else {
+                // Tile Not Empty Print Tile Data
+                vector<string> tileData = Nodes->at(i)->PrintTile();
+
+                line1->push_back(tileData.at(0));
+                line2->push_back(tileData.at(1));
+                line3->push_back(tileData.at(2));
+                line4->push_back(tileData.at(3));
+                line5->push_back(tileData.at(4));
+            }
+
+            if (i % 5 == 4) {
+                // Append newline to each vector "\n"
+                line1->push_back("\n");
+                line2->push_back("\n");
+                line3->push_back("\n");
+                line4->push_back("\n");
+                line5->push_back("\n");
+            }
+        }
+    }
+    else {
+        // TODO: PRINTING FOR 4 PLAYER MAP
+    }
+    // Print
+    for (string i : *line1) {
+        cout << i;
+    }
+    for (string i : *line2) {
+        cout << i;
+    }
+    for (string i : *line3) {
+        cout << i;
+    }
+    for (string i : *line3) {
+        cout << i;
+    }
+    for (string i : *line4) {
+        cout << i;
+    }
 }
 
 GBMap::GBNode::GBNode(int node_number) {
@@ -124,4 +185,8 @@ void GBMap::GBNode::ResetTileAccess() {
 	if (CheckTile()) {
 		Tile->ResetTileAccess();
 	}
+}
+
+vector<string> GBMap::GBNode::PrintTile() {
+    return Tile->PrintHarvestTile();
 }
