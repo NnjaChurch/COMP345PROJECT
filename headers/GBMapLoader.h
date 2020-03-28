@@ -14,7 +14,7 @@ using namespace std;
 // Class
 class GBMapLoader {
 public:
-	static GBMap LoadMap(int num_players);
+	static GBMap* LoadMap(int num_players);
 private:
 	// Parse Function
 	static bool ParseLine(vector<string> tokens, GBMap* load_map);

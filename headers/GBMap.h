@@ -44,6 +44,7 @@ public:
 	// Getters
 	vector<int> GetAdjacentTiles(int current_tile);
 	bool CheckEmpty(int board_space);
+	int GetNumNodes();
 
 	// Player Functions
 	void AddTile(int board_space, HarvestTile* tile);

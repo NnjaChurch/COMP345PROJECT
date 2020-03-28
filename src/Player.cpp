@@ -26,7 +26,7 @@ Player::~Player() {
 
 int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board) {
 	// Check if tile already placed
-	if (game_board->CheckEmpty(board_space)) {
+	if (!game_board->CheckEmpty(board_space)) {
 		// Copy Tile Pointer
 		HarvestTile* placed_tile = harvest_tiles->at(harvest_tile_number);
 		// Place Tile
@@ -64,12 +64,20 @@ void Player::ShowHand() {
 	cout << "Harvest Tiles: " << endl;
 	for (int i = 0; i < harvest_tiles->size(); i++) {
 		cout << "Tile: " << i << endl;
-		harvest_tiles->at(i)->PrintHarvestTile();
+		vector<string> tileData = harvest_tiles->at(i)->PrintHarvestTile();
+		for (string s : tileData) {
+			cout << s << "\n";
+		}
+		cout << "\n";
 	}
 	cout << "Building Tiles: " << endl;
 	for (int i = 0; i < building_tokens->size(); i++) {
 		cout << "Tile: " << i << endl;
-		building_tokens->at(i)->PrintBuildingTile();
+		vector<string> tileData = building_tokens->at(i)->PrintBuildingTile();
+		for (string s : tileData) {
+			cout << s << "\n";
+		}
+		cout << "\n";
 	}
 }
 
@@ -86,7 +94,7 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 	// Rules for placing village tiles (not yet implemented)
 
 	// Check if tile already placed
-	if(village->CheckEmpty(board_space)) {
+	if(!village->CheckEmpty(board_space)) {
 		// Copy tile pointer
 		BuildingTile* placed_tile = building_tokens->at(building_tile_number);
 		// Place tile
@@ -102,7 +110,7 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 
 vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 
-	game_board->GetAdjacentTiles(board_space);
+	// game_board->GetAdjacentTiles(board_space);
 
 
 

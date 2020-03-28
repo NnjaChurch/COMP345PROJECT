@@ -3,7 +3,7 @@
 // Map Files
 static string VGMapTP = "./maps/VGMapTP.txt";
 
-VGMap VGMapLoader::LoadMap(int player_number) {
+VGMap* VGMapLoader::LoadMap(int player_number) {
 	VGMap* load_map = new VGMap(player_number);
 
 	fstream in_stream;
@@ -35,7 +35,7 @@ VGMap VGMapLoader::LoadMap(int player_number) {
 			exit(-1);
 		}
 	}
-	return *load_map;
+	return load_map;
 }
 
 bool VGMapLoader::ParseLine(vector<string> tokens, VGMap* load_map) {

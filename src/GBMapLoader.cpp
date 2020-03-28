@@ -5,7 +5,7 @@ static string GBMap2P = "./maps/GBMap2P.txt";
 static string GBMap3P = "./maps/GBMap3P.txt";
 static string GBMap4P = "./maps/GBMap4P.txt";
 
-GBMap GBMapLoader::LoadMap(int num_players) {
+GBMap* GBMapLoader::LoadMap(int num_players) {
 	GBMap* load_map = new GBMap;
 	fstream in_stream;
 
@@ -47,7 +47,7 @@ GBMap GBMapLoader::LoadMap(int num_players) {
 			exit(-1);
 		}
 	}
-	return *load_map;
+	return load_map;
 }
 
 bool GBMapLoader::ParseLine(vector<string> tokens, GBMap* load_map) {
