@@ -23,6 +23,9 @@ public:
 		void PlaceTile(HarvestTile* tile);
 		void ResetTileAccess();
 
+		// Getter
+		HarvestTile* GetTile();
+
 		// Drawing Functions
 		vector<string> PrintTile();
 	private:
@@ -43,8 +46,9 @@ public:
 
 	// Getters
 	vector<int> GetAdjacentTiles(int current_tile);
+	GBNode* GetNode(int board_space);
+
 	bool CheckEmpty(int board_space);
-	int GetNumNodes();
 
 	// Player Functions
 	void AddTile(int board_space, HarvestTile* tile);

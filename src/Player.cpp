@@ -110,8 +110,9 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 
 vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 
-	// game_board->GetAdjacentTiles(board_space);
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
 
+	HarvestTile* tile = game_board->GetNode(board_space)->GetTile();
 
 
 
