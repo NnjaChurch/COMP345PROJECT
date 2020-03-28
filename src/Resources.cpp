@@ -178,6 +178,37 @@ void HarvestTile::rotate() {
 	Nodes->at(1) = tempNode;
 }
 
+string HarvestTile::twoCharResourcesType(ResourceType type) {
+    if (type == ResourceType::WOOD) {
+        return "WD";
+    }
+    else if (type == ResourceType::STONE) {
+        return "ST";
+    }
+    else if (type == ResourceType::SHEEP) {
+        return "SH";
+    }
+    else if (type == ResourceType::WHEAT) {
+        return "WH";
+    }
+}
+
+string HarvestTile::getTopRight() {
+    return twoCharResourcesType(Nodes->at(1)->getType());
+}
+
+string HarvestTile::getTopLeft() {
+    return twoCharResourcesType(Nodes->at(0)->getType());
+}
+
+string HarvestTile::getBottomLeft() {
+    return twoCharResourcesType(Nodes->at(2)->getType());
+}
+
+string HarvestTile::getBottomRight() {
+    return twoCharResourcesType(Nodes->at(3)->getType());
+}
+
 Deck::Deck() {
 	HarvestDeck = new stack<HarvestTile*>;
 	BuildingDeck = new stack<BuildingTile*>;

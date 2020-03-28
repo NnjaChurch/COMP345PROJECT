@@ -47,6 +47,53 @@ void GBMap::AddTile(int board_space, HarvestTile* tile) {
 	Nodes->at(board_space)->PlaceTile(tile);
 }
 
+void printRowOfHarvestTile(vector<HarvestTile*> allTile,int startingTile,bool tab=false,bool top=true,bool bottom=true){
+    vector<string> allLines{".","|","|","|","."};
+    if(tab){
+        allLines[0]="          "+allLines[0];
+        allLines[1]="          "+allLines[1];
+        allLines[2]="          "+allLines[2];
+        allLines[3]="          "+allLines[3];
+        allLines[4]="          "+allLines[4];
+
+    }
+    string TileNumber="";
+
+    for(int i=0;i<allTile.size();i++){
+        if(allTile[i]){
+            allLines[0]+="..........";
+            allLines[1]+=" "+allTile[i]->getTopRight()+" | "+allTile[i]->getTopLeft()+" |";
+            allLines[2]+=".........|";
+            allLines[3]+=" "+allTile[i]->getBottomRight()+" | "+allTile[i]->getBottomLeft()+" |";
+            allLines[4]+="..........";
+        }
+        else{
+            if(startingTile+i<10){
+                TileNumber="0"+to_string(startingTile+i);
+            }
+            else{
+                TileNumber=to_string(startingTile+i);
+            }
+            allLines[0]+="..........";
+            allLines[1]+="         |";
+            allLines[2]+="    "+TileNumber+"   |";
+            allLines[3]+="         |";
+            allLines[4]+="..........";
+
+        }}
+    if(top){
+        cout<<allLines[0]<<endl;
+    }
+
+    cout<<allLines[1]<<endl;
+    cout<<allLines[2]<<endl;
+    cout<<allLines[3]<<endl;
+    if(bottom){
+        cout<<allLines[4]<<endl;
+    }
+
+}
+
 void GBMap::Draw() {
 	// TODO: Print function to draw GBMap
 }

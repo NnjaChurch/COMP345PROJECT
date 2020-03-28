@@ -97,6 +97,14 @@ public:
         // Drawing Functions
         void PrintNode();
 
+        //return 2 char resource type
+        string getTopRight();
+        string getTopLeft();
+        string getBottomRight();
+        string getBottomLeft();
+
+        string twoCharResourcesType(ResourceType type);
+
     private:
         ResourceType* Type;
         bool* Visited;
