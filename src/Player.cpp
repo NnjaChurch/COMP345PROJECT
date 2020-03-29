@@ -94,7 +94,7 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 	// Rules for placing village tiles (not yet implemented)
 
 	// Check if tile already placed
-	if(!village->CheckEmpty(board_space)) {
+	if (!village->CheckEmpty(board_space)) {
 		// Copy tile pointer
 		BuildingTile* placed_tile = building_tokens->at(building_tile_number);
 		// Place tile
@@ -111,6 +111,56 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 
 	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
+	vector<int> tempResources = { 0, 0, 0, 0 };
+	HarvestTile* tile = game_board->GetNode(board_space)->GetTile();
+
+	//THIS METHOD IS FOR TOPLEFT OF A HARVEST TILE, WE WANT TO CHECK ABOVE TILE AND LEFT TILE
+
+	if (adjacent.at(0)!=NULL) { //That means there is a Tile above the Tile we are looking at
+		HarvestTile* tile_above = game_board->GetNode(adjacent.at(0))->GetTile(); //Get that tile
+		
+		//Now we want to compare the [0] with board_space with [2] of the tile above
+		if (tile->GetTileData()->at(0) == tile_above->GetTileData()->at(2)) { //TODO: AND NOT VISITED
+
+			//TODO: Make that tile visited for no loops
+			tempResources.at(0) += tempResources.at(0);
+			//TODO: Make sure Resources match SH WD WH ST and add the Resource accordingly using ifs?
+
+			return Player::CalculateResources(adjacent.at(0), game_board);//Recursion
+		}
+	}
+	else {
+		cout << "There is no tiles above this tile... moving on." << endl;
+	};
+	
+	if (adjacent.at(1) != NULL) { //That means there is a Tile left of the Tile we are looking at
+		HarvestTile* tile_left = game_board->GetNode(adjacent.at(1))->GetTile(); //Get that tile
+		//Now we want to compare the [0] with board_space with [1] of the left tile
+
+		if (tile->GetTileData()->at(0) == tile_left->GetTileData()->at(1)) { //TODO: && NOT VISITED
+
+			//TODO: Make that tile visited for no loops
+			tempResources.at(0) += tempResources.at(0);
+			//TODO: Make sure Resources match SH WD WH ST and add the Resource accordingly using ifs?
+
+			return Player::CalculateResources(adjacent.at(1), game_board); //Recursion
+		}
+
+	}
+	else {
+		cout << "There is no tiles left of this tile... moving on." << endl;
+	};
+
+
+	// Temp return
+	return tempResources;
+	//return Player::CalculateResources(board_space,  game_board);
+}
+
+/*Initial code for Calculate Resources
+vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
+
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
 
 	HarvestTile* tile = game_board->GetNode(board_space)->GetTile();
 
@@ -120,3 +170,4 @@ vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 	vector<int> tempResources = { 5, 5, 5, 5 };
 	return tempResources;
 }
+*/
