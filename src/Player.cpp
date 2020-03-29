@@ -116,17 +116,67 @@ vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 
 	//THIS METHOD IS FOR TOPLEFT OF A HARVEST TILE, WE WANT TO CHECK ABOVE TILE AND LEFT TILE
 
-	if (adjacent.at(0)!=NULL) { //That means there is a Tile above the Tile we are looking at
+
+	// KEVIN NOTE: should be adjacent.at(0) != -1
+	if (adjacent.at(0) != -1) { //That means there is a Tile above the Tile we are looking at
+
 		HarvestTile* tile_above = game_board->GetNode(adjacent.at(0))->GetTile(); //Get that tile
 		
+		// KEVIN NOTE: With new Visited check, you can check if the tile has been fully visited yet
+		if (!tile_above->TileVisited()) {
+			// KEVIN NOTE: This way it doesn't do all the checks if you've already fully visited the tile
+		}
 		//Now we want to compare the [0] with board_space with [2] of the tile above
-		if (tile->GetTileData()->at(0) == tile_above->GetTileData()->at(2)) { //TODO: AND NOT VISITED
+		
+		// NOTE: Grab the tile data first then do your comparisons after
+		vector<HarvestTile::HarvestNode*>* nodes = tile->GetTileData();
+		vector<HarvestTile::HarvestNode*>* nodes_above = tile_above->GetTileData();
 
-			//TODO: Make that tile visited for no loops
-			tempResources.at(0) += tempResources.at(0);
+		if (nodes->at(0) == nodes_above->at(2) && !nodes_above->at(2)->NodeVisited()) {
+
 			//TODO: Make sure Resources match SH WD WH ST and add the Resource accordingly using ifs?
+			// KEVIN NOTE: Should work this way I think
+			ResourceType resource = nodes_above->at(2)->getType();
+			if (resource == ResourceType::WOOD) {
+				tempResources.at(0)++;
+			}
+			else if (resource == ResourceType::STONE) {
+				tempResources.at(1)++;
+			}
+			else if (resource == ResourceType::SHEEP) {
+				tempResources.at(2)++;
+			}
+			else if (resource == ResourceType::WHEAT) {
+				tempResources.at(3)++;
+			}
+			else {
+				cerr << "ERROR::PLAYER::CALCULATE_RESOURCES::INVALID_RESOURCE_TYPE_FOUND" << endl;
+			}
 
-			return Player::CalculateResources(adjacent.at(0), game_board);//Recursion
+			// TODO: Mark Node as visited after you get the resources from it
+			nodes_above->at(2)->MarkNodeVisited();
+
+			// Check if every node in Tile has been visited:
+			bool tileVisited = true;
+			for (int i = 0; i < nodes_above->size(); i++) {
+				// If any Node in the Tile has not been visited, tileVisited will be set to false
+				if (!nodes_above->at(i)->NodeVisited()) {
+					tileVisited = false;
+				}
+			}
+
+			// Mark Tile as visited if all nodes have been visited
+			if (tileVisited) {
+				tile_above->MarkTileAccess();
+			}
+
+			// Recursion Call:
+			vector<int> recursion_resources = CalculateResources(adjacent.at(0), game_board);
+			// Add the resources from the recursion call to tempResources (transform is used to add the values of two vectors by index)
+			transform(tempResources.begin(), tempResources.end(), recursion_resources.begin(), recursion_resources.end(), plus<int>());
+
+			// KEVIN NOTE: this return function will make it so that you never check the other parts of the code if you get here, you can recursive call at the end of your function
+			// return Player::CalculateResources(adjacent.at(0), game_board) + tempResources; //Recursion
 		}
 	}
 	else {
@@ -151,23 +201,9 @@ vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
 		cout << "There is no tiles left of this tile... moving on." << endl;
 	};
 
+	// Add Check to see if entire tile has been visited after the iterations
 
 	// Temp return
 	return tempResources;
 	//return Player::CalculateResources(board_space,  game_board);
 }
-
-/*Initial code for Calculate Resources
-vector<int> Player::CalculateResources(int board_space, GBMap* game_board) {
-
-	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
-
-	HarvestTile* tile = game_board->GetNode(board_space)->GetTile();
-
-
-
-	// Temp return
-	vector<int> tempResources = { 5, 5, 5, 5 };
-	return tempResources;
-}
-*/

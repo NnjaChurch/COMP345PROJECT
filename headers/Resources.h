@@ -90,8 +90,10 @@ public:
 
         // Getters
         ResourceType getType();
+        bool NodeVisited();
 
         // Setters
+        void MarkNodeVisited();
         void ResetNodeAccess();
 
         // Drawing Functions
@@ -104,17 +106,21 @@ public:
 
     // Getters
     vector<HarvestNode*>* GetTileData();
+    bool TileVisited();
+
 
     // Drawing Functions
     vector<string> PrintHarvestTile();
     
     // Tile Functions
+    void MarkTileAccess();
     void ResetTileAccess();
     void rotate();
 
+private:
     // Attributes
     vector<HarvestNode*>* Nodes;
-
+    bool* Visited;
 };
 
 class Deck {

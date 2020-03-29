@@ -127,6 +127,14 @@ ResourceType HarvestTile::HarvestNode::getType() {
 	return *Type;
 }
 
+bool HarvestTile::HarvestNode::NodeVisited() {
+	return *Visited;
+}
+
+void HarvestTile::HarvestNode::MarkNodeVisited() {
+	*Visited = true;
+}
+
 void HarvestTile::HarvestNode::ResetNodeAccess() {
 	*Visited = false;
 }
@@ -155,6 +163,10 @@ vector<HarvestTile::HarvestNode*>* HarvestTile::GetTileData() {
 	return Nodes;
 }
 
+bool HarvestTile::TileVisited() {
+	return *Visited;
+}
+
 vector<string> HarvestTile::PrintHarvestTile() {
 	vector<string> tileData;	
 	// NOTE: Index Values in the ->at() might need to be changed for tile node order
@@ -166,6 +178,10 @@ vector<string> HarvestTile::PrintHarvestTile() {
 	tileData.push_back("..........");
 
 	return tileData;
+}
+
+void HarvestTile::MarkTileAccess() {
+	*Visited = true;
 }
 
 void HarvestTile::ResetTileAccess() {
