@@ -36,6 +36,8 @@ int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* ga
 		cout << "Player " << *PlayerNumber << " placed a Harvest Tile at position: " << board_space << endl;
 		// Calculate Resources Gathered
 		ResourceTracker(board_space, game_board);
+		// Reset map access after all calculations are complete
+		game_board->ResetMapAccess();
 		return 0;
 	}
 	else {
@@ -88,6 +90,7 @@ void Player::ResourceTracker(int board_space, GBMap* game_board) {
 	for (int i = 0; i < resource_markers->size(); i++) {
 		cout << " " << resource_markers->at(i) << ",";
 	}
+	cout << endl;
 }
 
 void Player::BuildVillage(int board_space, int building_tile_number) {
@@ -164,9 +167,10 @@ vector<int>* Player::CalculateTile(GBMap* game_board, vector<int> adjacent, Harv
 				vector<HarvestTile::HarvestNode*>* nodes_adjacent = adjacent_tile->GetTileData();
 
 				// Check if resource types match and the compared node hasn't already been visited
-				if (nodes->at(node_index) == nodes_adjacent->at(compare_index) && !nodes_adjacent->at(compare_index)->NodeVisited()) {
+				if ((nodes->at(node_index)->getType() == nodes_adjacent->at(compare_index)->getType()) && !nodes_adjacent->at(compare_index)->NodeVisited()) {
 					// Add resource to appropriate index in tempResources
 					ResourceType resource = nodes_adjacent->at(1)->getType();
+
 					if (resource == ResourceType::WOOD) {
 						temp_resources->at(0)++;
 					}
@@ -200,6 +204,8 @@ vector<int>* Player::CalculateTile(GBMap* game_board, vector<int> adjacent, Harv
 					}
 
 					// Recursive Call (only calls if there is an adjacent tile, it is not NULL and the ResourceType matches)
+					// TODO: Recursive call needs to be changed (doesn't work as intended) -> change recursive call to only check the 4 adjacent nodes to the compared node
+					// Also rewrite to check inner nodes of same tile
 					vector<int>* recursion_resources = CalculateResources(adjacent.at(adj_index), game_board);
 					// Add Resources from recursion
 					transform(temp_resources->begin(), temp_resources->end(), recursion_resources->begin(), temp_resources->begin(), plus<int>());

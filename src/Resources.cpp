@@ -112,7 +112,7 @@ HarvestTile::~HarvestTile() {
 
 HarvestTile::HarvestNode::HarvestNode() {
 	Type = new ResourceType;
-	Visited = new bool;
+	Visited = new bool(false);
 }
 
 HarvestTile::HarvestNode::HarvestNode(ResourceType type) {
@@ -190,6 +190,7 @@ void HarvestTile::ResetTileAccess() {
 	for (int i = 0; i < Nodes->size(); i++) {
 		Nodes->at(i)->ResetNodeAccess();
 	}
+	*Visited = false;
 }
 
 void HarvestTile::rotate() {

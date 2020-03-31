@@ -14,5 +14,10 @@ int main() {
 
 	p1->PlaceHarvestTile(5, 0, gameMap);
 
+	p1->DrawHarvestTile(decks);
+	p1->ShowHand();
+
+	p1->PlaceHarvestTile(6, 0, gameMap);
+
 	gameMap->Draw();
 }
