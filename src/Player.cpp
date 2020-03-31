@@ -113,105 +113,284 @@ void Player::BuildVillage(int board_space, int building_tile_number) {
 
 vector<int>* Player::CalculateResources(int board_space, GBMap* game_board) {
 	// Create temporary container for resources
-	vector<int>* temp_resources = new vector<int>(4, 0);
-	// Create temporary container for calculated resources
-	vector<int>* calculated_resources;
-	// Get Adjacent Tiles
-	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Create temporary container for node resources (initialized at zero)
+	vector<int>* node_resources = new vector<int>(4, 0);
 	// Get Current Tile
 	HarvestTile* tile = game_board->GetNode(board_space)->GetTile();
+	// Get Current Nodes
+	vector<HarvestTile::HarvestNode*>* cur_nodes = tile->GetTileData();
 
 	// Calculate collected resources for each node
 
-	// TOP LEFT NODE
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 0, 0, 1);	// Left Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 2, 0, 2);	// Top Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
+	// SELF
+	for (int i = 0; i < cur_nodes->size(); i++) {
+		vector<int>* gath_resources = GatherResources(cur_nodes->at(i)->GetType());
+		transform(calc_resources->begin(), calc_resources->end(), gath_resources->begin(), calc_resources->begin(), plus<int>());
+		cur_nodes->at(i)->MarkNodeVisited();
+	}
+
+	// TOP LEFT NODE ADJACENTS
+	node_resources = CalculateTL(game_board, board_space, tile);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 	
-	// TOP RIGHT NODE
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 1, 1, 0);	// Right Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 2, 1, 3);	// Top Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
+	// TOP RIGHT NODE ADJACENTS
+	node_resources = CalculateTR(game_board, board_space, tile);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 
-	// BOTTOM LEFT NODE
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 0, 2, 3);	// Left Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 3, 2, 0);	// Bottom Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
+	// BOT LEFT NODE ADJACENTS
+	node_resources = CalculateBL(game_board, board_space, tile);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 
-	// BOTTOM RIGHT NODE
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 1, 3, 2);	// Right Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
-	calculated_resources = CalculateTile(game_board, adjacent, tile, 3, 3, 1);	// Bottom Adjacency
-	transform(temp_resources->begin(), temp_resources->end(), calculated_resources->begin(), temp_resources->begin(), plus<int>());
+	// BOT RIGHT NODE ADJACENTS
+	node_resources = CalculateBR(game_board, board_space, tile);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 
-	return temp_resources;
+	return calc_resources;
 }
 
-vector<int>* Player::CalculateTile(GBMap* game_board, vector<int> adjacent, HarvestTile* current_tile, int adj_index, int node_index, int compare_index) {
-	
-	// Create temporary vector for resources
-	vector<int>* temp_resources = new vector<int>(4, 0);
+vector<int>* Player::CalculateTL(GBMap* game_board, int board_space, HarvestTile* tile) {
 
-	if (adjacent.at(adj_index) != -1) {
-		// Check if tile is placed in position
-		if (game_board->CheckEmpty(adjacent.at(adj_index))) {
-			HarvestTile* adjacent_tile = game_board->GetNode(adjacent.at(adj_index))->GetTile();
-			
-			// Check if tile has not already been fully visited
-			if (!adjacent_tile->TileVisited()) {
-				// Get node data from tiles
-				vector<HarvestTile::HarvestNode*>* nodes = current_tile->GetTileData();
-				vector<HarvestTile::HarvestNode*>* nodes_adjacent = adjacent_tile->GetTileData();
+	// Create temporary container for resources
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Create temporary container for node resources
+	vector<int>* node_resources = new vector<int>(4, 0);
+	// Get adjacency data of current tile
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
 
-				// Check if resource types match and the compared node hasn't already been visited
-				if ((nodes->at(node_index)->getType() == nodes_adjacent->at(compare_index)->getType()) && !nodes_adjacent->at(compare_index)->NodeVisited()) {
-					// Add resource to appropriate index in tempResources
-					ResourceType resource = nodes_adjacent->at(1)->getType();
+	// Adjacent Tiles
+	// LEFT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 0, 0, 1);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 
-					if (resource == ResourceType::WOOD) {
-						temp_resources->at(0)++;
-					}
-					else if (resource == ResourceType::STONE) {
-						temp_resources->at(1)++;
-					}
-					else if (resource == ResourceType::SHEEP) {
-						temp_resources->at(2)++;
-					}
-					else if (resource == ResourceType::WHEAT) {
-						temp_resources->at(3)++;
-					}
-					else {
-						cerr << "ERROR::PLAYER::CALCULATE_RESOURCES::INVALID_RESOURCE_TYPE_FOUND" << endl;
-					}
+	// TOP
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 2, 0, 2);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
 
-					// Mark node as visited to prevent adding it more than once
-					nodes_adjacent->at(compare_index)->MarkNodeVisited();
-					// Check if all nodes in tile has been visited
-					bool tileVisited = true;
-					for (int i = 0; i < nodes_adjacent->size(); i++) {
-						// If any Node in the Tile has not been visited, tileVisited will be set to false
-						if (!nodes_adjacent->at(i)->NodeVisited()) {
-							tileVisited = false;
+	// Same Tile
+	// RIGHT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 0, 1);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// BOT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 0, 2);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	return calc_resources;
+}
+
+vector<int>* Player::CalculateTR(GBMap* game_board, int board_space, HarvestTile* tile) {
+	// Create temporary container for resources
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Create temporary container for node resources
+	vector<int>* node_resources = new vector<int>(4, 0);
+	// Get adjacency data of current tile
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
+
+	// Adjacent Tiles
+	// RIGHT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 1, 1, 0);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// TOP
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 2, 1, 3);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// Same Tile
+	// LEFT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 1, 0);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// BOT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 1, 3);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	return calc_resources;
+}
+
+vector<int>* Player::CalculateBL(GBMap* game_board, int board_space, HarvestTile* tile) {
+	// Create temporary container for resources
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Create temporary container for node resources
+	vector<int>* node_resources = new vector<int>(4, 0);
+	// Get adjacency data of current tile
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
+
+	// Adjacent Tiles
+	// LEFT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 0, 2, 3);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// BOT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 3, 2, 0);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// Same Tile
+	// RIGHT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 2, 3);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// TOP
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 2, 0);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	return calc_resources;
+}
+
+vector<int>* Player::CalculateBR(GBMap* game_board, int board_space, HarvestTile* tile) {
+	// Create temporary container for resources
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Create temporary container for node resources
+	vector<int>* node_resources = new vector<int>(4, 0);
+	// Get adjacency data of current tile
+	vector<int> adjacent = game_board->GetAdjacentTiles(board_space);
+
+	// Adjacent Tiles
+	// RIGHT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 1, 3, 2);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// BOT
+	node_resources = CalculateNode_ADJ(game_board, adjacent, tile, 3, 3, 1);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// Same Tile
+	// LEFT
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 3, 2);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	// TOP
+	node_resources = CalculateNode_CUR(game_board, tile, board_space, 3, 1);
+	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
+
+	return calc_resources;
+}
+
+vector<int>* Player::CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index) {
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Check if there is an adjacent position left of the tile
+	if (adjacent.at(tile_index) != -1) {
+		// Check if tile has been placed in adjacent position
+		if (game_board->CheckEmpty(adjacent.at(tile_index))) {
+			// Get adjacent tile
+			HarvestTile* adj_tile = game_board->GetNode(adjacent.at(tile_index))->GetTile();
+			// Check if tile had already been fully visited
+			if (!adj_tile->TileVisited()) {
+				// Get node data of current and adjacent tile
+				vector<HarvestTile::HarvestNode*>* cur_nodes = cur_tile->GetTileData();
+				vector<HarvestTile::HarvestNode*>* adj_nodes = adj_tile->GetTileData();
+				// Check if resource type of current node matches adjacent node and that the adjacent node has not been already visited
+				if ((cur_nodes->at(node_index)->GetType() == adj_nodes->at(adj_index)->GetType()) && !adj_nodes->at(adj_index)->NodeVisited()) {
+					ResourceType resource = adj_nodes->at(adj_index)->GetType();
+					// Gather resources from node
+					vector<int>* gath_resources = GatherResources(resource);
+					// Add gathered resources to total calculated resources
+					transform(calc_resources->begin(), calc_resources->end(), gath_resources->begin(), calc_resources->begin(), plus<int>());
+					// Mark node as visited
+					adj_nodes->at(1)->MarkNodeVisited();
+					// Check if all nodes in tile have been visited and mark tile as visited if they have been
+					bool tile_visited = true;
+					for (int i = 0; i < adj_nodes->size(); i++) {
+						if (!adj_nodes->at(i)->NodeVisited()) {
+							tile_visited = false;
 						}
 					}
-
-					// Mark Tile as visited if all nodes have been visited
-					if (tileVisited) {
-						adjacent_tile->MarkTileAccess();
+					if (tile_visited) {
+						adj_tile->MarkTileAccess();
 					}
 
-					// Recursive Call (only calls if there is an adjacent tile, it is not NULL and the ResourceType matches)
-					// TODO: Recursive call needs to be changed (doesn't work as intended) -> change recursive call to only check the 4 adjacent nodes to the compared node
-					// Also rewrite to check inner nodes of same tile
-					vector<int>* recursion_resources = CalculateResources(adjacent.at(adj_index), game_board);
-					// Add Resources from recursion
-					transform(temp_resources->begin(), temp_resources->end(), recursion_resources->begin(), temp_resources->begin(), plus<int>());
+					// Recursively call for the compared node since the resource type matches
+					if (adj_index == 0) {
+						vector<int>* recu_resources = CalculateTL(game_board, adjacent.at(tile_index), adj_tile);
+						// Add recursively calculated resources to total calculated resources
+						transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+					}
+					else if (adj_index == 1) {
+						vector<int>* recu_resources = CalculateTR(game_board, adjacent.at(tile_index), adj_tile);
+						// Add recursively calculated resources to total calculated resources
+						transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+					}
+					else if (adj_index == 2) {
+						vector<int>* recu_resources = CalculateBL(game_board, adjacent.at(tile_index), adj_tile);
+						// Add recursively calculated resources to total calculated resources
+						transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+					}
+					else if (adj_index == 3) {
+						vector<int>* recu_resources = CalculateBR(game_board, adjacent.at(tile_index), adj_tile);
+						// Add recursively calculated resources to total calculated resources
+						transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+					}	
 				}
 			}
 		}
 	}
-	return temp_resources;
+	return calc_resources;
+}
+
+vector<int>* Player::CalculateNode_CUR(GBMap* game_board, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index) {
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	// Get node data of current tile
+	vector<HarvestTile::HarvestNode*>* cur_nodes = cur_tile->GetTileData();
+	// Check if resource type of current node matches adjacent node and that the adjacent node has not been already visited
+	if ((cur_nodes->at(node_index)->GetType() == cur_nodes->at(adj_index)->GetType()) && !cur_nodes->at(adj_index)->NodeVisited()) {
+		ResourceType resource = cur_nodes->at(adj_index)->GetType();
+		// Gather resources from node
+		vector<int>* gath_resources = GatherResources(resource);
+		// Add gathered resources to total calculated resources
+		transform(calc_resources->begin(), calc_resources->end(), gath_resources->begin(), calc_resources->begin(), plus<int>());
+		// Mark node as visited
+		cur_nodes->at(adj_index)->MarkNodeVisited();
+		// Check if all nodes in tile have been visited and mark tile as visited if they have been
+		bool tile_visited = true;
+		for (int i = 0; i < cur_nodes->size(); i++) {
+			if (!cur_nodes->at(i)->NodeVisited()) {
+				tile_visited = false;
+			}
+		}
+		if (tile_visited) {
+			cur_tile->MarkTileAccess();
+		}
+		// Recursively call for the compared node since the resource type matches
+		if (adj_index == 0) {
+			vector<int>* recu_resources = CalculateTL(game_board, tile_index, cur_tile);
+			// Add recursively calculated resources to total calculated resources
+			transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+		}
+		else if (adj_index == 1) {
+			vector<int>* recu_resources = CalculateTR(game_board, tile_index, cur_tile);
+			// Add recursively calculated resources to total calculated resources
+			transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+		}
+		else if (adj_index == 2) {
+			vector<int>* recu_resources = CalculateBL(game_board, tile_index, cur_tile);
+			// Add recursively calculated resources to total calculated resources
+			transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+		}
+		else if (adj_index == 3) {
+			vector<int>* recu_resources = CalculateBR(game_board, tile_index, cur_tile);
+			// Add recursively calculated resources to total calculated resources
+			transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
+		}
+	}
+	return calc_resources;
+}
+
+vector<int>* Player::GatherResources(ResourceType type) {
+	vector<int>* calc_resources = new vector<int>(4, 0);
+	if (type == ResourceType::WOOD) {
+		calc_resources->at(0)++;
+	}
+	else if (type == ResourceType::STONE) {
+		calc_resources->at(1)++;
+	}
+	else if (type == ResourceType::SHEEP) {
+		calc_resources->at(2)++;
+	}
+	else if (type == ResourceType::WHEAT) {
+		calc_resources->at(3)++;
+	}
+	else {
+		cerr << "ERROR::PLAYER::CALCULATE_RESOURCES::INVALID_RESOURCE_TYPE_FOUND" << endl;
+	}
+	return calc_resources;
 }

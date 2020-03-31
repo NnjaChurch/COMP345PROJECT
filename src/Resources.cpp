@@ -125,7 +125,7 @@ HarvestTile::HarvestNode::~HarvestNode() {
 	delete Visited;
 }
 
-ResourceType HarvestTile::HarvestNode::getType() {
+ResourceType HarvestTile::HarvestNode::GetType() {
 	return *Type;
 }
 

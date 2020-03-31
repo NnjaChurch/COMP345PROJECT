@@ -89,7 +89,7 @@ public:
         ~HarvestNode();
 
         // Getters
-        ResourceType getType();
+        ResourceType GetType();
         bool NodeVisited();
 
         // Setters

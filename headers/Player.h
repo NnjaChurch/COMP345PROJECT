@@ -35,7 +35,16 @@ public:
 	void BuildVillage(int board_space, int building_tile_number);
 	vector<int>* CalculateResources(int board_space, GBMap* game_board);
 
-	vector<int>* CalculateTile(GBMap* game_board, vector<int> adjacent, HarvestTile* current_tile, int adj_index, int node_index, int compare_index);
+	// Recursive Calculation Functions
+	vector<int>* CalculateTL(GBMap* game_board, int board_space, HarvestTile* tile);
+	vector<int>* CalculateTR(GBMap* game_board, int board_space, HarvestTile* tile);
+	vector<int>* CalculateBL(GBMap* game_board, int board_space, HarvestTile* tile);
+	vector<int>* CalculateBR(GBMap* game_board, int board_space, HarvestTile* tile);
+
+	// Calculation Functions
+	vector<int>* CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index);
+	vector<int>* CalculateNode_CUR(GBMap* game_board, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index);
+	vector<int>* GatherResources(ResourceType type);
 
 private:
 	int* PlayerNumber;
