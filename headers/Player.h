@@ -34,6 +34,10 @@ public:
 	// Part 6 Functions
 	void BuildVillage(int board_space, int building_tile_number);
 	vector<int> CalculateResources(int board_space, GBMap* game_board);
+	vector<int> CalculateResources_TOPLEFTSIDE(int board_space, GBMap* game_board);
+	vector<int> CalculateResources_TOPRIGHTSIDE(int board_space, GBMap* game_board) {}
+	vector<int> CalculateResources_BOTTOMLEFTSIDE(int board_space, GBMap* game_board) {}
+	vector<int> CalculateResources_BOTTOMRIGHTSIDE(int board_space, GBMap* game_board) {}
 
 
 private:
