@@ -184,7 +184,7 @@ vector<int> Player::CalculateResources_TOPLEFTSIDE(int board_space, GBMap* game_
 			}
 
 			// Recursion Call:
-			vector<int> recursion_resources = CalculateResources(adjacent.at(2), game_board);
+			vector<int> recursion_resources = CalculateResources(adjacent.at(0), game_board);
 			// Add the resources from the recursion call to tempResources (transform is used to add the values of two vectors by index)
 			transform(tempResources.begin(), tempResources.end(), recursion_resources.begin(), recursion_resources.end(), plus<int>());
 
@@ -250,7 +250,7 @@ vector<int> Player::CalculateResources_TOPLEFTSIDE(int board_space, GBMap* game_
 			}
 
 			// Recursion Call:
-			vector<int> recursion_resources = CalculateResources(adjacent.at(0), game_board);
+			vector<int> recursion_resources = CalculateResources(adjacent.at(2), game_board);
 			// Add the resources from the recursion call to tempResources (transform is used to add the values of two vectors by index)
 			transform(tempResources.begin(), tempResources.end(), recursion_resources.begin(), recursion_resources.end(), plus<int>());
 
