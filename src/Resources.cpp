@@ -95,6 +95,7 @@ vector<string> BuildingTile::PrintBuildingTile() {
 // Harvest Tile
 HarvestTile::HarvestTile() {
 	Nodes = new vector<HarvestNode*>;
+	Visited = new bool(false);
 }
 
 HarvestTile::HarvestTile(int tile_number, vector<ResourceType> resource_list) : Resource(tile_number) {
@@ -102,6 +103,7 @@ HarvestTile::HarvestTile(int tile_number, vector<ResourceType> resource_list) : 
 	for (int i = 0; i < resource_list.size(); i++) {
 		Nodes->push_back(new HarvestNode(resource_list[i]));
 	}
+	Visited = new bool(false);
 }
 
 HarvestTile::~HarvestTile() {

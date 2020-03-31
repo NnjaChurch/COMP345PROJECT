@@ -228,5 +228,4 @@ void GBMap::Draw() {
             }
         }
     }
-	}
 }
