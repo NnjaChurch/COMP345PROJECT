@@ -4,18 +4,18 @@
 #include <iostream>
 #include <vector>
 
-int main(){
+int main() {
 	// Initialization
 
 	cout << "Welcome to NewHaven how many players will be playing? ";
 	int numPlayers;
 	cin >> numPlayers;
-	cout<< "Alright! " << numPlayers << endl;
+	cout << "Alright! " << numPlayers << endl;
 
 	cout << "Initializing Game Resources..." << endl;
 	// Load Game Map
 	GBMap* GameMap = new GBMap();
-	*GameMap = GBMapLoader::LoadMap(numPlayers);
+	GameMap = GBMapLoader::LoadMap(numPlayers);
 	cout << "Map loaded successfully!" << endl;
 
 	// Load Players
@@ -24,7 +24,7 @@ int main(){
 		Players->push_back(new Player(i + 1));
 	}
 	cout << "Players created succesfully!" << endl;
-	
+
 	// Creating Deck
 	Deck* Decks = new Deck();
 	cout << "Decks created successfully!" << endl;
@@ -42,7 +42,7 @@ int main(){
 			// TODO: Display GBMap at the start of each Player's turn
 
 			cout << "It's the turn for player " << i + 1 << endl;
-
+			GameMap->Draw();
 			// Draw HarvestTile
 			Players->at(i)->DrawHarvestTile(Decks);
 			// Draw Building Tile
@@ -55,24 +55,34 @@ int main(){
 			cin >> tile_to_place;
 			cout << "Where do you want to place it?" << endl;
 			cin >> where_to_place;
-			Players->at(i)->PlaceHarvestTile(tile_to_place, where_to_place, GameMap);
+			//Players->at(i)->PlaceHarvestTile(where_to_place, tile_to_place, GameMap);
 			cout << "The Tile has been placed" << endl;
 			cout << "Calculating resources..." << endl;
-			Players->at(i)->CalculateResources(tile_to_place, GameMap);
-			Players->at(i)->ResourceTracker(tile_to_place, GameMap);
-			cout << "Village Building phase";
+			//Players->at(i)->CalculateResources(tile_to_place, GameMap);
+			//Players->at(i)->ResourceTracker(tile_to_place, GameMap);
+			cout << "Village Building phase for Player " + (i + 1) << endl;
 			cout << "Here are the buildings that you pocess: " << endl;
 			cout << "Which building do you want to place?" << endl;
 			cin >> building_to_place;
 			cout << "Where do you want to place it?" << endl;
 			cin >> where_to_placeBuilding;
-			Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
+			//Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
 			cout << "Building has been placed" << endl;
 
-			//TODO: each other player in clockwise order will have the option of also using any 
-			//remaining resources to construct buildings in their own village.
+			for (int j = 0; j < numPlayers-1; j++) {
+				cout << "Now Rotating Village Building phase for Player " + ((i+j+1)%numPlayers) << endl;
+				cout << "Here are the buildings that you pocess: " << endl;
+				cout << "Which building do you want to place?" << endl;
+				cin >> building_to_place;
+				cout << "Where do you want to place it?" << endl;
+				cin >> where_to_placeBuilding;
+				//Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
+				cout << "Building has been placed" << endl;
 
+				//TODO: each other player in clockwise order will have the option of also using any 
+				//remaining resources to construct buildings in their own village.
 
+			}
 		}
 
 	}

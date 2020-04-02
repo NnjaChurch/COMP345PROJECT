@@ -94,20 +94,26 @@ void Player::ResourceTracker(int board_space, GBMap* game_board) {
 }
 
 void Player::BuildVillage(int board_space, int building_tile_number) {
-	// Rules for placing village tiles (not yet implemented)
+	bool validturn = true;
+	while (validturn)
+	{
+		// Rules for placing village tiles (not yet implemented)
 
-	// Check if tile already placed
-	if (!village->CheckEmpty(board_space)) {
-		// Copy tile pointer
-		BuildingTile* placed_tile = building_tokens->at(building_tile_number);
-		// Place tile
-		village->AddTile(board_space, placed_tile);
-		// Remove tile from hand
-		building_tokens->erase(building_tokens->begin() + building_tile_number);
-		cout << "Player " << *PlayerNumber << " place Building Tile at position: " << board_space << endl;
-	}
-	else {
-		cout << "Tile already present in village at position: " << board_space << endl;
+		// Check if tile already placed
+		if (!village->CheckEmpty(board_space)) {
+			// Copy tile pointer
+			BuildingTile* placed_tile = building_tokens->at(building_tile_number);
+			// Place tile
+			village->AddTile(board_space, placed_tile); //TODO: need to check adjacency if matches
+			//TODO: if the building number doesnt match, need to ask to flip.
+			// Remove tile from hand
+			building_tokens->erase(building_tokens->begin() + building_tile_number);
+			cout << "Player " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
+		}
+		else {
+			cout << "Tile already present in village at position: " << board_space << endl;
+			validturn = true;
+		}
 	}
 }
 
@@ -133,7 +139,7 @@ vector<int>* Player::CalculateResources(int board_space, GBMap* game_board) {
 	// TOP LEFT NODE ADJACENTS
 	node_resources = CalculateTL(game_board, board_space, tile);
 	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
-	
+
 	// TOP RIGHT NODE ADJACENTS
 	node_resources = CalculateTR(game_board, board_space, tile);
 	transform(calc_resources->begin(), calc_resources->end(), node_resources->begin(), calc_resources->begin(), plus<int>());
@@ -319,7 +325,7 @@ vector<int>* Player::CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, 
 						vector<int>* recu_resources = CalculateBR(game_board, adjacent.at(tile_index), adj_tile);
 						// Add recursively calculated resources to total calculated resources
 						transform(calc_resources->begin(), calc_resources->end(), recu_resources->begin(), calc_resources->begin(), plus<int>());
-					}	
+					}
 				}
 			}
 		}
