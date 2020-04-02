@@ -37,27 +37,27 @@ BuildingTile::~BuildingTile() {
 	delete Flipped;
 }
 
-void BuildingTile::setValue(int value) {
+void BuildingTile::SetValue(int value) {
 	*Value = value;
 }
 
-void BuildingTile::setType(ResourceType type) {
+void BuildingTile::SetType(ResourceType type) {
 	*Type = type;
 }
 
-void BuildingTile::setFlipped(bool flip) {
+void BuildingTile::SetFlipped(bool flip) {
 	*Flipped = flip;
 }
 
-int BuildingTile::getValue() {
+int BuildingTile::GetValue() {
 	return *Value;
 }
 
-ResourceType BuildingTile::getType() {
+ResourceType BuildingTile::GetType() {
 	return *Type;
 }
 
-bool BuildingTile::getFlipped() {
+bool BuildingTile::GetFlipped() {
 	return *Flipped;
 }
 
@@ -83,11 +83,11 @@ string BuildingTile::PrintType() {
 vector<string> BuildingTile::PrintBuildingTile() {
 	vector<string> tileData;
 
-	tileData.push_back("**************************");
-	tileData.push_back("*  Building Type  *  " + PrintType());
-	tileData.push_back("**************************");
-	tileData.push_back("*      Value      *   " + to_string(getValue()) + "  *");
-	tileData.push_back("**************************");
+	tileData.push_back("..........");
+	tileData.push_back(" Tp | " + PrintType() + " |");
+	tileData.push_back("..........");
+	tileData.push_back(" V# | " + to_string(GetValue()) + " |");
+	tileData.push_back("..........");
 
 	return tileData;
 }

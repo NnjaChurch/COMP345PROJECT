@@ -19,6 +19,9 @@ public:
 		// Node Functions
 		bool CheckTile();
 		void PlaceTile(BuildingTile* tile);
+		// Drawing Functions
+		vector<string> PrintTile();
+
 	private:
 		int* NodeNumber;
 		int* NodeValue;

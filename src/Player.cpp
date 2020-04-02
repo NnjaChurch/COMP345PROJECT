@@ -93,27 +93,42 @@ void Player::ResourceTracker(int board_space, GBMap* game_board) {
 	cout << endl;
 }
 
-void Player::BuildVillage(int board_space, int building_tile_number) {
-	bool validturn = true;
-	while (validturn)
-	{
-		// Rules for placing village tiles (not yet implemented)
+int Player::BuildVillage(int board_space, int building_tile_number) {
 
-		// Check if tile already placed
-		if (!village->CheckEmpty(board_space)) {
-			// Copy tile pointer
-			BuildingTile* placed_tile = building_tokens->at(building_tile_number);
-			// Place tile
-			village->AddTile(board_space, placed_tile); //TODO: need to check adjacency if matches
-			//TODO: if the building number doesnt match, need to ask to flip.
-			// Remove tile from hand
-			building_tokens->erase(building_tokens->begin() + building_tile_number);
-			cout << "Player " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
-		}
-		else {
-			cout << "Tile already present in village at position: " << board_space << endl;
-			validturn = true;
-		}
+	// Rules for placing village tiles (not yet implemented)
+	
+	/*
+		Building Tile Placing Algorithm
+
+		1. Check if tile is already placed in position
+			1.f If tile already placed, return 0 and print out "Tile already present in village at position #"
+		2. Check if any other tiles of the same type have been already been placed in village
+			2.f If no other tile of same type has been placed skip to step 4
+		3. If tile of same type has already been placed, check if tile is adjacent to placing position, repeat
+		   with all tiles of same type until at least one matches.
+			3.f If no matching type tile is adjacent, return 0 and print out "Tile not adjacent to other tiles of same type"
+		4. Check if player has enough resources to place the tile
+			4.f If player does not have enough resources, ask if player wants to flip the tile
+				4.y If player decides to flip tile, return 1 and place tile in position with flipped set to true
+				4.n If player decides to not flip tile, return 0 and print out "Tile not placed"
+		5. If player has enough resources, return 1 and remove the proper resources and place the tile
+	*/
+
+	// Check if tile already placed
+	if (!village->CheckEmpty(board_space)) {
+		// Copy tile pointer
+		BuildingTile* placed_tile = building_tokens->at(building_tile_number);
+		// Place tile
+		village->AddTile(board_space, placed_tile); //TODO: need to check adjacency if matches
+		//TODO: if the building number doesnt match, need to ask to flip.
+		// Remove tile from hand
+		building_tokens->erase(building_tokens->begin() + building_tile_number);
+		cout << "Player " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
+		return 0;
+	}
+	else {
+		cout << "Tile already present in village at position: " << board_space << endl;
+		return 1;
 	}
 }
 

@@ -52,7 +52,70 @@ void VGMap::AddTile(int board_space, BuildingTile* tile) {
 }
 
 void VGMap::Draw() {
-	// TODO: Print functions for VGMap
+	cout << "Printing VGMap for Player: " << PlayerNumber << endl;
+
+	vector<string>* line1 = new vector<string>;
+	vector<string>* line2 = new vector<string>;
+	vector<string>* line3 = new vector<string>;
+	vector<string>* line4 = new vector<string>;
+	vector<string>* line5 = new vector<string>;
+	for (int i = 0; i < Nodes->size(); i++) {
+		if (!CheckEmpty(i)) {
+			// Tile Empty Print Number
+			string TileNumber;
+			if (i < 10) {
+				TileNumber = "0" + to_string(i);         // NOTE TILE NUMBER STARTS AT ZERO BECAUSE THE PLAYER'S INPUTS MUST MATCH INDEXES
+			}
+			else {
+				TileNumber = to_string(i);
+			}
+
+			line1->push_back("..........");
+			line2->push_back("         |");
+			line3->push_back("    " + TileNumber + "   |");
+			line4->push_back("         |");
+			line5->push_back("..........");
+		}
+		else {
+			// Tile Not Empty Print Tile Data
+			vector<string> tileData = Nodes->at(i)->PrintTile();
+
+			line1->push_back(tileData.at(0));
+			line2->push_back(tileData.at(1));
+			line3->push_back(tileData.at(2));
+			line4->push_back(tileData.at(3));
+			line5->push_back(tileData.at(4));
+		}
+
+		if (i % 5 == 4) {
+			// Print out buffers, new line and then clear
+			for (string s : *line1) {
+				cout << s;
+			}
+			line1->clear();
+			cout << "\n";
+			for (string s : *line2) {
+				cout << s;
+			}
+			line2->clear();
+			cout << "\n";
+			for (string s : *line3) {
+				cout << s;
+			}
+			line3->clear();
+			cout << "\n";
+			for (string s : *line4) {
+				cout << s;
+			}
+			line4->clear();
+			cout << "\n";
+			for (string s : *line5) {
+				cout << s;
+			}
+			line5->clear();
+			cout << "\n";
+		}
+	}
 }
 
 VGMap::VGNode::VGNode(int node_number, int node_value) {
@@ -79,4 +142,8 @@ bool VGMap::VGNode::CheckTile() {
 
 void VGMap::VGNode::PlaceTile(BuildingTile* tile) {
 	Tile = tile;
+}
+
+vector<string> VGMap::VGNode::PrintTile() {
+	return Tile->PrintBuildingTile();
 }

@@ -32,7 +32,7 @@ public:
 	void ResourceTracker(int board_space, GBMap* game_board);
 
 	// Part 6 Functions
-	void BuildVillage(int board_space, int building_tile_number);
+	int BuildVillage(int board_space, int building_tile_number);
 	vector<int>* CalculateResources(int board_space, GBMap* game_board);
 
 	// Recursive Calculation Functions

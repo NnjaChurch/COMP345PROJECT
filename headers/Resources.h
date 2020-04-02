@@ -51,14 +51,14 @@ public:
     ~BuildingTile();
 
     // Setters
-    void setValue(int value);
-    void setType(ResourceType type);
-    void setFlipped(bool flip);
+    void SetValue(int value);
+    void SetType(ResourceType type);
+    void SetFlipped(bool flip);
 
     // Getters
-    int getValue();
-    ResourceType getType();
-    bool getFlipped();
+    int GetValue();
+    ResourceType GetType();
+    bool GetFlipped();
 
     // Drawing Functions
     string PrintType();
