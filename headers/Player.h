@@ -22,16 +22,22 @@ public:
 	// Destructor
 	virtual ~Player();
 
-	// Functions
+	// Hand Functions
+	void ShowHand();
+	void ResourceTracker();
+
+	// Setters
+	void AssignVillage(VGMap* village);
+
+	// Getters
+
+	// Tile Functions
 	int PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board);
+	int PlaceShipmentTile(int board_space, GBMap* game_board);
 	void DrawBuilding(Deck* decks);
 	void DrawHarvestTile(Deck* decks);
+	void DrawShipmentTile(Deck* decks);
 
-	// Hand Functiions
-	void ShowHand();
-	void ResourceTracker(int board_space, GBMap* game_board);
-
-	// Part 6 Functions
 	int BuildVillage(int board_space, int building_tile_number);
 	vector<int>* CalculateResources(int board_space, GBMap* game_board);
 
@@ -48,8 +54,9 @@ public:
 
 private:
 	int* PlayerNumber;
-	VGMap* village;
-	vector<int>* resource_markers;
-	vector<HarvestTile*>* harvest_tiles;
-	vector<BuildingTile*>* building_tokens;
+	VGMap* Village;
+	vector<int>* Resource_Markers;
+	vector<HarvestTile*>* Harvest_Tiles;
+	vector<BuildingTile*>* Building_Tiles;
+	HarvestTile* Shipment_Tile;
 };

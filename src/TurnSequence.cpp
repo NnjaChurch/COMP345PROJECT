@@ -21,6 +21,8 @@ int main() {
 	// Load Players
 	vector<Player*>* Players = new vector<Player*>();
 	for (int i = 0; i < numPlayers; i++) {
+		Player* newPlayer = new Player(i + 1);
+		newPlayer->AssignVillage(VGMapLoader::LoadMap(i + 1));
 		Players->push_back(new Player(i + 1));
 	}
 	cout << "Players created succesfully!" << endl;
@@ -58,9 +60,8 @@ int main() {
 			//Players->at(i)->PlaceHarvestTile(where_to_place, tile_to_place, GameMap);
 			cout << "The Tile has been placed" << endl;
 			cout << "Calculating resources..." << endl;
-			//Players->at(i)->CalculateResources(tile_to_place, GameMap);
-			//Players->at(i)->ResourceTracker(tile_to_place, GameMap);
-			cout << "Village Building phase for Player " + (i + 1) << endl;
+			Players->at(i)->ResourceTracker();
+			cout << "Village Building phase for Player " << i + 1 << endl;
 			cout << "Here are the buildings that you pocess: " << endl;
 			cout << "Which building do you want to place?" << endl;
 			cin >> building_to_place;
@@ -69,8 +70,9 @@ int main() {
 			//Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
 			cout << "Building has been placed" << endl;
 
-			for (int j = 0; j < numPlayers-1; j++) {
-				cout << "Now Rotating Village Building phase for Player " + ((i+j+1)%numPlayers) << endl;
+			for (int j = 1; j < numPlayers; j++) {
+				int next_player = (i + j) % numPlayers;
+				cout << "Now Rotating Village Building phase for Player " << next_player + 1 << endl;
 				cout << "Here are the buildings that you pocess: " << endl;
 				cout << "Which building do you want to place?" << endl;
 				cin >> building_to_place;

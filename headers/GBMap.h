@@ -28,6 +28,7 @@ public:
 
 		// Drawing Functions
 		vector<string> PrintTile();
+
 	private:
 		int NodeNumber;
 		HarvestTile* Tile;
@@ -49,15 +50,20 @@ public:
 	GBNode* GetNode(int board_space);
 
 	bool CheckEmpty(int board_space);
+	int CountEmpty();
 
 	// Player Functions
 	void AddTile(int board_space, HarvestTile* tile);
+	void DrawTile(Deck* decks);
+	BuildingTile* TakeBuilding(int tile_number, Deck* decks);
 
 	// Draw Functions
 	void Draw();
 
 private:
 	int* NumNodes;
+	int* SpacesLeft;
 	vector<GBNode*>* Nodes;
 	vector<vector<int>>* Edges;
+	vector<BuildingTile*>* TilePool;
 };

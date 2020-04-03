@@ -2,8 +2,10 @@
 
 GBMap::GBMap() {
 	NumNodes = new int();
+	SpacesLeft = new int();
 	Nodes = new vector<GBNode*>;
 	Edges = new vector<vector<int>>;
+	TilePool = new vector<BuildingTile*>;
 }
 
 GBMap::~GBMap() {
@@ -15,6 +17,8 @@ GBMap::~GBMap() {
 	// Delete Edges
 	Edges->clear();
 	delete Edges;
+	TilePool->clear();
+	delete TilePool;
 }
 
 GBMap::GBNode::GBNode(int node_number) {
@@ -56,6 +60,7 @@ vector<string> GBMap::GBNode::PrintTile() {
 
 void GBMap::AddNodes(int num_nodes) {
 	*NumNodes = num_nodes;
+	*SpacesLeft = num_nodes;
 	for (int i = 0; i < num_nodes; i++) {
 		Nodes->push_back(new GBNode(i));
 	}
@@ -84,8 +89,27 @@ bool GBMap::CheckEmpty(int board_space) {
 	return Nodes->at(board_space)->CheckTile();
 }
 
+int GBMap::CountEmpty() {
+	return *SpacesLeft;
+}
+
 void GBMap::AddTile(int board_space, HarvestTile* tile) {
 	Nodes->at(board_space)->PlaceTile(tile);
+	*SpacesLeft--;
+}
+
+void GBMap::DrawTile(Deck* decks) {
+	if (TilePool->size() <= 5) {
+		BuildingTile* drawn_tile = decks->DrawBuilding();
+		TilePool->push_back(drawn_tile);
+	}
+}
+
+BuildingTile* GBMap::TakeBuilding(int tile_number, Deck* decks) {
+	BuildingTile* taken_tile = TilePool->at(tile_number);
+	TilePool->erase(TilePool->begin() + tile_number);
+	DrawTile(decks);
+	return taken_tile;
 }
 
 void GBMap::Draw() {
@@ -163,69 +187,69 @@ void GBMap::Draw() {
 	else {
 		// TODO: PRINTING FOR 4 PLAYER MAP
 		cout << "Printing for 4 Players" << endl;
-        for (int i = 0; i < Nodes->size(); i++) {
-            if(i==0 or i==40){
-                line1->push_back("          ");
-                line2->push_back("          ");
-                line3->push_back("          ");
-                line4->push_back("          ");
-                line5->push_back("          ");
-            }
-            if (!CheckEmpty(i)) {
-                // Tile Empty Print Number
-                string TileNumber;
-                if (i < 10) {
-                    TileNumber = "0" + to_string(i);         // NOTE TILE NUMBER STARTS AT ZERO BECAUSE THE PLAYER'S INPUTS MUST MATCH INDEXES
-                }
-                else {
-                    TileNumber = to_string(i);
-                }
+		for (int i = 0; i < Nodes->size(); i++) {
+			if(i==0 or i==40){
+				line1->push_back("          ");
+				line2->push_back("          ");
+				line3->push_back("          ");
+				line4->push_back("          ");
+				line5->push_back("          ");
+			}
+			if (!CheckEmpty(i)) {
+				// Tile Empty Print Number
+				string TileNumber;
+				if (i < 10) {
+					TileNumber = "0" + to_string(i);         // NOTE TILE NUMBER STARTS AT ZERO BECAUSE THE PLAYER'S INPUTS MUST MATCH INDEXES
+				}
+				else {
+					TileNumber = to_string(i);
+				}
 
-                line1->push_back("..........");
-                line2->push_back("         |");
-                line3->push_back("    " + TileNumber + "   |");
-                line4->push_back("         |");
-                line5->push_back("..........");
-            }
-            else {
-                // Tile Not Empty Print Tile Data
-                vector<string> tileData = Nodes->at(i)->PrintTile();
+				line1->push_back("..........");
+				line2->push_back("         |");
+				line3->push_back("    " + TileNumber + "   |");
+				line4->push_back("         |");
+				line5->push_back("..........");
+			}
+			else {
+				// Tile Not Empty Print Tile Data
+				vector<string> tileData = Nodes->at(i)->PrintTile();
 
-                line1->push_back(tileData.at(0));
-                line2->push_back(tileData.at(1));
-                line3->push_back(tileData.at(2));
-                line4->push_back(tileData.at(3));
-                line5->push_back(tileData.at(4));
-            }
+				line1->push_back(tileData.at(0));
+				line2->push_back(tileData.at(1));
+				line3->push_back(tileData.at(2));
+				line4->push_back(tileData.at(3));
+				line5->push_back(tileData.at(4));
+			}
 
-            if (i % 7 == 4|| i==44) {
-                // Print out buffers, new line and then clear
-                for (string s : *line1) {
-                    cout << s;
-                }
-                line1->clear();
-                cout << "\n";
-                for (string s : *line2) {
-                    cout << s;
-                }
-                line2->clear();
-                cout << "\n";
-                for (string s : *line3) {
-                    cout << s;
-                }
-                line3->clear();
-                cout << "\n";
-                for (string s : *line4) {
-                    cout << s;
-                }
-                line4->clear();
-                cout << "\n";
-                for (string s : *line5) {
-                    cout << s;
-                }
-                line5->clear();
-                cout << "\n";
-            }
-        }
-    }
+			if (i % 7 == 4|| i==44) {
+				// Print out buffers, new line and then clear
+				for (string s : *line1) {
+					cout << s;
+				}
+				line1->clear();
+				cout << "\n";
+				for (string s : *line2) {
+					cout << s;
+				}
+				line2->clear();
+				cout << "\n";
+				for (string s : *line3) {
+					cout << s;
+				}
+				line3->clear();
+				cout << "\n";
+				for (string s : *line4) {
+					cout << s;
+				}
+				line4->clear();
+				cout << "\n";
+				for (string s : *line5) {
+					cout << s;
+				}
+				line5->clear();
+				cout << "\n";
+			}
+		}
+	}
 }

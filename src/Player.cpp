@@ -5,37 +5,38 @@ Player::Player(int player_number) {
 	*PlayerNumber = player_number;
 
 	// Initialize Village
-	village = new VGMap(player_number);
+	Village = new VGMap();
 
 	// Initialize Resource Markers and Tile Hand
-	resource_markers = new vector<int>(4, 0);
-	harvest_tiles = new vector<HarvestTile*>;
-	building_tokens = new vector<BuildingTile*>;
+	Resource_Markers = new vector<int>(4, 0);
+	Harvest_Tiles = new vector<HarvestTile*>;
+	Building_Tiles = new vector<BuildingTile*>;
+	Shipment_Tile = NULL;
 }
 
 Player::~Player() {
-	resource_markers->clear();
-	delete resource_markers;
+	Resource_Markers->clear();
+	delete Resource_Markers;
 
-	harvest_tiles->clear();
-	delete harvest_tiles;
+	Harvest_Tiles->clear();
+	delete Harvest_Tiles;
 
-	building_tokens->clear();
-	delete building_tokens;
+	Building_Tiles->clear();
+	delete Building_Tiles;
 }
 
 int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board) {
 	// Check if tile already placed
 	if (!game_board->CheckEmpty(board_space)) {
 		// Copy Tile Pointer
-		HarvestTile* placed_tile = harvest_tiles->at(harvest_tile_number);
+		HarvestTile* placed_tile = Harvest_Tiles->at(harvest_tile_number);
 		// Place Tile
 		game_board->AddTile(board_space, placed_tile);
 		// Remove Tile from hand (only removes pointer in the vector, not what the pointer is pointing to)
-		harvest_tiles->erase(harvest_tiles->begin() + harvest_tile_number);
+		Harvest_Tiles->erase(Harvest_Tiles->begin() + harvest_tile_number);
 		cout << "Player " << *PlayerNumber << " placed a Harvest Tile at position: " << board_space << endl;
 		// Calculate Resources Gathered
-		ResourceTracker(board_space, game_board);
+		Resource_Markers = CalculateResources(board_space, game_board);
 		// Reset map access after all calculations are complete
 		game_board->ResetMapAccess();
 		return 0;
@@ -46,11 +47,48 @@ int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* ga
 	}
 }
 
+int Player::PlaceShipmentTile(int board_space, GBMap* game_board) {
+	// Check if tile already placed
+	if (!game_board->CheckEmpty(board_space)) {
+		// Copy Tile Pointer
+		HarvestTile* placed_tile = Shipment_Tile;
+
+		// Ask player what type of they want the Shipment tile to be
+		cout << " Choose Shipment tile type:\n1. WOOD\n2. STONE\n3. SHEEP\n4. WHEAT\n";
+		int selection;
+		cin >> selection;
+		if (selection == 1) {
+			placed_tile->SetShipmentType(ResourceType::WOOD);
+		}
+		else if (selection == 2) {
+			placed_tile->SetShipmentType(ResourceType::STONE);
+		}
+		else if (selection == 3) {
+			placed_tile->SetShipmentType(ResourceType::SHEEP);
+		}
+		else if (selection == 4) {
+			placed_tile->SetShipmentType(ResourceType::WHEAT);
+		}
+		Resource_Markers = CalculateResources(board_space, game_board);
+		// Reset Shipment Tile
+		Shipment_Tile->ClearShipment();
+		Shipment_Tile = NULL;
+		// Reset Map Access
+		game_board->ResetMapAccess();
+		return 0;
+	}
+	else {
+		cout << "Tile already present on game board at position: " << board_space << endl;
+		return 1;
+	}
+	
+}
+
 void Player::DrawBuilding(Deck* decks) {
 	// Draw Tile
 	BuildingTile* drawn_tile = decks->DrawBuilding();
 	// Add to Hand
-	building_tokens->push_back(drawn_tile);
+	Building_Tiles->push_back(drawn_tile);
 	cout << "Player " << *PlayerNumber << " drew a Building Tile" << endl;
 }
 
@@ -58,39 +96,57 @@ void Player::DrawHarvestTile(Deck* decks) {
 	// Draw Tile
 	HarvestTile* drawn_tile = decks->DrawHarvestTile();
 	// Add Tile to Hand
-	harvest_tiles->push_back(drawn_tile);
+	Harvest_Tiles->push_back(drawn_tile);
 	cout << "Player " << *PlayerNumber << " drew a Harvest Tile" << endl;
+}
+
+void Player::DrawShipmentTile(Deck* decks) {
+	// Draw Tile
+	HarvestTile* drawn_tile = decks->DrawHarvestTile();
+	// Set Tile to Shipment type
+	Shipment_Tile = drawn_tile;
+	cout << "Player " << *PlayerNumber << " drew their Shipment Tile" << endl;
 }
 
 void Player::ShowHand() {
 	cout << "Harvest Tiles: " << endl;
-	for (int i = 0; i < harvest_tiles->size(); i++) {
+	for (int i = 0; i < Harvest_Tiles->size(); i++) {
 		cout << "Tile: " << i << endl;
-		vector<string> tileData = harvest_tiles->at(i)->PrintHarvestTile();
+		vector<string> tileData = Harvest_Tiles->at(i)->PrintHarvestTile();
 		for (string s : tileData) {
 			cout << s << "\n";
 		}
 		cout << "\n";
 	}
 	cout << "Building Tiles: " << endl;
-	for (int i = 0; i < building_tokens->size(); i++) {
+	for (int i = 0; i < Building_Tiles->size(); i++) {
 		cout << "Tile: " << i << endl;
-		vector<string> tileData = building_tokens->at(i)->PrintBuildingTile();
+		vector<string> tileData = Building_Tiles->at(i)->PrintBuildingTile();
 		for (string s : tileData) {
 			cout << s << "\n";
 		}
 		cout << "\n";
 	}
+	cout << "Shipment Tile Available: ";
+	if (Shipment_Tile != NULL) {
+		cout << "Yes" << endl;
+	}
+	else {
+		cout << "No" << endl;
+	}
 }
 
-void Player::ResourceTracker(int board_space, GBMap* game_board) {
-	vector<int>* resources_gathered = CalculateResources(board_space, game_board);
-	resource_markers = resources_gathered;
+void Player::ResourceTracker() {
 	cout << "Resources Gathered:";
-	for (int i = 0; i < resource_markers->size(); i++) {
-		cout << " " << resource_markers->at(i) << ",";
+	for (int i = 0; i < Resource_Markers->size(); i++) {
+		cout << " " << Resource_Markers->at(i) << ",";
 	}
 	cout << endl;
+}
+
+void Player::AssignVillage(VGMap* village) {
+	delete Village;
+	Village = village;
 }
 
 int Player::BuildVillage(int board_space, int building_tile_number) {
@@ -115,14 +171,23 @@ int Player::BuildVillage(int board_space, int building_tile_number) {
 	*/
 
 	// Check if tile already placed
-	if (!village->CheckEmpty(board_space)) {
+	if (!Village->CheckEmpty(board_space)) {	// 1
 		// Copy tile pointer
-		BuildingTile* placed_tile = building_tokens->at(building_tile_number);
+		BuildingTile* placed_tile = Building_Tiles->at(building_tile_number);
+		// Check for other tiles of same type
+		ResourceType placed_type = placed_tile->GetType();
+		if (Village->CheckType(placed_type)) {
+			// Adjacent Placing Rules
+
+		}
+		else {
+			// Normal Placing Rules
+		}
 		// Place tile
-		village->AddTile(board_space, placed_tile); //TODO: need to check adjacency if matches
+		Village->AddTile(board_space, placed_tile); //TODO: need to check adjacency if matches
 		//TODO: if the building number doesnt match, need to ask to flip.
 		// Remove tile from hand
-		building_tokens->erase(building_tokens->begin() + building_tile_number);
+		Building_Tiles->erase(Building_Tiles->begin() + building_tile_number);
 		cout << "Player " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
 		return 0;
 	}
@@ -146,7 +211,13 @@ vector<int>* Player::CalculateResources(int board_space, GBMap* game_board) {
 
 	// SELF
 	for (int i = 0; i < cur_nodes->size(); i++) {
-		vector<int>* gath_resources = GatherResources(cur_nodes->at(i)->GetType());
+		vector<int>* gath_resources = new vector<int>(4, 0);
+		if (tile->GetShipment()) {
+			gath_resources = GatherResources(tile->GetShipmentType());
+		}
+		else {
+			gath_resources = GatherResources(cur_nodes->at(i)->GetType());
+		}
 		transform(calc_resources->begin(), calc_resources->end(), gath_resources->begin(), calc_resources->begin(), plus<int>());
 		cur_nodes->at(i)->MarkNodeVisited();
 	}
@@ -301,7 +372,15 @@ vector<int>* Player::CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, 
 				vector<HarvestTile::HarvestNode*>* cur_nodes = cur_tile->GetTileData();
 				vector<HarvestTile::HarvestNode*>* adj_nodes = adj_tile->GetTileData();
 				// Check if resource type of current node matches adjacent node and that the adjacent node has not been already visited
-				if ((cur_nodes->at(node_index)->GetType() == adj_nodes->at(adj_index)->GetType()) && !adj_nodes->at(adj_index)->NodeVisited()) {
+				ResourceType cur_type;
+				// Check if tile is a shipment or not
+				if (cur_tile->GetShipment()) {
+					cur_type = cur_tile->GetShipmentType();
+				}
+				else {
+					cur_type = cur_nodes->at(node_index)->GetType();
+				}
+				if ((cur_type == adj_nodes->at(adj_index)->GetType()) && !adj_nodes->at(adj_index)->NodeVisited()) {
 					ResourceType resource = adj_nodes->at(adj_index)->GetType();
 					// Gather resources from node
 					vector<int>* gath_resources = GatherResources(resource);

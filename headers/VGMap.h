@@ -19,9 +19,9 @@ public:
 		// Node Functions
 		bool CheckTile();
 		void PlaceTile(BuildingTile* tile);
+		BuildingTile* GetTile();
 		// Drawing Functions
 		vector<string> PrintTile();
-
 	private:
 		int* NodeNumber;
 		int* NodeValue;
@@ -43,6 +43,8 @@ public:
 	// Getter Functions
 	vector<int> GetAdjacentTiles(int board_space);
 	bool CheckEmpty(int board_space);
+	bool CheckType(ResourceType type);
+	bool CheckAdjacentType(int board_space, ResourceType type);
 
 	// Player Functions
 	void AddTile(int board_space, BuildingTile* tile);

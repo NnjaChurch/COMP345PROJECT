@@ -47,6 +47,24 @@ bool VGMap::CheckEmpty(int board_space) {
 	return Nodes->at(board_space)->CheckTile();
 }
 
+bool VGMap::CheckType(ResourceType type) {
+	bool typeMatch = false;
+	for (int i = 0; i < Nodes->size(); i++) {
+		if (!Nodes->at(i)->CheckTile() && Nodes->at(i)->GetTile()->GetType() == type) {
+			typeMatch = true;
+		}
+	}
+	return typeMatch;
+}
+
+bool VGMap::CheckAdjacentType(int board_space, ResourceType type) {
+	bool adjacent_type = false;
+	for (int i = 0; i < Nodes->size(); i++) {
+		if(!Nodes->at(i)->CheckTile() && Nodes->at(i)->GetTile()->GetType() == )
+	}
+	return false;
+}
+
 void VGMap::AddTile(int board_space, BuildingTile* tile) {
 	Nodes->at(board_space)->PlaceTile(tile);
 }
@@ -142,6 +160,10 @@ bool VGMap::VGNode::CheckTile() {
 
 void VGMap::VGNode::PlaceTile(BuildingTile* tile) {
 	Tile = tile;
+}
+
+BuildingTile* VGMap::VGNode::GetTile() {
+	return Tile;
 }
 
 vector<string> VGMap::VGNode::PrintTile() {
