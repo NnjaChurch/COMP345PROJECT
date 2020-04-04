@@ -144,7 +144,7 @@ int main() {
 		}
 
 		//TODO: Reset Resource Tracker to all 0s
-		if (GameMap->CountEmpty == 1) {
+		if ((GameMap->CountEmpty()) == 1) {
 			exit = true;
 		}
 	}
