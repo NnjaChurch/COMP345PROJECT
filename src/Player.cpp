@@ -154,12 +154,28 @@ int Player::ResourceTracker() {
 	return zero_count;
 }
 
+void Player::PassResources(Player* t_player) {
+	// Copy current resources
+	vector<int>* passed_resources = new vector<int>(4, 0);
+	transform(passed_resources->begin(), passed_resources->end(), Resource_Markers->begin(), passed_resources->begin(), plus<int>());
+	// Give to other player
+	t_player->AddResources(passed_resources);
+	
+	// Reset Resource_Markers
+	delete Resource_Markers;
+	Resource_Markers = new vector<int>(4, 0);
+}
+
 void Player::AssignVillage(VGMap* village) {
 	Village = village;
 }
 
-int Player::BuildVillage(int board_space, int building_tile_number) {
+void Player::AddResources(vector<int>* resources) {
+	// Add Passed resources
+	transform(Resource_Markers->begin(), Resource_Markers->end(), resources->begin(), Resource_Markers->begin(), plus<int>());
+}
 
+int Player::BuildVillage(int board_space, int building_tile_number) {
 
 	// Check if tile already placed and selected tile is in hand
 	if (!Village->CheckEmpty(board_space)) {

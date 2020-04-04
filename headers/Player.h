@@ -25,9 +25,11 @@ public:
 	// Hand Functions
 	void ShowHand();
 	int ResourceTracker();
+	void PassResources(Player* t_player);
 
 	// Setters
 	void AssignVillage(VGMap* village);
+	void AddResources(vector<int>* resources);
 
 	// Getters
 
@@ -39,6 +41,15 @@ public:
 	void DrawShipmentTile(Deck* decks);
 
 	int BuildVillage(int board_space, int building_tile_number);
+
+private:
+	int* PlayerNumber;
+	VGMap* Village;
+	vector<int>* Resource_Markers;
+	vector<HarvestTile*>* Harvest_Tiles;
+	vector<BuildingTile*>* Building_Tiles;
+	HarvestTile* Shipment_Tile;
+
 	vector<int>* CalculateResources(int board_space, GBMap* game_board);
 
 	// Recursive Calculation Functions
@@ -51,12 +62,4 @@ public:
 	vector<int>* CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index);
 	vector<int>* CalculateNode_CUR(GBMap* game_board, HarvestTile* cur_tile, int tile_index, int node_index, int adj_index);
 	vector<int>* GatherResources(ResourceType type);
-
-private:
-	int* PlayerNumber;
-	VGMap* Village;
-	vector<int>* Resource_Markers;
-	vector<HarvestTile*>* Harvest_Tiles;
-	vector<BuildingTile*>* Building_Tiles;
-	HarvestTile* Shipment_Tile;
 };
