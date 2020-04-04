@@ -21,9 +21,8 @@ int main() {
 	// Load Players
 	vector<Player*>* Players = new vector<Player*>();
 	for (int i = 0; i < numPlayers; i++) {
-		Player* newPlayer = new Player(i + 1);
-		newPlayer->AssignVillage(VGMapLoader::LoadMap(i + 1));
 		Players->push_back(new Player(i + 1));
+		Players->at(i)->AssignVillage(VGMapLoader::LoadMap(i + 1));
 	}
 	cout << "Players created succesfully!" << endl;
 
@@ -78,7 +77,7 @@ int main() {
 				cin >> building_to_place;
 				cout << "Where do you want to place it?" << endl;
 				cin >> where_to_placeBuilding;
-				//Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
+				Players->at(i)->BuildVillage(where_to_placeBuilding, building_to_place);
 				cout << "Building has been placed" << endl;
 
 				//TODO: each other player in clockwise order will have the option of also using any 
@@ -86,7 +85,6 @@ int main() {
 
 			}
 		}
-
 	}
 	//end of main loop
 

@@ -24,7 +24,7 @@ public:
 
 	// Hand Functions
 	void ShowHand();
-	void ResourceTracker();
+	int ResourceTracker();
 
 	// Setters
 	void AssignVillage(VGMap* village);
