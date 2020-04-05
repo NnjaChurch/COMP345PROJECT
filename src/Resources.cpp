@@ -21,7 +21,7 @@ int Resource::GetTileNumber() {
 BuildingTile::BuildingTile() {
 	Value = new int;
 	Type = new ResourceType;
-	Flipped = new bool;
+	Flipped = new bool(false);
 }
 
 BuildingTile::BuildingTile(int tile_number, int value, ResourceType type) : Resource(tile_number) {
@@ -49,15 +49,15 @@ void BuildingTile::SetFlipped(bool flip) {
 	*Flipped = flip;
 }
 
-int BuildingTile::GetValue() {
+int BuildingTile::GetValue() const {
 	return *Value;
 }
 
-ResourceType BuildingTile::GetType() {
+ResourceType BuildingTile::GetType() const {
 	return *Type;
 }
 
-bool BuildingTile::GetFlipped() {
+bool BuildingTile::GetFlipped() const {
 	return *Flipped;
 }
 
@@ -82,20 +82,19 @@ string BuildingTile::PrintType() {
 
 vector<string> BuildingTile::PrintBuildingTile() {
 	vector<string> tileData;
-
-	if (Flipped) {
-		tileData.push_back("..........");
-		tileData.push_back("         |");
-		tileData.push_back("    " + PrintType() + "   |");
-		tileData.push_back("         |");
-		tileData.push_back("..........");
+	if (GetFlipped()) {
+		tileData.push_back("|........");
+		tileData.push_back("|        ");
+		tileData.push_back("|   " + PrintType() + "   ");
+		tileData.push_back("|        ");
+		tileData.push_back("|........");
 	}
 	else {
-		tileData.push_back("..........");
-		tileData.push_back(" Tp | " + PrintType() + " |");
-		tileData.push_back("..........");
-		tileData.push_back(" V# | " + to_string(GetValue()) + " |");
-		tileData.push_back("..........");
+		tileData.push_back("|........");
+		tileData.push_back("| Tp: " + PrintType() + " ");
+		tileData.push_back("|........");
+		tileData.push_back("| V#: 0" + to_string(GetValue()) + " ");
+		tileData.push_back("|........");
 	}
 
 	return tileData;
@@ -106,6 +105,7 @@ HarvestTile::HarvestTile() {
 	Nodes = new vector<HarvestNode*>;
 	Visited = new bool(false);
 	Shipment = new bool(false);
+	Shipment_Type = new ResourceType;
 }
 
 HarvestTile::HarvestTile(int tile_number, vector<ResourceType> resource_list) : Resource(tile_number) {
@@ -115,6 +115,7 @@ HarvestTile::HarvestTile(int tile_number, vector<ResourceType> resource_list) : 
 	}
 	Visited = new bool(false);
 	Shipment = new bool(false);
+	Shipment_Type = new ResourceType;
 }
 
 HarvestTile::~HarvestTile() {
@@ -136,11 +137,11 @@ HarvestTile::HarvestNode::~HarvestNode() {
 	delete Visited;
 }
 
-ResourceType HarvestTile::HarvestNode::GetType() {
+ResourceType HarvestTile::HarvestNode::GetType() const {
 	return *Type;
 }
 
-bool HarvestTile::HarvestNode::NodeVisited() {
+bool HarvestTile::HarvestNode::NodeVisited() const {
 	return *Visited;
 }
 
@@ -172,19 +173,19 @@ string HarvestTile::HarvestNode::PrintNode() {
 	}
 }
 
-vector<HarvestTile::HarvestNode*>* HarvestTile::GetTileData() {
+vector<HarvestTile::HarvestNode*>* HarvestTile::GetTileData() const {
 	return Nodes;
 }
 
-bool HarvestTile::TileVisited() {
+bool HarvestTile::TileVisited() const {
 	return *Visited;
 }
 
-bool HarvestTile::GetShipment() {
+bool HarvestTile::GetShipment() const {
 	return *Shipment;
 }
 
-ResourceType HarvestTile::GetShipmentType() {
+ResourceType HarvestTile::GetShipmentType() const {
 	return *Shipment_Type;
 }
 
@@ -204,11 +205,11 @@ vector<string> HarvestTile::PrintHarvestTile() {
 	vector<string> tileData;	
 	// NOTE: Index Values in the ->at() might need to be changed for tile node order
 
-	tileData.push_back("..........");
-	tileData.push_back(" " + Nodes->at(0)->PrintNode() + " | " + Nodes->at(1)->PrintNode() + " |");
-	tileData.push_back(".........|");
-	tileData.push_back(" " + Nodes->at(2)->PrintNode() + " | " + Nodes->at(3)->PrintNode() + " |");
-	tileData.push_back("..........");
+	tileData.push_back("|.........");
+	tileData.push_back("| " + Nodes->at(0)->PrintNode() + " | " + Nodes->at(1)->PrintNode() + " ");
+	tileData.push_back("|....|....");
+	tileData.push_back("| " + Nodes->at(2)->PrintNode() + " | " + Nodes->at(3)->PrintNode() + " ");
+	tileData.push_back("|....|....");
 
 	return tileData;
 }

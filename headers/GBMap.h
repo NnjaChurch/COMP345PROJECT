@@ -47,7 +47,8 @@ public:
 
 	// Getters
 	vector<int> GetAdjacentTiles(int current_tile);
-	GBNode* GetNode(int board_space);
+	int GetNumNodes() const;
+	GBNode* GetNode(int board_space) const;
 
 	bool CheckEmpty(int board_space);
 	int CountEmpty();
@@ -59,6 +60,7 @@ public:
 
 	// Draw Functions
 	void Draw();
+	void PrintTilePool();
 
 private:
 	int* NumNodes;

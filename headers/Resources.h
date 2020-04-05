@@ -51,9 +51,9 @@ public:
 	void SetFlipped(bool flip);
 
 	// Getters
-	int GetValue();
-	ResourceType GetType();
-	bool GetFlipped();
+	int GetValue() const;
+	ResourceType GetType() const;
+	bool GetFlipped() const;
 
 	// Drawing Functions
 	string PrintType();
@@ -84,8 +84,8 @@ public:
 		~HarvestNode();
 
 		// Getters
-		ResourceType GetType();
-		bool NodeVisited();
+		ResourceType GetType() const;
+		bool NodeVisited() const;
 
 		// Setters
 		void MarkNodeVisited();
@@ -100,10 +100,10 @@ public:
 	};
 
 	// Getters
-	vector<HarvestNode*>* GetTileData();
-	bool TileVisited();
-	bool GetShipment();
-	ResourceType GetShipmentType();
+	vector<HarvestNode*>* GetTileData() const;
+	bool TileVisited() const;
+	bool GetShipment() const;
+	ResourceType GetShipmentType() const;
 
 	// Setters
 	void SetShipment();

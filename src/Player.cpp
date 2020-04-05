@@ -1,8 +1,8 @@
 #include "../headers/Player.h"
 
 Player::Player(int player_number) {
-	PlayerNumber = new int;
-	*PlayerNumber = player_number;
+	PlayerNumber = new int(player_number);
+	PlayerScore = new int();
 
 	// Initialize Village
 	Village = NULL;
@@ -27,7 +27,104 @@ Player::~Player() {
 	delete Shipment_Tile;
 }
 
-int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board) {
+void Player::ShowHand() {
+	ShowHarvestTiles();
+	ShowBuildingTiles();
+}
+
+void Player::ShowHarvestTiles() {
+	vector<string>* print_data = new vector<string>(5, "");
+	vector<string> tile_data;
+	cout << "\nHarvest Tiles: " << endl;
+	for (int i = 0; i < Harvest_Tiles->size(); i++) {
+		tile_data = Harvest_Tiles->at(i)->PrintHarvestTile();
+		print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
+		print_data->at(1).append("   " + tile_data.at(1) + "|\t");
+		print_data->at(2).append("   " + tile_data.at(2) + "|\t");
+		print_data->at(3).append("   " + tile_data.at(3) + "|\t");
+		print_data->at(4).append("   " + tile_data.at(4) + "|\t");
+
+		if (i % 5 == 4) {
+			// Flush buffer to prevent lines getting too long
+			for (int i = 0; i < print_data->size(); i++) {
+				print_data->at(i).append("\n");
+				cout << print_data->at(i);
+				print_data->at(i) = "";
+			}
+		}
+	}
+	for (int i = 0; i < print_data->size(); i++) {
+		print_data->at(i).append("\n");
+		cout << print_data->at(i);
+		print_data->at(i) = "";
+	}
+	cout << "\nShipment Tile Available: ";
+	if (Shipment_Tile != NULL) {
+		cout << "Yes" << endl;
+	}
+	else {
+		cout << "No" << endl;
+	}
+}
+
+void Player::ShowBuildingTiles() {
+	vector<string>* print_data = new vector<string>(5, "");
+	vector<string> tile_data;
+	cout << "\nBuilding Tiles: " << endl;
+	for (int i = 0; i < Building_Tiles->size(); i++) {
+		tile_data = Building_Tiles->at(i)->PrintBuildingTile();
+		print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
+		print_data->at(1).append("   " + tile_data.at(1) + "|\t");
+		print_data->at(2).append("   " + tile_data.at(2) + "|\t");
+		print_data->at(3).append("   " + tile_data.at(3) + "|\t");
+		print_data->at(4).append("   " + tile_data.at(4) + "|\t");
+		if (i % 5 == 4) {
+			// Flush buffer to prevent lines getting too long
+			for (int i = 0; i < print_data->size(); i++) {
+				print_data->at(i).append("\n");
+				cout << print_data->at(i);
+				print_data->at(i) = "";
+			}
+		}
+	}
+	for (int i = 0; i < print_data->size(); i++) {
+		print_data->at(i).append("\n");
+		cout << print_data->at(i);
+		print_data->at(i) = "";
+	}
+}
+
+void Player::AssignVillage(VGMap* village) {
+	Village = village;
+}
+
+void Player::AddResources(vector<int>* resources) {
+	// Add Passed resources
+	transform(Resource_Markers->begin(), Resource_Markers->end(), resources->begin(), Resource_Markers->begin(), plus<int>());
+}
+
+void Player::ResetResources() {
+	delete Resource_Markers;
+	Resource_Markers = new vector<int>(4, 0);
+}
+
+int Player::GetPlayerNumber() const {
+	return *PlayerNumber;
+}
+
+int Player::GetPlayerScore() const {
+	return *PlayerScore;
+}
+
+int Player::GetHarvestHandSize() const {
+	return (int)Harvest_Tiles->size();
+}
+
+int Player::GetBuildingHandSize() const {
+	return (int)Building_Tiles->size();
+}
+
+bool Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board) {
 	// Check if tile already placed
 	if (!game_board->CheckEmpty(board_space)) {
 		// Copy Tile Pointer
@@ -41,22 +138,22 @@ int Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* ga
 		Resource_Markers = CalculateResources(board_space, game_board);
 		// Reset map access after all calculations are complete
 		game_board->ResetMapAccess();
-		return 0;
+		return true;
 	}
 	else {
-		cout << "Tile already present on game board at position: " << board_space << endl;
-		return 1;
+		cout << "\nTile already present on game board at position: " << board_space << endl;
+		return false;
 	}
 }
 
-int Player::PlaceShipmentTile(int board_space, GBMap* game_board) {
+bool Player::PlaceShipmentTile(int board_space, GBMap* game_board) {
 	// Check if tile already placed
 	if (!game_board->CheckEmpty(board_space)) {
 		// Copy Tile Pointer
 		HarvestTile* placed_tile = Shipment_Tile;
 
 		// Ask player what type of they want the Shipment tile to be
-		cout << " Choose Shipment tile type:\n1. WOOD\n2. STONE\n3. SHEEP\n4. WHEAT\n";
+		cout << "\nChoose Shipment tile type:\n1. WOOD\n2. STONE\n3. SHEEP\n4. WHEAT\n";
 		int selection;
 		cin >> selection;
 		if (selection == 1) {
@@ -71,19 +168,25 @@ int Player::PlaceShipmentTile(int board_space, GBMap* game_board) {
 		else if (selection == 4) {
 			placed_tile->SetShipmentType(ResourceType::WHEAT);
 		}
+		// Place Shipment Tile
+		game_board->AddTile(board_space, placed_tile);
+		cout << "Player " << *PlayerNumber << " placed a Shipment Tile at position: " << board_space << endl;
 		Resource_Markers = CalculateResources(board_space, game_board);
 		// Reset Shipment Tile
 		Shipment_Tile->ClearShipment();
 		Shipment_Tile = NULL;
 		// Reset Map Access
 		game_board->ResetMapAccess();
-		return 0;
+		return true;
 	}
 	else {
-		cout << "Tile already present on game board at position: " << board_space << endl;
-		return 1;
+	cout << "\nTile already present on game board at position: " << board_space << endl;
+	return false;
 	}
-	
+}
+
+void Player::CollectBuilding(BuildingTile* tile) {
+	Building_Tiles->push_back(tile);
 }
 
 void Player::DrawBuilding(Deck* decks) {
@@ -107,49 +210,28 @@ void Player::DrawShipmentTile(Deck* decks) {
 	HarvestTile* drawn_tile = decks->DrawHarvestTile();
 	// Set Tile to Shipment type
 	Shipment_Tile = drawn_tile;
+	Shipment_Tile->SetShipment();
 	cout << "Player " << *PlayerNumber << " drew their Shipment Tile" << endl;
-}
-
-void Player::ShowHand() {
-	cout << "Harvest Tiles: " << endl;
-	for (int i = 0; i < Harvest_Tiles->size(); i++) {
-		cout << "Tile: " << i << endl;
-		vector<string> tileData = Harvest_Tiles->at(i)->PrintHarvestTile();
-		for (string s : tileData) {
-			cout << s << "\n";
-		}
-		cout << "\n";
-	}
-	cout << "Building Tiles: " << endl;
-	for (int i = 0; i < Building_Tiles->size(); i++) {
-		cout << "Tile: " << i << endl;
-		vector<string> tileData = Building_Tiles->at(i)->PrintBuildingTile();
-		for (string s : tileData) {
-			cout << s << "\n";
-		}
-		cout << "\n";
-	}
-	cout << "Shipment Tile Available: ";
-	if (Shipment_Tile != NULL) {
-		cout << "Yes" << endl;
-	}
-	else {
-		cout << "No" << endl;
-	}
 }
 
 int Player::ResourceTracker() {
 	// Number at zero
 	int zero_count = 0;
 
-	cout << "Resources Gathered:";
+	cout << "\nRemaing Resources:\n[WD ST SH WH ]\n[";
 	for (int i = 0; i < Resource_Markers->size(); i++) {
 		if (Resource_Markers->at(i) == 0) {
 			zero_count++;
 		}
-		cout << " " << Resource_Markers->at(i) << ",";
+		if (Resource_Markers->at(i) < 10) {
+			cout << " " << Resource_Markers->at(i) << " ";
+		}
+		else {
+			cout << Resource_Markers->at(i) << " ";
+		}
+		
 	}
-	cout << endl;
+	cout << "]" << endl;
 
 	return zero_count;
 }
@@ -160,23 +242,12 @@ void Player::PassResources(Player* t_player) {
 	transform(passed_resources->begin(), passed_resources->end(), Resource_Markers->begin(), passed_resources->begin(), plus<int>());
 	// Give to other player
 	t_player->AddResources(passed_resources);
-	
+
 	// Reset Resource_Markers
-	delete Resource_Markers;
-	Resource_Markers = new vector<int>(4, 0);
+	ResetResources();
 }
 
-void Player::AssignVillage(VGMap* village) {
-	Village = village;
-}
-
-void Player::AddResources(vector<int>* resources) {
-	// Add Passed resources
-	transform(Resource_Markers->begin(), Resource_Markers->end(), resources->begin(), Resource_Markers->begin(), plus<int>());
-}
-
-int Player::BuildVillage(int board_space, int building_tile_number) {
-
+bool Player::BuildVillage(int board_space, int building_tile_number) {
 	// Check if tile already placed and selected tile is in hand
 	if (!Village->CheckEmpty(board_space)) {
 		// Copy tile pointer
@@ -187,74 +258,64 @@ int Player::BuildVillage(int board_space, int building_tile_number) {
 			// Adjacent Placing Rules
 			if (!Village->CheckAdjacentType(board_space, placed_type)) {
 				// Tile cannot be placed
-				cout << "Tile not adjacent to already placed building of same type" << endl;
-				return 1;
+				cout << "\nTile not adjacent to already placed building of same type" << endl;
+				return false;
 			}
 		}
 
-		bool enough_resources = true;
-		// Check if sufficient resources
+		bool valid_placement = true;
+		// Check if Tile Value matches Node Value
+		if (!(placed_tile->GetValue() == Village->GetNode(board_space)->GetValue())) {
+			valid_placement = false;
+		}
+		// Check if enough resources are available to construct building
+		int res_index = -1;
 		if (placed_type == ResourceType::WOOD) {
-			if (Resource_Markers->at(0) >= placed_tile->GetValue()) {
-				// Subtract resources from player resources
-				Resource_Markers->at(0) -= placed_tile->GetValue();
-			}
-			else {
-				enough_resources = false;
-			}
+			res_index = 0;
 		}
-		else if (placed_type == ResourceType::STONE) {
-			if (Resource_Markers->at(1) >= placed_tile->GetValue()) {
-				// Subtract resources from player resources
-				Resource_Markers->at(1) -= placed_tile->GetValue();
-			}
-			else {
-				enough_resources = false;
-			}
+		if (placed_type == ResourceType::STONE) {
+			res_index = 1;
 		}
-		else if (placed_type == ResourceType::SHEEP) {
-			if (Resource_Markers->at(2) >= placed_tile->GetValue()) {
-				// Subtract resources from player resources
-				Resource_Markers->at(2) -= placed_tile->GetValue();
-			}
-			else {
-				enough_resources = false;
-			}
+		if (placed_type == ResourceType::SHEEP) {
+			res_index = 2;
 		}
-		else if (placed_type == ResourceType::WHEAT) {
-			if (Resource_Markers->at(3) >= placed_tile->GetValue()) {
-				// Subtract resources from player resources
-				Resource_Markers->at(3) -= placed_tile->GetValue();
-			}
-			else {
-				enough_resources = false;
-			}
+		if (placed_type == ResourceType::WHEAT) {
+			res_index = 3;
 		}
-		if (!enough_resources) {
+		if (!(Resource_Markers->at(res_index) >= Village->GetNode(board_space)->GetValue())) {
+			cout << "\nNot enough of required Resource to construct Building at this position." << endl;
+			return false;
+		}
+
+		if (!valid_placement) {
 			int selection;
-			// Ask player to flip tile
-			cout << "Not enough resources to place tile at position, do you want to flip?\n1: Yes\n2: No" << endl;
+			cout << "\nBuilding value does not match placement position value.\nDo you want to flip?\n1. Yes\t2. No" << endl;
 			cin >> selection;
 			if (selection == 1) {
-				// Set tile to flipped
 				placed_tile->SetFlipped(true);
 			}
-			else {
-				cout << "Tile not placed." << endl;
-				return 1;
+			if (selection == 2) {
+				cout << "\nTile placement cancelled." << endl;
+				return false;
 			}
-		}
+		}	
+		// Deduct Resources
+		Resource_Markers->at(res_index) -= Village->GetNode(board_space)->GetValue();
 		// Place tile
 		Village->AddTile(board_space, placed_tile);
 		// Remove tile from hand
 		Building_Tiles->erase(Building_Tiles->begin() + building_tile_number);
-		cout << "Player " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
-		return 0;
+		cout << "\nPlayer " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
+		return true;
 	}
 	else {
-		cout << "Tile already present in village at position: " << board_space << endl;
-		return 1;
+		cout << "\nTile already present in village at position: " << board_space << endl;
+		return false;
 	}
+}
+
+void Player::PrintVillage() {
+	Village->Draw();
 }
 
 vector<int>* Player::CalculateResources(int board_space, GBMap* game_board) {
@@ -435,6 +496,7 @@ vector<int>* Player::CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, 
 				ResourceType cur_type;
 				// Check if tile is a shipment or not
 				if (cur_tile->GetShipment()) {
+					cout << "CALC_ADJ_SHIPMENT" << endl;
 					cur_type = cur_tile->GetShipmentType();
 				}
 				else {
@@ -447,7 +509,7 @@ vector<int>* Player::CalculateNode_ADJ(GBMap* game_board, vector<int> adjacent, 
 					// Add gathered resources to total calculated resources
 					transform(calc_resources->begin(), calc_resources->end(), gath_resources->begin(), calc_resources->begin(), plus<int>());
 					// Mark node as visited
-					adj_nodes->at(1)->MarkNodeVisited();
+					adj_nodes->at(adj_index)->MarkNodeVisited();
 					// Check if all nodes in tile have been visited and mark tile as visited if they have been
 					bool tile_visited = true;
 					for (int i = 0; i < adj_nodes->size(); i++) {
@@ -553,4 +615,75 @@ vector<int>* Player::GatherResources(ResourceType type) {
 		cerr << "ERROR::PLAYER::CALCULATE_RESOURCES::INVALID_RESOURCE_TYPE_FOUND" << endl;
 	}
 	return calc_resources;
+}
+
+void Player::CalculateVillageScore() {
+	/*
+		Scoring Guide
+		Row 1 = 6	Row 2 = 5	Row 3 = 4	Row 4 = 3	Row 5 = 2	Row 6 = 1
+		Col 1 = 5	Col 2 = 4	Col 3 = 3	Col 4 = 4	Col 5 = 5
+		All face up (not Flipped) = 2x
+	*/
+
+	vector<vector<bool>> rows = vector<vector<bool>>(6, vector<bool>(2, true));
+	vector<vector<bool>> cols = vector<vector<bool>>(5, vector<bool>(2, true));
+
+	VGMap::VGNode* cur_node;
+
+	// Check for placed tiles
+	for (int i = 0; i < 6; i++) {
+		int offset = 5 * i;
+		for (int j = 0; j < 5; j++) {
+			cur_node = Village->GetNode(offset + j);
+			if (cur_node->CheckTile()) {
+				// No tile placed, no points awarded
+				rows.at(i).at(0) = false;
+				cols.at(j).at(0) = false;
+			}
+			if(cur_node->GetTile()->GetFlipped()) {
+				// Tile flipped, no doubling points
+				rows.at(i).at(1) = false;
+				cols.at(j).at(1) = false;
+			}
+		}
+	}
+
+	// Calculate Points
+	int tot_points = 0;
+	int cur_points = 0;
+	// Rows
+	for (int i = 0; i < rows.size(); i++) {
+		cur_points = 0;
+		if (rows.at(i).at(0)) {
+			cur_points += (6 - i);
+		}
+		if (rows.at(i).at(1)) {
+			cur_points *= 2;
+		}
+		tot_points += cur_points;
+	}
+	// Cols
+	for (int i = 0; i < cols.size(); i++) {
+		cur_points = 0;
+		if (cols.at(i).at(0)) {
+			if (i == 0 || i == 4) {
+				cur_points += 5;
+			}
+			if (i == 1 || i == 3) {
+				cur_points += 4;
+			}
+			if (i == 2) {
+				cur_points += 3;
+			}
+		}
+		if (cols.at(i).at(1)) {
+			cur_points *= 2;
+		}
+		tot_points += cur_points;
+	}
+	*PlayerScore = tot_points;
+}
+
+int Player::CountVillage() {
+	return Village->CountEmpty();
 }

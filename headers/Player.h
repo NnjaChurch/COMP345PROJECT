@@ -16,7 +16,6 @@ using namespace std;
 class Player
 {
 public:
-	
 	// Default Constructor
 	Player(int player_number);
 	// Destructor
@@ -24,26 +23,42 @@ public:
 
 	// Hand Functions
 	void ShowHand();
-	int ResourceTracker();
-	void PassResources(Player* t_player);
+	void ShowHarvestTiles();
+	void ShowBuildingTiles();
 
 	// Setters
 	void AssignVillage(VGMap* village);
 	void AddResources(vector<int>* resources);
+	void ResetResources();
 
 	// Getters
+	int GetPlayerNumber() const;
+	int GetPlayerScore() const;
+	int GetHarvestHandSize() const;
+	int GetBuildingHandSize() const;
+	
 
 	// Tile Functions
-	int PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board);
-	int PlaceShipmentTile(int board_space, GBMap* game_board);
+	bool PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board);
+	bool PlaceShipmentTile(int board_space, GBMap* game_board);
+	void CollectBuilding(BuildingTile* tile);
 	void DrawBuilding(Deck* decks);
 	void DrawHarvestTile(Deck* decks);
 	void DrawShipmentTile(Deck* decks);
 
-	int BuildVillage(int board_space, int building_tile_number);
+	// Resource Functions
+	int ResourceTracker();
+	void PassResources(Player* t_player);
+	
+	// Village Functions
+	bool BuildVillage(int board_space, int building_tile_number);
+	void PrintVillage();
+	void CalculateVillageScore();
+	int CountVillage();
 
 private:
 	int* PlayerNumber;
+	int* PlayerScore;
 	VGMap* Village;
 	vector<int>* Resource_Markers;
 	vector<HarvestTile*>* Harvest_Tiles;

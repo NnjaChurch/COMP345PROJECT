@@ -20,6 +20,7 @@ public:
 		bool CheckTile();
 		void PlaceTile(BuildingTile* tile);
 		BuildingTile* GetTile();
+		int GetValue();
 		// Drawing Functions
 		vector<string> PrintTile();
 	private:
@@ -42,9 +43,11 @@ public:
 
 	// Getter Functions
 	vector<int> GetAdjacentTiles(int board_space);
+	VGMap::VGNode* GetNode(int board_space) const;
 	bool CheckEmpty(int board_space);
 	bool CheckType(ResourceType type);
 	bool CheckAdjacentType(int board_space, ResourceType type);
+	int CountEmpty();
 
 	// Player Functions
 	void AddTile(int board_space, BuildingTile* tile);
@@ -55,6 +58,7 @@ public:
 private:
 	int* PlayerNumber;
 	int* NumNodes;
+	int* SpacesLeft;
 	vector<VGNode*>* Nodes;
 	vector<vector<int>>* Edges;
 };
