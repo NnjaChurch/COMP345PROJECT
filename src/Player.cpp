@@ -38,11 +38,16 @@ void Player::ShowHarvestTiles() {
 	cout << "\nHarvest Tiles: " << endl;
 	for (int i = 0; i < Harvest_Tiles->size(); i++) {
 		tile_data = Harvest_Tiles->at(i)->PrintHarvestTile();
-		print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
-		print_data->at(1).append("   " + tile_data.at(1) + "|\t");
-		print_data->at(2).append("   " + tile_data.at(2) + "|\t");
-		print_data->at(3).append("   " + tile_data.at(3) + "|\t");
-		print_data->at(4).append("   " + tile_data.at(4) + "|\t");
+		if (i < 10) {
+			print_data->at(0).append(" " + to_string(i) + ": " + tile_data.at(0) + "|\t");
+		}
+		else {
+			print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
+		}
+		print_data->at(1).append("    " + tile_data.at(1) + "|\t");
+		print_data->at(2).append("    " + tile_data.at(2) + "|\t");
+		print_data->at(3).append("    " + tile_data.at(3) + "|\t");
+		print_data->at(4).append("    " + tile_data.at(4) + "|\t");
 
 		if (i % 5 == 4) {
 			// Flush buffer to prevent lines getting too long
@@ -73,11 +78,16 @@ void Player::ShowBuildingTiles() {
 	cout << "\nBuilding Tiles: " << endl;
 	for (int i = 0; i < Building_Tiles->size(); i++) {
 		tile_data = Building_Tiles->at(i)->PrintBuildingTile();
-		print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
-		print_data->at(1).append("   " + tile_data.at(1) + "|\t");
-		print_data->at(2).append("   " + tile_data.at(2) + "|\t");
-		print_data->at(3).append("   " + tile_data.at(3) + "|\t");
-		print_data->at(4).append("   " + tile_data.at(4) + "|\t");
+		if (i < 10) {
+			print_data->at(0).append(" " + to_string(i) + ": " + tile_data.at(0) + "|\t");
+		}
+		else {
+			print_data->at(0).append(to_string(i) + ": " + tile_data.at(0) + "|\t");
+		}
+		print_data->at(1).append("    " + tile_data.at(1) + "|\t");
+		print_data->at(2).append("    " + tile_data.at(2) + "|\t");
+		print_data->at(3).append("    " + tile_data.at(3) + "|\t");
+		print_data->at(4).append("    " + tile_data.at(4) + "|\t");
 		if (i % 5 == 4) {
 			// Flush buffer to prevent lines getting too long
 			for (int i = 0; i < print_data->size(); i++) {
@@ -635,15 +645,17 @@ void Player::CalculateVillageScore() {
 		int offset = 5 * i;
 		for (int j = 0; j < 5; j++) {
 			cur_node = Village->GetNode(offset + j);
-			if (cur_node->CheckTile()) {
+			if (!cur_node->CheckTile()) {
 				// No tile placed, no points awarded
 				rows.at(i).at(0) = false;
 				cols.at(j).at(0) = false;
 			}
-			if(cur_node->GetTile()->GetFlipped()) {
-				// Tile flipped, no doubling points
-				rows.at(i).at(1) = false;
-				cols.at(j).at(1) = false;
+			else {
+				if (cur_node->GetTile()->GetFlipped()) {
+					// Tile flipped, no doubling points
+					rows.at(i).at(1) = false;
+					cols.at(j).at(1) = false;
+				}
 			}
 		}
 	}

@@ -208,6 +208,7 @@ void GBMap::Draw() {
 		}
 	}
 
+	cout << "Turns Left: " << *SpacesLeft << endl;
 	// Print out Building Tile Pool
 	PrintTilePool();
 }

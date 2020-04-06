@@ -3,68 +3,7 @@
 #include "GBMapLoader.h"
 #include "VGMapLoader.h"
 
-
-// Main function templated from assignment (functions to be filled in later
-
 int main() {
-	/*
-	PART 1: Game Setup
-
-	DONE 1.1: Select number of players
-
-	DONE 1.2: Load appropriate map using GBMapLoader based on number of players
-
-	NONE 1.3: Use ResourceTracker() -> not entirely sure why this is here since it is initialized in Player's constructor
-
-	DONE 1.4: Create Player objects
-
-	DONE 1.5: Use the VGMapLoader to load maps for each player
-
-	DONE 1.6: Create a concrete deck of Harvest tiles (60 non random tiles)
-
-	DONE 1.7: Create a concrete deck of Building tiles (144 non random tiles)
-
-	DONE 1.8: Use DrawBuilding() method to draw 5 Building tiles to form the initial face up pool of the game
-
-	DONE 1.9: Assign empty hand of cards to each Player
-
-	DONE 1.10: Each Player uses DrawBuilding() to draw six Building tiles and DrawHarvestTile() to draw two Harvest tiles that stay hidden from other players
-
-	DONE 1.11: Each Player uses DrawHarvestTile() to draw one harvest tile to be placed face down with his Village board as his 'shipment' tile
-
-	PART 2 and 3: Playing the Game
-
-	DONE 2.1: Player with smallest ID goes first, game ends when only one open space is left
-
-	DONE 2.2: Placing Tiles:
-
-		DONE 3.1: Player places a HarvestTile using PlaceHarvestTile()
-			DONE 2.2.1a: Player can choose to use PlaceShipmentTile() if they still have their ShipmentTile available
-
-		DONE 3.2: Player recieves resources after placing tile displayed with ResourceTracker()
-
-		DONE 3.3: Player constructs buildings in their village using BuildVillage()
-
-		DONE 3.4: Rotate to next Player in ascending order (looping back until returning to player), passing Resources over and letting them construct buildings
-
-	DONE: 2.3: Drawing Tiles
-
-		DONE 3.5: Active Player draws a BuildingTile using DrawBuildingTile() for each Resource_Marker set to zero
-			DONE 3.5a: First Building tile must be taken from the TilePool using TakeBuilding()
-			DONE 3.5b: Other buildings can be either taken from the TilePool or from drawn from the Deck
-
-		DONE 3.6: Active Player draws a HarvestTile using DrawHarvestTile() to replaced the placed one
-
-	Part 4: Calculating the Scores
-
-	DONE 4.1: Calculate scores for each player
-
-	DONE 4.2: Player with the highest score wins
-		DONE 4.2a: If players have a tied score, check who has the least amount remaining spaced in their village wins
-		DONE 4.2b: If still tied, then the player with the least amount of buildings tiles in their hand wins
-		DONE 4.2c: If still tied, the tied players all win
-
-	 */
 	int num_players;
 	bool valid_input;
 	cout << "Welcome to New Haven! How many players will be playing?\n2 Players?\t3 Players?\t4 Players?" << endl;
