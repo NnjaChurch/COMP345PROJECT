@@ -9,12 +9,13 @@
 #include "GBMap.h"
 #include "VGMap.h"
 #include "Resources.h"
+#include "GameObservers.h"
+
 // Namespaces
 using namespace std;
 
 // Player Class
-class Player
-{
+class Player : public Subject {
 public:
 	// Default Constructor
 	Player(int player_number);
