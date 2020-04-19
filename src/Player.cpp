@@ -111,6 +111,7 @@ void Player::AssignVillage(VGMap* village) {
 void Player::AddResources(vector<int>* resources) {
 	// Add Passed resources
 	transform(Resource_Markers->begin(), Resource_Markers->end(), resources->begin(), Resource_Markers->begin(), plus<int>());
+	Notify_Observers();
 }
 
 void Player::ResetResources() {
@@ -134,6 +135,16 @@ int Player::GetBuildingHandSize() const {
 	return (int)Building_Tiles->size();
 }
 
+int Player::GetBuildingCount() const {
+	int village_empty = Village->CountEmpty();
+	int building_count = 30 - village_empty;
+	return building_count;
+}
+
+vector<int>* Player::GetResourceCount() const {
+	return Resource_Markers;
+}
+
 bool Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board) {
 	// Check if tile already placed
 	if (!game_board->CheckEmpty(board_space)) {
@@ -143,11 +154,12 @@ bool Player::PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* g
 		game_board->AddTile(board_space, placed_tile);
 		// Remove Tile from hand (only removes pointer in the vector, not what the pointer is pointing to)
 		Harvest_Tiles->erase(Harvest_Tiles->begin() + harvest_tile_number);
-		cout << "Player " << *PlayerNumber << " placed a Harvest Tile at position: " << board_space << endl;
+		cout << "Player " << *PlayerNumber + 1 << " placed a Harvest Tile at position: " << board_space << endl;
 		// Calculate Resources Gathered
 		Resource_Markers = CalculateResources(board_space, game_board);
 		// Reset map access after all calculations are complete
 		game_board->ResetMapAccess();
+		Notify_Observers();
 		return true;
 	}
 	else {
@@ -180,13 +192,14 @@ bool Player::PlaceShipmentTile(int board_space, GBMap* game_board) {
 		}
 		// Place Shipment Tile
 		game_board->AddTile(board_space, placed_tile);
-		cout << "Player " << *PlayerNumber << " placed a Shipment Tile at position: " << board_space << endl;
+		cout << "Player " << *PlayerNumber + 1 << " placed a Shipment Tile at position: " << board_space << endl;
 		Resource_Markers = CalculateResources(board_space, game_board);
 		// Reset Shipment Tile
 		Shipment_Tile->ClearShipment();
 		Shipment_Tile = NULL;
 		// Reset Map Access
 		game_board->ResetMapAccess();
+		Notify_Observers();
 		return true;
 	}
 	else {
@@ -228,20 +241,20 @@ int Player::ResourceTracker() {
 	// Number at zero
 	int zero_count = 0;
 
-	cout << "\nRemaing Resources:\n[WD ST SH WH ]\n[";
+	//cout << "\nRemaing Resources:\n[WD ST SH WH ]\n[";
 	for (int i = 0; i < Resource_Markers->size(); i++) {
 		if (Resource_Markers->at(i) == 0) {
 			zero_count++;
 		}
-		if (Resource_Markers->at(i) < 10) {
+		/*if (Resource_Markers->at(i) < 10) {
 			cout << " " << Resource_Markers->at(i) << " ";
 		}
 		else {
 			cout << Resource_Markers->at(i) << " ";
-		}
+		}*/
 		
 	}
-	cout << "]" << endl;
+	//cout << "]" << endl;
 
 	return zero_count;
 }
@@ -255,6 +268,7 @@ void Player::PassResources(Player* t_player) {
 
 	// Reset Resource_Markers
 	ResetResources();
+	Notify_Observers();
 }
 
 bool Player::BuildVillage(int board_space, int building_tile_number) {
@@ -316,6 +330,8 @@ bool Player::BuildVillage(int board_space, int building_tile_number) {
 		// Remove tile from hand
 		Building_Tiles->erase(Building_Tiles->begin() + building_tile_number);
 		cout << "\nPlayer " << *PlayerNumber << " Placed Building Tile at position: " << board_space << endl;
+		CalculateVillageScore();
+		Notify_Observers();
 		return true;
 	}
 	else {
@@ -625,6 +641,36 @@ vector<int>* Player::GatherResources(ResourceType type) {
 		cerr << "ERROR::PLAYER::CALCULATE_RESOURCES::INVALID_RESOURCE_TYPE_FOUND" << endl;
 	}
 	return calc_resources;
+}
+
+void Player::DrawObservers() {
+	DrawStatObservers();
+	DrawTurnObservers();
+}
+
+void Player::DrawTurnObservers() {
+	TurnObserver* turn_observer = dynamic_cast<TurnObserver*>(Observers->at(0));
+	if (turn_observer) {
+		turn_observer->Draw();
+	}
+}
+
+void Player::DrawStatObservers() {
+	StatObserver* stat_observer = dynamic_cast<StatObserver*>(Observers->at(1));
+	if (stat_observer) {
+		stat_observer->Draw();
+	}
+}
+
+void Player::Notify_Observers() {
+	TurnObserver* turn_observer = dynamic_cast<TurnObserver*>(Observers->at(0));
+	if (turn_observer) {
+		turn_observer->Update(GetPlayerNumber(), GetBuildingCount(), GetResourceCount());
+	}
+	StatObserver* stat_observer = dynamic_cast<StatObserver*>(Observers->at(1));
+	if (stat_observer) {
+		stat_observer->Update(GetPlayerNumber(), GetBuildingCount(), GetResourceCount(), GetPlayerScore());
+	}
 }
 
 void Player::CalculateVillageScore() {

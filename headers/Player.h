@@ -37,6 +37,8 @@ public:
 	int GetPlayerScore() const;
 	int GetHarvestHandSize() const;
 	int GetBuildingHandSize() const;
+	int GetBuildingCount() const;
+	vector<int>* GetResourceCount() const;
 	
 
 	// Tile Functions
@@ -57,6 +59,11 @@ public:
 	void CalculateVillageScore();
 	int CountVillage();
 
+	// Observer Functions
+	void DrawObservers();
+	void DrawTurnObservers();
+	void DrawStatObservers();
+	virtual void Notify_Observers() override;
 private:
 	int* PlayerNumber;
 	int* PlayerScore;
