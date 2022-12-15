@@ -1,0 +1,107 @@
+----------------------------------------------------------------------------------------------------
+	COMP345 - ASSIGNMENT 1 - DOCUMENTATION
+	GROUP - 17
+		- Kevin McAllister (40031326)
+		- Karim Loulou (40027203)
+		- Annes Cherid (40038453)
+----------------------------------------------------------------------------------------------------
+Compile Instructions:
+- Included Visual Studio Solution should allow compilation without any extra libraries
+- To run a specific driver:
+	- Exclude all other drivers (as having multiple main functions on compilation will generate an error)
+	- Run the desired driver (on x64 Debug, as all settings are configured for that version)
+	- Repeat for other drivers
+----------------------------------------------------------------------------------------------------
+GBMap.h / GBMap.cpp:
+Description:	Handles the creation and modification of the Game Board and its related components
+Type:	Object
+Functions:
+	GBMap(int num_players)										// Default Constructor
+	GBMap(vector<GBNode>* Nodes, vector<vector<int>>* Edges)	// Constructor for MapLoader
+	~GBMap()													// Destructor
+	void AddTile(int board_space, Tile harvest_tile)			// Function to add tiles to the board
+	void Draw()													// Outputs board to the console
+
+Subclass:	GBNode
+Description:	Stores data of the tiles that are placed on the board
+Functions:
+	GBNode(int node_number)										// Constructor
+	~GBNode()													// Destructor
+
+VGMap.h / VGMap.cpp:
+Description:	Handles the creation and modification of the Village board and its related components
+Type:	Object
+Functions:
+	VGMap(int player_number)									// Default Constructor
+	VGMap(vector<VGNode>* Nodes, vector<vector<int>>* Edges)	// Constrcutor for MapLoader
+	~VGMap()													// Destructor
+	void AddTile(int board_space, Tile building_tile)			// Function to add tiles to the board
+	void Draw()													// Outputs board to the console
+	
+Subclass:	VGNode
+Description:	Stores data of tiles that are placed on the board and costs to place them
+Functions:
+	VGNode(int node_number)										// Constructor
+	~VGNode()													// Destructor
+	
+GBMapLoader.h / GBMapLoader.cpp:
+Description:	Handles the loading of GBMaps from files
+Type:	Static Functions
+Functions:
+	static void LoadMap(string map_file)						// Loads map from file
+	static vector<int>* GetNodes()								// Returns stored nodes loaded from file
+	static vector<vector<int>>* GetEdges()						// Returns stored edges loaded from file
+	
+VGMapLoader.h / VGMapLoader.cpp:
+Description:	Handles loading of VGMaps from files
+Type:	Static Functions
+Functions:
+	static void LoadMap(string map_file)						// Loads map from file
+	static vector<int>* GetNodes()								// Returns stored nodes loaded from file
+	static vector<vector<int>>* GetEdges()						// Returns stored edges loaded from file
+
+Resources.h / Resources.cpp:
+Description:	Handles the creation and modification of the Harvest Tiles and its related components.
+		Also, it shuffles the cards and handles the angle of the Harvest Tile.
+subclass:	TileDeck
+Functions:
+    	
+	vector <vector<char>> allCard() 			//vector of vector wich reprensents all possible tiles
+	vector<char> drawTile()						//draws from deck pile take the first card in the stack
+ 	rotate(vector<char>& arr);				//rotate once clock wise a vector representing a tile
+	shuffle(vector <vector<char>>& vec, int a, int b);	//Swaps 2 random Tiles, repeat to make a full shuffle 
+	fullShuffle(vector <vector<char>>& vec);		//Returns a repeated shuffle to make it a full shuffle	
+	stack<vector<char>> createDeck(vector<vector<char>> cards); //Creates a stack full of cards
+	char getTopLeftOfTile(vector<char>)			//return the upper left ressources part of a tile card
+	char getTopRightOfTile(vector<char>)			//return the upper right ressources part of a tile card
+	char getBottomLeftOfTile(vector<char>)			//return the bottom left ressources part of a tile card
+	char getBottomRightOfTile(vector<char>)			//return the bottom right ressources part of a tile card
+	int randomInRange(int range);				//Generates a random number in a specific range, used for Shuffle
+	void fullShuffle(vector<Building>& vec);		//Returns a repeated shuffle to make it a full shuffle
+	stack<Building> createDeck(vector<Building> cards);	//Creates deck for the building cards
+
+Subclass:	BuildingDeck
+Description:	Handles the creation and modification of the Building cards and its related components.
+		Also, it shuffles the cards and handles the flip of the card.
+
+Functions:	
+	Building drawBuilding();					//draws from deck pile
+	void shuffle(vector<Building>& vec, int a, int b);		//Swaps 2 random Buidling tokens, repeat to make a full shuffle 
+	void BuildingFullShuffle(vector<Building>& vec)			//Returns a repeated shuffle to make it a full shuffle
+	stack<Building>createDeckOfBuilding(vector<Building> cards)	//Creates deck for the building cards
+
+
+Player.h / Player.cpp:
+Description:	Handles what a Player can own and do in the GameBoard and Village Board.
+Type:	Object
+Functions:	
+	virtual ~Player(); //Destructor	
+	Player(int player_number); // Default Constructor		
+	int PlaceHarvestTile(int board_space, int harvest_tile_number, GBMap* game_board);	//Places a tile in the GameBoard
+	void DrawBuilding(stack<Tile*>* building_deck); 					//Draws a Tile from the Building deck
+	void DrawHarvestTile(stack<Tile*>* harvest_deck);					//Draws a Tile from the Harvest deck
+	void ResourceTracker(int board_space, GBMap* game_board);				//Checks/Modifies what Resource the Player has to spend
+	void BuildVillage(int board_space, int building_tile_number);				//Builds a village using the Building cards in the Village Board
+	vector<int> CalculateResources(int board_space, GBMap* game_board);			//Calculates resources base on the Tile place in the Game Board
+
+
